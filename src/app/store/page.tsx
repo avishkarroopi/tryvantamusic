@@ -5,6 +5,7 @@ import {
   ShoppingCart, Search, X, BookOpen, Music, Plus, Minus, Trash2, ShieldCheck, Truck, Check, AlertCircle, Loader2,
 } from "lucide-react";
 import styles from "./page.module.css";
+import { useAuth } from "@/context/AuthContext";
 
 // Real Razorpay Checkout integration: /api/checkout/create-order opens a
 // Razorpay order server-side, checkout.razorpay.com's script renders the
@@ -83,6 +84,7 @@ const CATEGORIES = [
 interface CartLine { product: Product; qty: number }
 
 export default function StorePage() {
+  const { user } = useAuth(); // optional — Store checkout stays guest-friendly; attaches the buyer when signed in
   const [activeCategory, setActiveCategory] = useState("all");
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartLine[]>([]);
@@ -132,6 +134,10 @@ export default function StorePage() {
         body: JSON.stringify({
           amount: subtotal,
           receipt: `store_${Date.now()}`,
+          module: "store",
+          userId: user?.id, // omitted entirely for guest checkout — undefined isn't sent by JSON.stringify
+          productRef: cart.map((l) => `${l.product.id}x${l.qty}`).join(","),
+          description: `Store order: ${cartCount} item${cartCount === 1 ? "" : "s"}`,
           notes: { customerEmail: customer.email, items: String(cartCount) },
         }),
       });
