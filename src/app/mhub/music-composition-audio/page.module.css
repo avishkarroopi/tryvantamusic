@@ -1,0 +1,119 @@
+/* Recovered verbatim from "remaining pages data.zip" / music composing.html (M-Hub route /mhub/music-composition-audio — confirmed via mhub.har). Dark purple/teal theme, no site Navbar. */
+
+.container{color:#fff;background-color:#0d0d12;min-height:100vh;font-family:Outfit,sans-serif;overflow-x:hidden}
+.floatingCircle:active{transform:scale(.9)}
+.heroSection{padding:8rem 1rem 5rem;position:relative;overflow:visible}
+.heroGlow{filter:blur(120px);z-index:0;background:#a855f740;border-radius:50%;width:20rem;height:20rem;position:absolute;top:-5rem;left:-5rem}
+.heroContainer{z-index:10;grid-template-columns:1fr;align-items:center;gap:3rem;max-width:1280px;margin:0 auto;display:grid;position:relative}
+@media (min-width:1024px){.heroContainer{text-align:left;grid-template-columns:1fr 1fr;gap:4rem}
+}
+.heroContent{text-align:center;flex-direction:column;align-items:center;display:flex}
+@media (min-width:1024px){.heroContent{text-align:left;align-items:flex-start}
+}
+.heroBadge{color:#d8b4fe;background:#ffffff0d;border:1px solid #ffffff1a;border-radius:9999px;margin-bottom:2rem;padding:.5rem 1rem;font-size:.875rem;font-weight:500;display:inline-block}
+.heroTitle{letter-spacing:-.02em;margin-bottom:1.5rem;font-family:Fredoka,sans-serif;font-size:2.75rem;font-weight:800;line-height:1.1}
+@media (min-width:768px){.heroTitle{font-size:4rem}
+}
+.heroDesc{color:#9ca3af;max-width:36rem;margin-bottom:2.5rem;font-size:1.125rem;font-weight:300;line-height:1.6}
+.heroBtns{flex-direction:column;gap:1rem;width:100%;margin-bottom:2rem;display:flex}
+@media (min-width:640px){.heroBtns{flex-direction:row;width:auto;margin-bottom:0}
+}
+.btnPrimary{color:#fff;cursor:pointer;background:linear-gradient(90deg,#9333ea,#ec4899);border:none;border-radius:1rem;padding:1rem 2.5rem;font-size:1.125rem;font-weight:700;transition:transform .2s,box-shadow .2s;box-shadow:0 10px 15px -3px #9333ea4d}
+.btnPrimary:hover{transform:translateY(-2px);box-shadow:0 20px 25px -5px #9333ea66}
+.btnSecondary{color:#fff;cursor:pointer;background:#ffffff0d;border:1px solid #ffffff1a;border-radius:1rem;padding:1rem 2.5rem;font-size:1.125rem;font-weight:600;transition:background .2s}
+.btnSecondary:hover{background:#ffffff1a}
+.heroVisual{justify-content:center;align-items:center;display:flex;position:relative}
+.studentImgCard{aspect-ratio:4/5;background:linear-gradient(#1a1a24,#1a1a24) padding-box padding-box,linear-gradient(to bottom right,#a855f7,#2dd4bf) border-box;border:3px solid #0000;border-radius:2rem;width:100%;max-width:30rem;transition:transform .3s;position:relative;overflow:hidden;transform:rotate(2deg);box-shadow:0 50px 100px -20px #a855f74d}
+.studentImgCard:hover{transform:rotate(0) scale(1.02)}
+.studentImg{object-fit:cover;width:100%;height:100%}
+.imageOverlay{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);text-align:center;background:#0009;border:1px solid #ffffff1a;border-radius:1rem;padding:1rem;position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem}
+.imageText{color:#fff;letter-spacing:.02em;font-size:.9rem;font-weight:600}
+.whySection{background-color:#ffffff05;padding:4rem 1rem}
+.sectionTitle{text-align:center;margin-bottom:2.5rem;font-family:Fredoka,sans-serif;font-size:1.875rem;font-weight:700}
+.gridGeneric{max-width:1280px;margin:0 auto}
+@media (min-width:768px){.gridGeneric{grid-template-columns:repeat(2,1fr)}
+}
+.featureCard{background:#ffffff0d;border:1px solid #ffffff1a;border-radius:1.5rem;padding:1.5rem}
+.featureIcon{border-radius:1rem;justify-content:center;align-items:center;width:3rem;height:3rem;margin-bottom:1rem;display:flex}
+.iconPurple{color:#c084fc;background:#a855f733}
+.iconTeal{color:#2dd4bf;background:#2dd4bf33}
+.iconPink{color:#fb7185;background:#fb718533}
+.iconBlue{color:#60a5fa;background:#60a5fa33}
+.earsSection{text-align:center;background:0 0;padding:6rem 1rem}
+.earsSubtitle{color:#6b7280;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem;font-size:.875rem;font-weight:600;display:block}
+.earsGrid{grid-template-columns:1fr;gap:1.5rem;max-width:1280px;margin:4rem auto 0;display:grid}
+@media (min-width:640px){.earsGrid{grid-template-columns:repeat(2,1fr)}
+}
+@media (min-width:1024px){.earsGrid{grid-template-columns:repeat(4,1fr);gap:2rem}
+}
+.earsCard{text-align:left;background:#15151b;border:1px solid #ffffff0d;border-radius:1.5rem;flex-direction:column;min-height:24rem;padding:2.5rem 1.5rem;transition:all .3s;display:flex;position:relative;overflow:hidden}
+.earsCard:hover{border-color:#ffffff1a;transform:translateY(-5px);box-shadow:0 20px 40px -10px #00000080}
+.earsCardContent{z-index:10;flex-direction:column;flex:1;display:flex;position:relative}
+.earsWatermark{opacity:.03;-webkit-user-select:none;user-select:none;pointer-events:none;color:#fff;font-family:Fredoka,sans-serif;font-size:10rem;font-weight:900;line-height:1;position:absolute;top:-1rem;right:-1rem}
+.earsIconBox{color:#fff;opacity:.8;margin-bottom:2rem;font-size:2rem}
+.earsBigLetter{text-shadow:0 0 30px;margin-bottom:.5rem;font-family:Fredoka,sans-serif;font-size:4rem;font-weight:800;line-height:1}
+.earsTitle{color:#fff;margin-bottom:1rem;font-size:1.25rem;font-weight:700}
+.earsDesc{color:#9ca3af;margin-top:auto;font-size:.875rem;line-height:1.6}
+.mlabSection{background:#ffffff03;padding:6rem 1rem;position:relative;overflow:hidden}
+.mlabGlow{filter:blur(120px);background:#2dd4bf0d;position:absolute;inset:0}
+.mlabContainer{z-index:10;max-width:1024px;margin:0 auto;position:relative}
+.mlabCard{background:linear-gradient(to bottom right,#134e4a66,#1a1a24);border:1px solid #ffffff1a;border-radius:3rem;padding:2rem;box-shadow:0 25px 50px -12px #00000040}
+@media (min-width:768px){.mlabCard{padding:4rem}
+}
+.mlabGrid{grid-template-columns:1fr;gap:2rem;margin-top:3rem;display:grid}
+@media (min-width:768px){.mlabGrid{grid-template-columns:repeat(2,1fr)}
+}
+@media (min-width:1024px){.mlabGrid{grid-template-columns:repeat(3,1fr)}
+}
+.mlabItem{align-items:flex-start;gap:1rem;display:flex}
+.mlabIcon{color:#2dd4bf;background:#2dd4bf33;border-radius:.75rem;padding:.75rem}
+.highlightsSection{background:linear-gradient(#581c8733,#0000);padding:4rem 1rem}
+.highlightsContainer{background:#ffffff0d;border:1px solid #ffffff1a;border-radius:1.5rem;max-width:896px;margin:0 auto;padding:2rem}
+.highlightsGrid{grid-template-columns:1fr;gap:2rem;display:grid}
+@media (min-width:768px){.highlightsGrid{grid-template-columns:repeat(2,1fr)}
+}
+.founderSection{padding:5rem 1rem}
+.founderCard{background:#1a1a24;border:1px solid #ffffff1a;border-radius:1.5rem;flex-direction:column;align-items:center;gap:2.5rem;max-width:896px;margin:0 auto;padding:2rem;display:flex}
+@media (min-width:768px){.founderCard{flex-direction:row;padding:3rem}
+}
+.founderImgBox{border:4px solid #2dd4bf4d;border-radius:9999px;flex-shrink:0;width:12rem;height:12rem;overflow:hidden;box-shadow:0 0 20px #a855f733}
+.levelsSection{text-align:center;padding:4rem 1rem}
+.levelTabs{flex-wrap:wrap;justify-content:center;gap:.75rem;margin-bottom:2.5rem;display:flex}
+.levelTab{cursor:pointer;color:#fff;background:#ffffff0d;border:1px solid #ffffff1a;border-radius:9999px;padding:.625rem 1.25rem;font-weight:700}
+.tabActive{background:linear-gradient(135deg,#a855f7,#2dd4bf);border-color:#0000}
+.levelContent{background:#ffffff0d;border:1px solid #ffffff1a;border-radius:1.5rem;max-width:42rem;margin:0 auto;padding:2rem}
+.plansGrid{grid-template-columns:1fr;gap:2rem;max-width:1280px;margin:0 auto;display:grid}
+@media (min-width:768px){.plansGrid{grid-template-columns:repeat(3,1fr)}
+}
+.planCard{text-align:center;background:#15151b;border:1px solid #ffffff0d;border-radius:2rem;flex-direction:column;padding:3rem 2rem;transition:all .3s;display:flex}
+.planCard:hover{border-color:#ffffff1a;transform:translateY(-5px)}
+.planCardFeatured{z-index:10;background:linear-gradient(#1a1a24,#121217);border:2px solid #a855f7;position:relative;transform:scale(1.05);box-shadow:0 0 40px #a855f726}
+.planCardFeatured:hover{transform:scale(1.05) translateY(-5px);box-shadow:0 20px 50px #a855f733}
+.planTitle{margin-bottom:2rem;font-size:1.5rem;font-weight:700}
+.planPrice{color:#fff;margin-bottom:3rem;font-family:Fredoka,sans-serif;font-size:3.5rem;font-weight:900}
+.planPrice span{color:#9ca3af;margin-left:.25rem;font-size:1rem;font-weight:500}
+.btnPlan{color:#fff;cursor:pointer;background:#27272a;border:none;border-radius:1rem;width:100%;margin-top:auto;padding:1.25rem;font-size:1rem;font-weight:700;transition:all .2s}
+.btnPlan:hover{background:#3f3f46}
+.btnPlanFeatured{background:linear-gradient(90deg,#c084fc,#ec4899);box-shadow:0 10px 20px -5px #a855f766}
+.btnPlanFeatured:hover{background:linear-gradient(90deg,#a855f7,#db2777);transform:translateY(-2px);box-shadow:0 15px 30px -5px #a855f780}
+.footer{color:#6b7280;background:#000;border-top:1px solid #ffffff0d;padding:4rem 1rem 6rem;font-size:.875rem}
+.footerGrid{grid-template-columns:repeat(2,1fr);gap:2.5rem;max-width:1280px;margin:0 auto;display:grid}
+@media (min-width:768px){.footerGrid{grid-template-columns:repeat(4,1fr)}
+}
+.arsenalSection{background:#0d0d12;padding:6rem 1rem;position:relative}
+.arsenalGrid{grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:1024px;margin:3rem auto 0;display:grid}
+@media (min-width:768px){.arsenalGrid{grid-template-columns:repeat(4,1fr)}
+}
+.arsenalCard{text-align:center;background:#15151b;border:1px solid #ffffff0d;border-radius:1.5rem;flex-direction:column;justify-content:center;align-items:center;padding:2.5rem 1.5rem;transition:all .3s;display:flex;position:relative;overflow:hidden}
+.arsenalCard:hover{border-color:#fff3;transform:translateY(-5px)}
+.arsenalIcon{margin-bottom:1rem;transition:transform .3s}
+.arsenalCard:hover .arsenalIcon{transform:scale(1.1) rotate(5deg)}
+.msgLogic:hover{border-color:#a855f766;box-shadow:0 0 30px #a855f733}
+.msgAbleton:hover{border-color:#2dd4bf66;box-shadow:0 0 30px #2dd4bf33}
+.msgProTools:hover{border-color:#fb718566;box-shadow:0 0 30px #fb718533}
+.msgMidi:hover{border-color:#60a5fa66;box-shadow:0 0 30px #60a5fa33}
+.arsenalTitle{color:#fff;font-size:1rem;font-weight:700}
+.textPurple{color:#c084fc}
+.textTeal{color:#2dd4bf}
+.textPink{color:#fb7185}
+.textBlue{color:#60a5fa}

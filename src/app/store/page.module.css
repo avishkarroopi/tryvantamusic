@@ -1,0 +1,81 @@
+/* Muziclly Store — rebuilt from the recovered "Muziclly Store v2" basic prototype
+   (admin-store-label.zip) into a full Next.js storefront + cart + checkout.
+   Light, clean e-commerce theme (deliberately distinct from the site's dark/gold
+   public theme, matching the bespoke look already established for /store-like
+   internal-catalog tools). */
+
+.page { min-height: 100vh; background: #f9fafb; color: #111827; font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif); }
+
+.header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid #f3f4f6; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.headerInner { max-width: 1280px; margin: 0 auto; padding: 0 16px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.logoWrap { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.logoMark { background: #4f46e5; color: #fff; padding: 6px 10px; border-radius: 8px; font-weight: 700; font-size: 1.25rem; }
+.logoText { font-weight: 700; font-size: 1.25rem; color: #111827; letter-spacing: -0.01em; }
+.logoLight { color: #4f46e5; font-weight: 300; }
+.headerRight { display: flex; align-items: center; gap: 8px; }
+.iconBtn { position: relative; padding: 8px; color: #4b5563; background: transparent; border: none; cursor: pointer; border-radius: 8px; }
+.iconBtn:hover { color: #4f46e5; background: #f5f3ff; }
+.cartBadge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 0.6875rem; font-weight: 700; border-radius: 999px; padding: 1px 6px; }
+
+.toolbar { position: sticky; top: 64px; z-index: 30; background: rgba(255,255,255,0.95); backdrop-filter: blur(6px); border-bottom: 1px solid #f9fafb; padding: 16px 0; }
+.toolbarInner { max-width: 1280px; margin: 0 auto; padding: 0 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.catRow { display: flex; gap: 8px; overflow-x: auto; }
+.catBtn { padding: 8px 16px; border-radius: 999px; white-space: nowrap; font-size: 0.875rem; font-weight: 500; border: none; cursor: pointer; background: #f3f4f6; color: #4b5563; }
+.catBtnActive { background: #111827; color: #fff; box-shadow: 0 8px 16px -6px rgba(17,24,39,0.35); }
+.searchWrap { position: relative; width: 100%; max-width: 288px; }
+.searchIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+.searchInput { width: 100%; padding: 10px 16px 10px 40px; border-radius: 12px; border: 1px solid #e5e7eb; background: #f9fafb; outline: none; font-size: 0.875rem; }
+.searchInput:focus { background: #fff; box-shadow: 0 0 0 2px #6366f1; }
+
+.grid { max-width: 1280px; margin: 0 auto; padding: 32px 16px 80px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+
+.card { background: #fff; border-radius: 14px; border: 1px solid #f3f4f6; box-shadow: 0 1px 2px rgba(0,0,0,0.03); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s, transform 0.2s; }
+.card:hover { box-shadow: 0 12px 24px -8px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.cardMedia { height: 176px; width: 100%; display: grid; place-items: center; cursor: pointer; }
+.cardBody { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+.cardTopRow { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.cardCat { font-size: 0.6875rem; font-weight: 700; color: #4f46e5; text-transform: uppercase; letter-spacing: 0.05em; }
+.cardLevel { font-size: 0.625rem; font-weight: 700; background: #f3f4f6; color: #4b5563; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; }
+.cardName { font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 4px; cursor: pointer; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cardDesc { font-size: 0.8125rem; color: #6b7280; margin-bottom: 8px; flex: 1; }
+.cardFoot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 1px solid #f9fafb; }
+.cardPrice { font-size: 1.125rem; font-weight: 700; color: #111827; }
+.addBtn { background: #4f46e5; color: #fff; padding: 8px 12px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 0.8125rem; font-weight: 600; }
+.addBtn:hover { background: #4338ca; }
+.stockNote { font-size: 0.6875rem; color: #9ca3af; margin-top: 4px; }
+
+.emptyState { text-align: center; padding: 80px 16px; color: #9ca3af; grid-column: 1 / -1; }
+
+/* Cart drawer */
+.overlay { position: fixed; inset: 0; z-index: 100; background: rgba(17,24,39,0.4); backdrop-filter: blur(2px); }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 420px; background: #fff; z-index: 101; display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(0,0,0,0.2); }
+.drawerHead { padding: 20px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center; justify-content: space-between; }
+.drawerTitle { font-weight: 700; font-size: 1.125rem; }
+.drawerBody { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.cartRow { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f9fafb; }
+.cartThumb { width: 56px; height: 56px; border-radius: 10px; flex-shrink: 0; display: grid; place-items: center; }
+.cartRowName { font-size: 0.875rem; font-weight: 700; }
+.cartRowPrice { font-size: 0.8125rem; color: #6b7280; }
+.qtyRow { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.qtyBtn { width: 22px; height: 22px; border-radius: 6px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; display: grid; place-items: center; }
+.removeBtn { color: #ef4444; background: transparent; border: none; cursor: pointer; padding: 4px; align-self: flex-start; }
+.drawerFoot { padding: 20px; border-top: 1px solid #f3f4f6; }
+.subtotalRow { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; font-size: 1.0625rem; }
+.checkoutBtn { width: 100%; background: #111827; color: #fff; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; font-size: 0.9375rem; }
+.checkoutBtn:disabled { background: #d1d5db; cursor: not-allowed; }
+
+/* Checkout */
+.checkoutWrap { max-width: 640px; margin: 0 auto; padding: 48px 16px 96px; }
+.checkoutCard { background: #fff; border-radius: 16px; border: 1px solid #f3f4f6; padding: 32px; }
+.fieldGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.fieldFull { grid-column: 1 / -1; }
+.fieldLabel { font-size: 0.75rem; font-weight: 600; color: #4b5563; }
+.fieldInput { padding: 10px 12px; border-radius: 8px; border: 1px solid #e5e7eb; outline: none; font-size: 0.875rem; }
+.fieldInput:focus { box-shadow: 0 0 0 2px #6366f1; }
+.successState { text-align: center; padding: 48px 16px; }
+.spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

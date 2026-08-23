@@ -1,0 +1,5 @@
+api.mcam.example.com {
+    reverse_proxy api:8000
+    encode gzip zstd
+    header { Strict-Transport-Security "max-age=31536000" }
+}

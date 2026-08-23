@@ -1,0 +1,54 @@
+/* Recovered from Mentors-module__tv6dUG__ (_next/static/chunks/60382a8f9d1af59b.css).
+   In the original this section's class list combines Mentors' own ".section"
+   (background override only) with the shared Section-module's ".paddingLg"
+   and ".container" rules on the same elements — reproduced directly below so
+   this component doesn't depend on being wrapped by <Section>. */
+.section {
+  background: #fff;
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+}
+@media (min-width: 768px) {
+  .section { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+}
+.container {
+  gap: var(--space-8);
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  display: grid;
+}
+.imageWrapper { border-radius: var(--radius-xl); border: none; order: -1; width: 100%; overflow: hidden; box-shadow: 0 20px 40px #0000001a; }
+.image { width: 100%; height: auto; transition: transform 0.5s; display: block; }
+.imageWrapper:hover .image { transform: scale(1.02); }
+.content { gap: var(--space-6); text-align: left; flex-direction: column; display: flex; }
+.title { font-size: var(--text-3xl); font-weight: var(--font-bold); color: #1f2937; margin: 0; }
+.subtitle { font-size: var(--text-lg); color: #4b5563; }
+.list { gap: var(--space-4); flex-direction: column; margin: 0; padding: 0; list-style: none; display: flex; }
+.listItem { align-items: center; gap: var(--space-4); padding: var(--space-4); border-radius: var(--radius-lg); background: #f9fafb; border: 1px solid transparent; transition: all 0.2s; display: flex; }
+.listItem:hover { background: #fff; border-color: #e5e7eb; transform: translateX(4px); box-shadow: 0 10px 15px -3px #0000001a; }
+.icon { border-radius: var(--radius-md); width: 48px; height: 48px; font-size: var(--text-2xl); background: #fff; border: 1px solid #e5e7eb; flex-shrink: 0; justify-content: center; align-items: center; display: flex; box-shadow: 0 1px 2px #0000000d; }
+.info { flex-direction: column; gap: 2px; display: flex; }
+.name { color: #111827; font-weight: var(--font-bold); font-size: var(--text-lg); }
+.role { color: #6b7280; font-size: var(--text-sm); }
+.footerBadge {
+  align-items: center;
+  gap: var(--space-3);
+  color: #4f46e5;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-bold);
+  font-size: var(--text-lg);
+  background: #eef2ff;
+  border: 1px solid #e0e7ff;
+  align-self: flex-start;
+  display: inline-flex;
+}
+.badgeIcon { font-size: var(--text-xl); }
+
+@media (min-width: 768px) {
+  .container { gap: var(--space-12); grid-template-columns: 1fr 1fr; }
+  .title { font-size: var(--text-4xl); }
+}

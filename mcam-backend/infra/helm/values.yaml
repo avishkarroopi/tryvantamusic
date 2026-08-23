@@ -1,0 +1,30 @@
+image:
+  repository: registry.example.com/mcam-v5-api
+  tag: "5.5.0"
+  pullPolicy: IfNotPresent
+
+replicaCount: 3
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  requests: { cpu: "250m", memory: "256Mi" }
+  limits: { cpu: "1", memory: "512Mi" }
+
+env:
+  RATE_LIMIT_RPS: "20"
+  RATE_LIMIT_BURST: "40"
+
+# Backing services are provided by managed offerings or their own charts.
+postgres: { host: "postgres", port: 5432 }
+redis: { host: "redis", port: 6379 }
+livekit: { url: "wss://livekit.example.com" }
+
+ingress:
+  enabled: true
+  host: api.mcam.example.com
+  tls: true

@@ -1,0 +1,24 @@
+/* Recovered from Section-module__ZXevnG__ (_next/static/chunks/60382a8f9d1af59b.css) */
+
+.section { width: 100%; position: relative; }
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  margin: 0 auto;
+}
+.primary { background-color: var(--color-bg-primary); }
+.secondary { background-color: var(--color-bg-secondary); }
+.tertiary { background-color: var(--color-bg-tertiary); }
+.paddingSm { padding-top: var(--space-12); padding-bottom: var(--space-12); }
+.paddingMd { padding-top: var(--space-16); padding-bottom: var(--space-16); }
+.paddingLg { padding-top: var(--space-20); padding-bottom: var(--space-20); }
+.paddingXl { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+
+@media (min-width: 768px) {
+  .paddingSm { padding-top: var(--space-16); padding-bottom: var(--space-16); }
+  .paddingMd { padding-top: var(--space-20); padding-bottom: var(--space-20); }
+  .paddingLg { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+  .paddingXl { padding-top: var(--space-32); padding-bottom: var(--space-32); }
+}

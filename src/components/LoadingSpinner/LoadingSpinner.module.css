@@ -1,0 +1,52 @@
+/* Recovered from LoadingSpinner-module__VplYZG__ (_next/static/chunks/60382a8f9d1af59b.css) */
+
+.container {
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  display: flex;
+}
+.fullScreen {
+  z-index: 9999;
+  background-color: #0a0a0fcc;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.spinnerWrapper {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+.rotatingRing {
+  border: 2px solid transparent;
+  border-top-color: var(--color-accent-primary);
+  border-right-color: var(--color-accent-secondary);
+  box-shadow: 0 0 15px var(--color-accent-glow);
+  border-radius: 50%;
+  animation: 1.5s linear infinite spin;
+  position: absolute;
+  inset: -5px;
+}
+.logoContainer {
+  background: var(--color-bg-secondary);
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  padding: 15%;
+  animation: 2s ease-in-out infinite pulse;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px #00000080;
+}
+@keyframes spin {
+  0% { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, to { opacity: 0.9; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1); }
+}

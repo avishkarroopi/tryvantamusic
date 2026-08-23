@@ -1,0 +1,79 @@
+/*
+ * Recovered from "remaining pages data.zip" / m-leaderboard.html.
+ * Note: the captured page was embedded inside the Student Dashboard's
+ * Sidebar-module shell (Phase 2, out of scope — see AGENTS notes / build
+ * report). Only the leaderboard-specific content below was ported; the
+ * surrounding dashboard sidebar/navigation was intentionally NOT rebuilt.
+ */
+
+.main {
+  min-height: 100vh;
+  background: #0f172a;
+  font-family: var(--font-heading);
+  position: relative;
+  overflow: hidden;
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+.glow {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  right: 0;
+  height: 600px;
+  background: radial-gradient(circle at 50% 0%, rgba(232, 197, 71, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+  z-index: 0;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 24px; position: relative; z-index: 1; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.titleRow { display: flex; align-items: center; gap: 12px; }
+.trophyBadge {
+  background: linear-gradient(135deg, #e8c547 0%, #b45309 100%);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(232, 197, 71, 0.3);
+}
+.title { font-size: 24px; font-weight: 700; color: #fff; margin: 0; }
+.titleAccent { color: #e8c547; }
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 50px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px;
+  border-radius: 100px;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.tab {
+  padding: 10px 32px;
+  border-radius: 30px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tabActive { background: #e8c547; color: #1f2937; }
+
+.body { max-width: 1000px; margin: 0 auto; }
+.emptyState {
+  text-align: center;
+  padding: 60px;
+  color: #64748b;
+  background: rgba(30, 41, 59, 0.3);
+  border-radius: 24px;
+}
+.emptyIcon { margin-bottom: 16px; opacity: 0.5; }
+.emptyTitle { font-size: 18px; margin: 0 0 8px; }
+.emptyText { font-size: 14px; margin: 0; }

@@ -1,0 +1,101 @@
+/* Recovered from FounderStory-module__R7gx2a__ (_next/static/chunks/60382a8f9d1af59b.css) */
+
+.section {
+  padding: var(--space-20) 0;
+  background: radial-gradient(circle at 100% 0, #e8c5470d 0%, #0000 40%),
+    radial-gradient(circle at 0 100%, #525ee20d 0%, #0000 40%);
+  position: relative;
+  overflow: hidden;
+}
+/* In the original this section's class list also carries the shared
+   Section-module's ".paddingLg" (whose 768px+ media rule bumps vertical
+   padding to --space-24) — reproduced here so this component is self-contained. */
+@media (min-width: 768px) {
+  .section { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+}
+.container {
+  max-width: 1200px;
+  padding: 0 var(--space-6);
+  gap: var(--space-16);
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin: 0 auto;
+  display: grid;
+}
+.imageWrapper { justify-content: center; display: flex; position: relative; }
+.founderImage {
+  border-radius: var(--radius-2xl);
+  z-index: 2;
+  border: 1px solid #e8c54733;
+  width: 100%;
+  max-width: 450px;
+  transition: transform 0.4s;
+  position: relative;
+  box-shadow: 0 20px 60px #0006;
+}
+.founderImage:hover { transform: scale(1.02); }
+.backdropCircle {
+  border: 2px solid var(--color-accent-primary);
+  border-radius: var(--radius-2xl);
+  z-index: 1;
+  opacity: 0.3;
+  width: 100%;
+  max-width: 450px;
+  height: 100%;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+.experienceBadge {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-accent-primary);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-xl);
+  z-index: 3;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  bottom: 30px;
+  right: -20px;
+  box-shadow: 0 10px 30px #0000004d;
+}
+.badgeNumber { color: var(--color-accent-primary); font-size: 2rem; font-weight: 800; line-height: 1; font-family: var(--font-heading); }
+.badgeText { color: var(--color-text-primary); font-size: 0.9rem; font-weight: 600; }
+.content { gap: var(--space-6); flex-direction: column; display: flex; }
+.label {
+  color: var(--color-accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-2);
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+}
+.title { color: var(--color-text-primary); font-size: 2.5rem; font-weight: 700; line-height: 1.2; }
+.titleHighlight { background: var(--color-accent-gradient); color: transparent; -webkit-background-clip: text; background-clip: text; }
+.role { color: var(--color-text-secondary); margin-top: -10px; font-size: 1.25rem; font-weight: 500; }
+.description { color: var(--color-text-muted); font-size: 1.1rem; line-height: 1.7; }
+.highlightBox {
+  border-left: 4px solid var(--color-accent-primary);
+  padding: var(--space-6);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  margin: var(--space-4) 0;
+  background: #ffffff08;
+}
+.quote { color: var(--color-text-secondary); font-size: 1.1rem; font-style: italic; line-height: 1.6; }
+.grid { gap: var(--space-4); margin-top: var(--space-4); grid-template-columns: 1fr 1fr; display: grid; }
+.gridItem { align-items: center; gap: var(--space-3); color: var(--color-text-primary); font-size: 1rem; display: flex; }
+.checkIcon { color: var(--color-accent-primary); }
+
+@media (max-width: 900px) {
+  .container { gap: var(--space-12); grid-template-columns: 1fr; }
+  .imageWrapper { order: -1; }
+  .experienceBadge { right: 0; }
+  .title { font-size: 2rem; }
+}
+@media (max-width: 480px) {
+  .experienceBadge { align-self: center; width: 80%; margin-top: -30px; position: relative; bottom: auto; right: auto; }
+  .grid { grid-template-columns: 1fr; }
+}

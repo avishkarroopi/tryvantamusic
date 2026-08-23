@@ -1,0 +1,46 @@
+# M-CAM V5 — local stack: control plane + media plane + data + storage.
+version: "3.9"
+services:
+  api:
+    # FIX (deployment cleanup): same build-context defect as
+    # docker-compose.prod.yml — the backend lives at mcam-backend/, not
+    # mcam-backend/apps/api.
+    build: ..
+    ports: ["8000:8000"]
+    env_file: ../.env
+    depends_on: [postgres, redis, livekit]
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: mcam
+      POSTGRES_PASSWORD: mcam
+      POSTGRES_DB: mcam
+    ports: ["5432:5432"]
+    volumes:
+      - pg:/var/lib/postgresql/data
+      - ../db/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+
+  livekit:
+    image: livekit/livekit-server:latest
+    command: --dev
+    ports: ["7880:7880", "7881:7881", "7882:7882/udp"]
+    environment:
+      LIVEKIT_KEYS: "devkey: devsecret"
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio12345
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [minio:/data]
+
+volumes:
+  pg:
+  minio:

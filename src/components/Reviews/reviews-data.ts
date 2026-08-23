@@ -1,0 +1,52 @@
+// Recovered verbatim from the live homepage marquee (39 unique Google review
+// testimonials, rendered twice back-to-back in the original for the seamless
+// CSS marquee loop — see Reviews.tsx).
+export interface Review {
+  avatar: string;
+  name: string;
+  role: string;
+  quote: string;
+  date: string;
+}
+
+export const reviews: Review[] = [
+  { avatar: "AS", name: "Ashwini S", role: "Parent", date: "8 months ago", quote: "This music academy is an excellent place to learn! Teachers are highly skilled and engaging learning environment. My kid learned Piano for 6 months and now he is able to play excellent music to different songs." },
+  { avatar: "SB", name: "Shirsendu Bhattacharya", role: "Student", date: "1 month ago", quote: "Very good organisation..Nice atmosphere for Music teaching ..." },
+  { avatar: "SS", name: "Sumalatha Sreeramula", role: "Parent", date: "7 years ago", quote: "Excellent and very patient Music Teacher! It's been a year Avishkar taking keyboard classes to my children. As a parent I am really impressed with his teaching skills. He is very experienced and knowledgeable." },
+  { avatar: "TY", name: "Teja Y", role: "Student", date: "6 years ago", quote: "When Avishkar Started teaching me keyboard I was surprised at how quickly I was improving. He has a way of making everything seem simple. In all earnest I can now call him a friend and absolutely adore every moment spent in his presence." },
+  { avatar: "SG", name: "Sandhya Gayathri P", role: "Parent", date: "3 years ago", quote: "This is a very nice place to learn musical instruments. My son learned keyboard from Avishkar sir when he was young. We have moved from that place but he still wants to learn only from him." },
+  { avatar: "FS", name: "Francis Sabarinath", role: "Parent", date: "6 years ago", quote: "Both my sons learn piano and are preparing for grades exams from Mr. Avishkar. He is a well qualified and patient teacher. Both my sons enjoy his classes as he teaches the theory and concepts behind the actual playing." },
+  { avatar: "GP", name: "Geetha Prasanna", role: "Parent", date: "7 years ago", quote: "Avishkar academy is the best place for learning music, be it Guitar or Keyboard. The teacher is well experienced and knows how to deal with the younger kids. I have my two sons learning guitar and keyboard since 5 months." },
+  { avatar: "AK", name: "Anusha Karumuri", role: "Parent", date: "3 years ago", quote: "My kid joined this academy when he was 4.5 years old to learn keyboard. He has been learning for the last 9 months. The teaching is systematic, professional and caters to the calibre of the student." },
+  { avatar: "JJ", name: "Juby Joseph", role: "Student", date: "3 years ago", quote: "I have been learning keyboard from past one month through online mode. Avishkar Academy teaches us in a standard way and they provide videos also for every topic, which makes your learning quite easy and faster." },
+  { avatar: "AJ", name: "Akhil Joy", role: "Student", date: "2 years ago", quote: "Iam very happy with the services. I have joined only for 3 months but sir have taught me all the basic stuff in very easy way. Iam really very much thankful to avishkar sir for his experienced teaching." },
+  { avatar: "SG", name: "Santosh Gayale", role: "Parent", date: "7 years ago", quote: "We are into this institute since 1.5 years my son learns keyboard he enjoys playing it. Sir is flexible in teaching kids. This institute is good for learning music and kids are interested." },
+  { avatar: "AV", name: "Anil Veera", role: "Parent", date: "9 years ago", quote: "My son is learning keyboard and he picked really quick within short span of time just because the tutors are so friendly and taking at most care for the kids to feel comfortable and learn at the institute." },
+  { avatar: "SK", name: "Shiva Rama Krishna", role: "Student", date: "3 years ago", quote: "As a higher class student, it was difficult for me to give time to learn a musical instrument, but the avishkar academy just inspired me in a way that now I play my instrument 3-4 times a day." },
+  { avatar: "TJ", name: "Teresa Jacob", role: "Student", date: "6 years ago", quote: "Avishkar Sir is a very experienced and dedicated teacher. I personally feel great learning music here. The teaching methods are easy and understandable. Glad to be a part of this Institute." },
+  { avatar: "RG", name: "Ruche Gargg", role: "Parent", date: "3 years ago", quote: "The teacher here is really good. During the pandemic they are trying really hard to train the students online..my daughter is learning keyboard here and I am very happy with her performance." },
+  { avatar: "SP", name: "SanthoshReddy P", role: "Student", date: "8 years ago", quote: "I had really a great experience with Avishkar academy of music. Avishkar has great skills in teaching and dealing with kids. I strongly recommend everyone to join this institute for their better musical journey." },
+  { avatar: "JD", name: "Jitendra Deshpande", role: "Student", date: "6 years ago", quote: "Avishkar sir is very dedicated and skilled in his profession. He never says no to any of the song he has been requested to teach. He has a lot of patience and will identify the skills of each person." },
+  { avatar: "TH", name: "Thati Hemanth", role: "Student", date: "1 year ago", quote: "Very good teaching methods and the way he teaches is very much good. If there's anyone willing to learn music I suggest this is the best academy to learn." },
+  { avatar: "BV", name: "Bharggavi Veerla", role: "Student", date: "7 years ago", quote: "Avishkar is a very good musician and he will teach very well. This institute is best place if you want to learn music. I am learning keyboard here, and i am very happy to be in this institute." },
+  { avatar: "PR", name: "Prabhakar", role: "Parent", date: "1 year ago", quote: "Very good atmosphere for kids to learn music. Avishkar makes kids to learn very well. Over all very good experience." },
+  { avatar: "PV", name: "Priya Varshapally", role: "Parent", date: "8 years ago", quote: "He has a great passion and synergy for music... has been for one and half years teaching my kids... never ever money oriented... great example for a dedicated musician..." },
+  { avatar: "AP", name: "Arun Pattnaik", role: "Student", date: "7 years ago", quote: "It's amazing experience learning guitar from Aviskar sir .. step by step guidance , new songs along with regular classes in a supportive environment." },
+  { avatar: "SP", name: "Sylvester Pidakala", role: "Parent", date: "7 years ago", quote: "Big Thumbs up ! His music teaching to my kids has definitely increased their inclination towards music, and they have been progressing good. I even have listened to few of his excerpts..Were good.." },
+  { avatar: "AG", name: "Arup Gupta", role: "Parent", date: "7 years ago", quote: "It is a very good Institute where you find real improvement in your kid. My son joined here with basic knowledge on guitar and now he has started playing tunes." },
+  { avatar: "AV", name: "Abhi Vicky", role: "Student", date: "9 years ago", quote: "This institute was very good institute where people can learn any instruments very well with in a short time of period and also avishkar is a very good teacher with excellent faculty." },
+  { avatar: "RP", name: "Rajeev Pareek", role: "Parent", date: "9 years ago", quote: "My daughter learning piano/keyboard ...aviskar is really true teacher and having a vast knowledge on music. I appreciate the dedication and teaching skills." },
+  { avatar: "SA", name: "Saatwik", role: "Student", date: "6 years ago", quote: "These guys are just excellent, especially when it's one to one they teach with lot of patience, also they're Friendly too. If you reside around miyapur surroundings, without any hesitation please join up here." },
+  { avatar: "VC", name: "Vannala Charishma", role: "Parent", date: "7 years ago", quote: "My daughter is learning music since 4 years ....avishkar is very good tutor he has exellent teaching skills ." },
+  { avatar: "SR", name: "Saritha Ravula", role: "Parent", date: "1 year ago", quote: "My son and daughter have been learning piano in this academy....it's very good institute. Teaching skills of avishkar is very good ... I really recommend this institute" },
+  { avatar: "VV", name: "VenkataPraveen V", role: "Student", date: "6 years ago", quote: "Doesn't matter how others feel and rate. If you want to learn music for real, please go. Don't go for time pass. For me the best experience and guidance by Avishkar sir." },
+  { avatar: "SN", name: "Sravanthi Namana", role: "Student", date: "6 years ago", quote: "It's been a month since I have joined here and it has been a great experience learning from him. He is a great teacher. I recommend this in learning instrument music." },
+  { avatar: "SM", name: "Shiprah Mattepally", role: "Student", date: "1 year ago", quote: "Very good and wonderful music classes and I proud of you annaya and akka" },
+  { avatar: "BA", name: "B Abhi", role: "Student", date: "2 years ago", quote: "Really very impressive academy. Sir taught very easy techniques to master the instrument. Thanks to the academy." },
+  { avatar: "PS", name: "Praveen Sarilla", role: "Student", date: "8 years ago", quote: "The master was trained at A.R.Rahman's institute... He's a professional.. Music = Mathematics. Don't miss it... Gain some true knowledge Of music... It's the good platform.." },
+  { avatar: "SM", name: "Dr. Soujanya M", role: "Parent", date: "2 years ago", quote: "My son has been getting piano classes from Avishkar sir. Very nice teaching and so professional." },
+  { avatar: "NC", name: "Nagaraju C", role: "Student", date: "6 years ago", quote: "Avishkar Sir is not only talented in music his understanding and focus on each student is really remarkable and my best wishes to all..." },
+  { avatar: "AS", name: "Arun Sunder", role: "Student", date: "8 years ago", quote: "If you wanna learn music Avishkar is the best seen many teachers but Avishkar Roopi the best in business." },
+  { avatar: "BV", name: "Bannu Vannala", role: "Student", date: "7 years ago", quote: "I have been learning guitar in Avishkar academy from past 2 months. I will strongly recommend to join this academy to pursue your dreams." },
+  { avatar: "KU", name: "Kumar B. Uday", role: "Student", date: "1 year ago", quote: "Excellent service for piano. Sir is very friendly and he is very much professional" },
+];

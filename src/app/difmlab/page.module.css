@@ -1,0 +1,113 @@
+/* Recovered from page-module__4ShrFa__ (_next/static/chunks/60382a8f9d1af59b.css) */
+
+.main { background: var(--color-bg-primary); min-height: 100vh; color: var(--color-text-primary); padding-top: 80px; position: relative; overflow-x: hidden; }
+.bgGlow { z-index: 0; pointer-events: none; background: radial-gradient(circle, #525ee226 0%, #0000 70%); width: 100%; height: 800px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+.hero { padding: var(--space-20) var(--container-padding); text-align: center; z-index: 1; position: relative; }
+.heroContent { flex-direction: column; align-items: center; max-width: 800px; margin: 0 auto; display: flex; }
+.badge {
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-accent-primary);
+  margin-bottom: var(--space-6);
+  background: #525ee21a;
+  border: 1px solid #525ee24d;
+  border-radius: 100px;
+  padding: 6px 16px;
+  animation: 0.8s ease-out fadeInDown;
+  display: inline-flex;
+}
+.heroTitle {
+  font-size: var(--text-6xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-6);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  animation: 0.8s ease-out 0.2s backwards fadeInUp;
+}
+.highlight { background: var(--color-accent-gradient); -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text; display: inline-block; }
+/* Note: `.vs` references the undefined --color-text-tertiary token (present
+   nowhere in any recovered stylesheet), so it inherits color from its parent
+   heading rather than a distinct tone — preserved exactly. */
+.vs { vertical-align: middle; color: var(--color-text-tertiary); margin: 0 var(--space-2); font-size: 0.5em; font-style: italic; }
+.heroSubtitle { font-size: var(--text-xl); color: var(--color-text-secondary); max-width: 600px; margin-bottom: var(--space-10); line-height: 1.6; animation: 0.8s ease-out 0.4s backwards fadeInUp; }
+.textHighlight { color: var(--color-text-primary); font-weight: var(--font-semibold); }
+.heroActions { gap: var(--space-4); animation: 0.8s ease-out 0.6s backwards fadeInUp; display: flex; }
+/* padding is intentionally omitted here: in the original this class combines
+   with the shared Section-module's ".paddingLg" on the same element, and
+   Section's rule wins the cascade (it's later in the compiled stylesheet),
+   so the effective padding is Section's, applied via the <Section> wrapper. */
+.comparisonSection { position: relative; }
+.sectionHeader { text-align: center; margin-bottom: var(--space-16); }
+.sectionHeader h2 { font-size: var(--text-3xl); font-weight: var(--font-bold); margin-bottom: var(--space-4); }
+.sectionHeader p { color: var(--color-text-secondary); font-size: var(--text-lg); }
+.container { max-width: var(--container-max); padding: 0 var(--container-padding); margin: 0 auto; }
+.comparisonGrid { gap: var(--space-8); grid-template-columns: 1fr auto 1fr; align-items: center; display: grid; position: relative; }
+.vsBadge {
+  background: var(--color-bg-primary);
+  border: 2px solid var(--color-border-subtle);
+  width: 60px;
+  height: 60px;
+  font-weight: var(--font-bold);
+  color: var(--color-text-secondary);
+  z-index: 2;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
+  display: flex;
+  box-shadow: 0 0 20px #0000001a;
+}
+.card { background: var(--color-bg-secondary); border-radius: var(--radius-2xl); padding: var(--space-10); border: 1px solid var(--color-border-subtle); flex-direction: column; height: 100%; transition: all 0.4s; display: flex; }
+.cardHeader { text-align: center; margin-bottom: var(--space-8); }
+.iconBoxTrad, .iconBoxMlab { width: 60px; height: 60px; margin: 0 auto var(--space-4); border-radius: 16px; justify-content: center; align-items: center; display: flex; }
+.iconBoxTrad { color: var(--color-text-secondary); background: #ffffff0d; }
+.iconBoxMlab { color: var(--color-accent-primary); background: linear-gradient(135deg, #525ee233, #e8c54733); }
+.card h3 { font-size: var(--text-2xl); font-weight: var(--font-bold); margin-bottom: var(--space-2); }
+.card p { color: var(--color-text-secondary); font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--font-semibold); }
+.featureList { flex-grow: 1; margin: 0; padding: 0; list-style: none; }
+.featureList li { align-items: flex-start; gap: var(--space-4); margin-bottom: var(--space-5); font-size: var(--text-base); color: var(--color-text-secondary); display: flex; }
+.iconTrad { color: #ef4444; flex-shrink: 0; margin-top: 2px; }
+.iconMlab { color: #22c55e; flex-shrink: 0; margin-top: 2px; }
+.traditionalCard { background: #ffffff05; }
+.traditionalCard:hover { border-color: #ffffff1a; transform: translateY(-5px); }
+.mlabCard {
+  z-index: 1;
+  background: linear-gradient(145deg, #1e1e28e6, #14141ef2);
+  border: 1px solid #525ee24d;
+  position: relative;
+  transform: scale(1.05);
+  box-shadow: 0 20px 50px #525ee226;
+}
+.mlabCard:hover { border-color: var(--color-accent-primary); transform: scale(1.08); box-shadow: 0 30px 60px #525ee240; }
+.ctaWrapper { margin-top: var(--space-8); text-align: center; }
+.glowButton { box-shadow: 0 0 20px #e8c54766; }
+/* padding omitted for the same reason as .comparisonSection above — the
+   shared Section-module's ".paddingLg" wins the cascade in the original. */
+.featuresSection { background: linear-gradient(transparent, #525ee20d); }
+.featureGrid { gap: var(--space-8); grid-template-columns: repeat(3, 1fr); display: grid; }
+.featureItem { text-align: center; padding: var(--space-8); border-radius: var(--radius-xl); background: #ffffff05; border: 1px solid transparent; transition: all 0.3s; }
+.featureItem:hover { background: #ffffff0d; border-color: #525ee233; transform: translateY(-5px); }
+.featureIcon { width: 80px; height: 80px; margin: 0 auto var(--space-6); background: var(--color-accent-gradient); color: #000; border-radius: 50%; justify-content: center; align-items: center; display: flex; }
+.featureItem h3 { font-size: var(--text-xl); margin-bottom: var(--space-3); color: var(--color-text-primary); }
+.featureItem p { color: var(--color-text-secondary); line-height: 1.5; }
+
+@media (max-width: 1024px) {
+  .comparisonGrid { gap: var(--space-12); grid-template-columns: 1fr; }
+  .vsBadge { margin: -30px auto; transform: rotate(90deg); }
+  .mlabCard { transform: none; }
+  .mlabCard:hover { transform: translateY(-5px); }
+}
+@media (max-width: 768px) {
+  .heroTitle { font-size: var(--text-4xl); }
+  .featureGrid { grid-template-columns: 1fr; }
+}
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+  0% { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

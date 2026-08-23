@@ -1,0 +1,139 @@
+/*
+ * NOTE ON EVIDENCE: unlike every other route in /mhub, no recovered capture
+ * (HTML, HAR, or crawler cache) contains any visual evidence for the bare
+ * /mhub index page itself — only its 7 child course pages were recovered.
+ * This page is therefore an evidence-conservative index built from the
+ * site's EXISTING design system (globals.css tokens + Section/Button),
+ * not a reconstruction of a specific captured design. Flagged in the
+ * integration report.
+ */
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem var(--container-padding, 1.5rem);
+  max-width: var(--container-max, 1200px);
+  margin: 0 auto;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+}
+
+.backHome {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+}
+
+.backHome:hover {
+  color: var(--color-accent-primary);
+}
+
+.hero {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  color: var(--color-accent-primary);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-8);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  transition: border-color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.card:hover {
+  border-color: var(--color-accent-primary);
+  background: var(--color-bg-card-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.cardTag {
+  color: var(--color-accent-primary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cardTitle {
+  color: var(--color-text-primary);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  font-family: var(--font-heading);
+}
+
+.cardDesc {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  flex: 1;
+}
+
+.cardLink {
+  color: var(--color-accent-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+}
+
+.card:hover .cardLink {
+  text-decoration: underline;
+}
+
+.ctaSection {
+  text-align: center;
+}

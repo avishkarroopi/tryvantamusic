@@ -1,0 +1,6 @@
+apiVersion: v2
+name: mcam-v5
+description: M-CAM V5 — AI music-education platform (control plane + realtime).
+type: application
+version: 5.5.0
+appVersion: "5.5.0"

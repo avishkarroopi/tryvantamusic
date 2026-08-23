@@ -1,0 +1,27 @@
+# Minimal production LiveKit server configuration for M-CAM V5.
+#
+# FIX (deployment cleanup): docker-compose.prod.yml has always mounted this
+# file (`--config /etc/livekit.yaml`), but it never existed anywhere in the
+# source — a pre-existing gap from the original consolidated package, not
+# something introduced by the Dashboard integration. Without it, the
+# `livekit` service in the production stack cannot start.
+#
+# Deliberately contains NO credentials. API keys are supplied at container
+# start via the `LIVEKIT_KEYS` environment variable on the `livekit` service
+# in docker-compose.prod.yml (${LIVEKIT_API_KEY}/${LIVEKIT_API_SECRET}) — the
+# same mechanism the local dev stack already uses unparameterized
+# (docker-compose.yml: `LIVEKIT_KEYS: "devkey: devsecret"`). LiveKit merges
+# keys supplied this way with the rest of this file; nothing here needs to
+# change to rotate a key, only the environment values do.
+
+port: 7880
+
+rtc:
+  tcp_port: 7881
+  port_range_start: 7882
+  port_range_end: 7882
+  use_external_ip: true
+
+logging:
+  level: info
+  json: true

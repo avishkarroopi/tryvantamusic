@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector: { matchLabels: { app: {{ .Release.Name }}-api } }
+  template:
+    metadata:
+      labels: { app: {{ .Release.Name }}-api }
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports: [{ containerPort: 8000 }]
+          env:
+            - { name: RATE_LIMIT_RPS, value: "{{ .Values.env.RATE_LIMIT_RPS }}" }
+            - { name: RATE_LIMIT_BURST, value: "{{ .Values.env.RATE_LIMIT_BURST }}" }
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 8000 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health/live, port: 8000 }
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources: {{ toYaml .Values.resources | nindent 12 }}
