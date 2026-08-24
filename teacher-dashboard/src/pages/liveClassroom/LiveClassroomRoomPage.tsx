@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  AlertTriangle, ArrowLeft, LayoutGrid, MessageSquareText, Mic, Music4, PenTool, Video, Trash2,
+  AlertTriangle, ArrowLeft, LayoutGrid, MessageSquareText, Mic, Music4, PenTool, Video, Trash2, ChevronDown, ChevronUp,
 } from "lucide-react";
 import { color, font } from "@/mcam/design-system/tokens";
 import { useMcamAuth } from "@/mcam/integration/mcamAuth";
@@ -154,6 +154,11 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
   const [handRaised, setHandRaised] = useState(false);
   const [mic, setMic] = useState(true);
   const [cam, setCam] = useState(true);
+  // Collapsed by default — the poll section used to be a permanently
+  // reserved 240px block eating into the video area even with no poll
+  // running. Now it's a small toggle bar, auto-expanding only once a poll
+  // actually launches.
+  const [pollExpanded, setPollExpanded] = useState(false);
   const startedAt = useMemo(() => Date.now(), []);
 
   const classroom = useClassroom(MCAM_API_BASE, token, sessionId);
@@ -249,6 +254,12 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
     broadcast.update(studio.active, streamsMap);
   }, [broadcast, studio.active, streamsMap]);
 
+  // Pop the poll section open on its own the moment a poll actually starts
+  // — no need to leave it permanently expanded just in case.
+  useEffect(() => {
+    if (rt.poll) setPollExpanded(true);
+  }, [rt.poll]);
+
   return (
     <div style={{ display: "flex", height: "100%" }}>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
@@ -289,8 +300,24 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
                   </div>
                 )}
               </div>
-              <div style={{ height: 240 }}>
-                <PollCard poll={rt.poll} isTeacher onCreate={rt.createPoll} onVote={rt.vote} />
+              <div style={{ flexShrink: 0 }}>
+                <button
+                  onClick={() => setPollExpanded((v) => !v)}
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%",
+                    padding: "8px 14px", borderRadius: 10, cursor: "pointer", fontSize: 13, fontWeight: 600,
+                    background: color.surface, color: color.score, border: `1px solid ${color.hairline}`,
+                    marginBottom: pollExpanded ? 8 : 0,
+                  }}
+                >
+                  <span>{rt.poll ? (rt.poll.closed ? "Poll (closed)" : "Poll — live") : "Poll"}</span>
+                  {pollExpanded ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+                </button>
+                {pollExpanded && (
+                  <div style={{ maxHeight: 280, overflowY: "auto" }}>
+                    <PollCard poll={rt.poll} isTeacher onCreate={rt.createPoll} onVote={rt.vote} />
+                  </div>
+                )}
               </div>
             </div>
           )}

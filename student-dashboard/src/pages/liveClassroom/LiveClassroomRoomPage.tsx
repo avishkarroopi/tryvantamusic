@@ -224,9 +224,17 @@ function RoomInner({ sessionId, token, currentStudent }: { sessionId: string; to
                 </div>
                 )}
               </div>
-              <div style={{ height: 240 }}>
-                <PollCard poll={rt.poll} isTeacher={false} onCreate={rt.createPoll} onVote={rt.vote} />
-              </div>
+              {rt.poll && (
+                // Was a permanently-reserved 240px block even with no poll
+                // running — PollCard renders null for students when there's
+                // no active poll (isTeacher=false), so that space was
+                // reserved for literally nothing most of the time. Students
+                // never create polls, so there's no "empty" state worth
+                // keeping space for — just show it when one exists.
+                <div style={{ maxHeight: 280, overflowY: "auto", flexShrink: 0 }}>
+                  <PollCard poll={rt.poll} isTeacher={false} onCreate={rt.createPoll} onVote={rt.vote} />
+                </div>
+              )}
             </div>
           )}
 
