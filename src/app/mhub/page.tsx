@@ -12,8 +12,8 @@ import styles from "./page.module.css";
 // the site's existing design system rather than reconstructed from a
 // specific capture. See the integration report for details.
 export const metadata: Metadata = {
-  title: "M-Hub | Muziclly",
-  description: "Explore Muziclly's specialized course tracks — from kids' instrument programs to teacher certification and audio production.",
+  title: "M-Hub | Tryvanta Music",
+  description: "Explore Tryvanta Music's specialized course tracks — from kids' instrument programs to teacher certification and audio production.",
 };
 
 const courses = [
@@ -66,7 +66,7 @@ export default function MHubPage() {
     <div>
       <div className={styles.topBar}>
         <Link href="/" className={styles.logoLink}>
-          <Image src="/logo-new.png" alt="Muziclly" width={140} height={40} priority />
+          <Image src="/logo-new.png" alt="Tryvanta Music" width={140} height={40} priority />
         </Link>
         <Link href="/" className={styles.backHome}>
           ← Back to Home
@@ -78,7 +78,7 @@ export default function MHubPage() {
           <span className={styles.eyebrow}>M-Hub</span>
           <h1 className={styles.title}>Every Track. One Hub.</h1>
           <p className={styles.subtitle}>
-            Explore Muziclly&apos;s specialized course tracks — each built on the E.A.R.S™ method, with real
+            Explore Tryvanta Music&apos;s specialized course tracks — each built on the E.A.R.S™ method, with real
             mentorship and structured pathways for every age and goal.
           </p>
         </div>

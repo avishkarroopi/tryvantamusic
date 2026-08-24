@@ -12,7 +12,7 @@ export default function Mentors() {
     <section className={styles.section} id="mentors">
       <div className={styles.container}>
         <div className={styles.imageWrapper}>
-          <Image src="/mentors-group.png" alt="Muziclly Top Mentors" width={600} height={450} className={styles.image} />
+          <Image src="/mentors-group.png" alt="Tryvanta Music Top Mentors" width={600} height={450} className={styles.image} />
         </div>
         <div className={styles.content}>
           <h2 className={styles.title}>Guided by Expert Mentors</h2>

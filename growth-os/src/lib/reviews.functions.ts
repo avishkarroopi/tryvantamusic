@@ -81,7 +81,7 @@ export const reviewTemplates = createServerFn({ method: "POST" })
     {
       id: "google-review",
       title: "Google Review Request (Parent, post-enrollment)",
-      body: `Hi {{parent_name}}, thank you for enrolling {{student_name}} in {{instrument}} classes at Muziclly! 🎵\n\nWould you take 30 seconds to share your experience? It helps other parents discover us: {{google_review_link}}\n\nWith gratitude, Team Muziclly`,
+      body: `Hi {{parent_name}}, thank you for enrolling {{student_name}} in {{instrument}} classes at Music! 🎵\n\nWould you take 30 seconds to share your experience? It helps other parents discover us: {{google_review_link}}\n\nWith gratitude, Team Music`,
     },
     {
       id: "testimonial",

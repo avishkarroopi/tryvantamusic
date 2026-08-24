@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 // capture (no image data) — reproduced as placeholder circles rather than
 // invented stock photos.
 export const metadata: Metadata = {
-  title: "Kids Keyboard & Piano Classes | Muziclly M-Hub",
+  title: "Kids Keyboard & Piano Classes | Tryvanta Music M-Hub",
   description: "Building a lifelong love for music through fun, interactive 1-on-1 keyboard & piano sessions designed for ages 5–14.",
 };
 
@@ -56,7 +56,7 @@ export default function KidsKeyboardPianoPage() {
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
-        <Image src="/logo-new.png" alt="Muziclly" width={200} height={80} className={styles.navLogo} />
+        <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={80} className={styles.navLogo} />
         <a href="#book-demo" className={styles.navCta}>Book Free Demo</a>
       </nav>
 
@@ -348,7 +348,7 @@ export default function KidsKeyboardPianoPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div>
-            <Image src="/logo-new.png" alt="Muziclly" width={200} height={120} className={styles.footerLogo} />
+            <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={120} className={styles.footerLogo} />
             <p>Empowering the next generation of musicians.</p>
           </div>
           <div>
@@ -362,7 +362,7 @@ export default function KidsKeyboardPianoPage() {
             <p style={{ color: "#B2BEC3" }}>hello@muzicllyglobal.com</p>
           </div>
         </div>
-        <div className={styles.copyright}>© 2026 Muziclly Global. All rights reserved.</div>
+        <div className={styles.copyright}>© 2026 Tryvanta Music Global. All rights reserved.</div>
       </footer>
     </div>
   );

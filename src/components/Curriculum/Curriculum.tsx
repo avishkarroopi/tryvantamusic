@@ -54,7 +54,7 @@ export default function Curriculum() {
         <span className={styles.overline}>Our Core Curriculum</span>
         <h2 className={styles.title}>One System. One Duration. Complete Musicianship.</h2>
         <div className={styles.programTitle}>
-          <span className={styles.programHighlight}>Muziclly Structured Music Program</span>
+          <span className={styles.programHighlight}>Tryvanta Music Structured Music Program</span>
           <span className={styles.programSub}>The 12-Month Unified Journey to Musical Excellence</span>
         </div>
       </div>

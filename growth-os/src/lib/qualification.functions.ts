@@ -81,7 +81,7 @@ async function generateAiSummary(
           {
             role: "system",
             content:
-              "You are a lead-qualification analyst for Muziclly, a premium music education platform. Return strict JSON with keys `summary` (2 sentences, concrete, no fluff) and `next_action` (single imperative sentence).",
+              "You are a lead-qualification analyst for Music, a premium music education platform. Return strict JSON with keys `summary` (2 sentences, concrete, no fluff) and `next_action` (single imperative sentence).",
           },
           {
             role: "user",

@@ -19,7 +19,7 @@ function Landing() {
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-brand-gradient" />
             <span className="font-display text-lg font-bold tracking-tight">
-              Muziclly <span className="text-muted-foreground font-medium">Growth OS</span>
+              Music <span className="text-muted-foreground font-medium">Growth OS</span>
             </span>
           </div>
           <Link
@@ -98,7 +98,7 @@ function Landing() {
 
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 text-xs text-muted-foreground">
-          <span>© Muziclly · Growth OS</span>
+          <span>© Music · Growth OS</span>
           <span className="inline-flex items-center gap-1.5">
             <BarChart3 className="h-3.5 w-3.5" /> Phase 1
           </span>

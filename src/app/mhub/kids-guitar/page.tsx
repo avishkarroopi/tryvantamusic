@@ -5,7 +5,7 @@ import { Users, Video, PartyPopper, Music, Ear, Music2, Star, Activity, Radio, C
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Online Guitar Classes for Kids | Muziclly M-Hub",
+  title: "Online Guitar Classes for Kids | Tryvanta Music M-Hub",
   description: "Spark their musical journey with fun, 1-on-1 online guitar lessons tailored for ages 6 to 15. From first chords to favorite songs.",
 };
 
@@ -103,7 +103,7 @@ export default function KidsGuitarPage() {
 
       <section className={styles.whySection} id="why">
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <h2 className={styles.sectionTitle}>Why guitarists choose Muziclly?</h2>
+          <h2 className={styles.sectionTitle}>Why guitarists choose Tryvanta Music?</h2>
           <div className={styles.gridFour}>
             {features.map((f) => (
               <div className={styles.featureCard} key={f.title}>
@@ -175,7 +175,7 @@ export default function KidsGuitarPage() {
           <div style={{ textAlign: "left" }}>
             <h2 style={{ fontSize: "2.25rem", fontWeight: 800, marginBottom: "0.25rem" }}>Dr. Avishkar Roopi</h2>
             <p style={{ color: "rgb(45,212,191)", fontWeight: 600, fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1rem" }}>
-              Music Educator &amp; Founder – Muziclly
+              Music Educator &amp; Founder – Tryvanta Music
             </p>
             <ul style={{ marginBottom: "1rem", color: "rgb(209,213,219)", fontSize: "0.875rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               <li style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -273,7 +273,7 @@ export default function KidsGuitarPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div>
-            <Image src="/logo-new.png" alt="Muziclly" width={140} height={42} className={styles.footerLogo} />
+            <Image src="/logo-new.png" alt="Tryvanta Music" width={140} height={42} className={styles.footerLogo} />
             <p style={{ maxWidth: 300, lineHeight: 1.6 }}>
               The global benchmark for online music education. Creating a generation of skilled, passionate
               musicians.
@@ -298,7 +298,7 @@ export default function KidsGuitarPage() {
             </ul>
           </div>
         </div>
-        <div className={styles.copyright}>© 2026 Muziclly Global. All Rights Reserved.</div>
+        <div className={styles.copyright}>© 2026 Tryvanta Music Global. All Rights Reserved.</div>
       </footer>
     </div>
   );

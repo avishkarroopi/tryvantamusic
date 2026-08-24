@@ -62,12 +62,12 @@ export default function SignInPage() {
         <div className={styles.container}>
           <div className={styles.illustrationSide}>
             <Link href="/" className={styles.logo}>
-              <Image src="/logo-new.png" alt="Muziclly" width={200} height={80} />
+              <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={80} />
             </Link>
             <div className={styles.illustrationContent}>
               <h1 className={styles.welcomeTitle}>Welcome Back</h1>
               <p className={styles.welcomeText}>
-                Continue your musical journey with Muziclly. Access your dashboard, lessons, and resources.
+                Continue your musical journey with Tryvanta Music. Access your dashboard, lessons, and resources.
               </p>
               <div className={styles.features}>
                 <div className={styles.feature}>

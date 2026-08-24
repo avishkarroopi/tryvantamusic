@@ -13,7 +13,7 @@ export default function Journey() {
     <section className={styles.section} id="journey">
       <div className={styles.container}>
         <div className={styles.imageWrapper}>
-          <Image src="/journey.png" alt="Muziclly Founders and Students" width={600} height={450} className={styles.image} />
+          <Image src="/journey.png" alt="Tryvanta Music Founders and Students" width={600} height={450} className={styles.image} />
         </div>
         <div className={styles.content}>
           <h2 className={styles.title}>

@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import styles from "./page.module.css";
 
-// Recovered verbatim in spirit from "admin-store-label.zip" / Muziclly Admin Full.txt
+// Recovered verbatim in spirit from "admin-store-label.zip" / Tryvanta Music Admin Full.txt
 // (basic prototype), rebuilt into a full Next.js admin console: sidebar module
 // switcher, CMS/Investor Room/CRM/Security modules, plus the Phase-2 KPI dashboard.
 
@@ -54,9 +54,9 @@ const cmsPages = [
 ];
 
 const investorDocs = [
-  { title: "Muziclly Pitch Deck", desc: "Financial projections and roadmap 2026-2028.", size: "1.2MB PDF", views: 243, badges: [{ t: "v4.2", c: "badgeBlue" }, { t: "Gated", c: "badgeAmber" }] },
+  { title: "Tryvanta Music Pitch Deck", desc: "Financial projections and roadmap 2026-2028.", size: "1.2MB PDF", views: 243, badges: [{ t: "v4.2", c: "badgeBlue" }, { t: "Gated", c: "badgeAmber" }] },
   { title: "Detailed Cap Table", desc: "Full equity breakdown and shareholder rights.", size: "450KB XLSX", views: 12, badges: [{ t: "v1.0", c: "badgeBlue" }, { t: "NDA Required", c: "badgeRose" }] },
-  { title: "Growth OS Metrics", desc: "Muziclly Growth OS KPI export, trailing 90 days.", size: "890KB PDF", views: 58, badges: [{ t: "v1.0", c: "badgeBlue" }, { t: "Internal", c: "badgeGreen" }] },
+  { title: "Growth OS Metrics", desc: "Music Growth OS KPI export, trailing 90 days.", size: "890KB PDF", views: 58, badges: [{ t: "v1.0", c: "badgeBlue" }, { t: "Internal", c: "badgeGreen" }] },
 ];
 
 const crmLeads = [
@@ -124,7 +124,7 @@ export default function AdminPage() {
       <aside className={`${styles.sidebar} ${collapsed ? styles.sidebarCollapsed : ""}`}>
         <div className={styles.sidebarHead}>
           <div className={styles.sidebarLogo}><Layers size={18} color="#fff" /></div>
-          {!collapsed && <span className={styles.sidebarTitle}>MUZICLLY</span>}
+          {!collapsed && <span className={styles.sidebarTitle}>TRYVANTA MUSIC</span>}
         </div>
         <nav className={styles.nav}>
           {NAV.map((item) => (
@@ -274,9 +274,9 @@ function DashboardModule() {
           <Link href="/student" className={styles.btnDark}>Student Dashboard →</Link>
           <Link href="/mhub" className={styles.btnDark}>M-Hub →</Link>
           <Link href="/m-leaderboard" className={styles.btnDark}>M-Leaderboard →</Link>
-          <Link href="/store" className={styles.btnDark}>Muziclly Store →</Link>
-          <Link href="/label" className={styles.btnDark}>Muziclly Label →</Link>
-          <Link href="/muzicllyos" className={styles.btnPrimary}>Muziclly Growth OS →</Link>
+          <Link href="/store" className={styles.btnDark}>Tryvanta Music Store →</Link>
+          <Link href="/label" className={styles.btnDark}>Tryvanta Music Label →</Link>
+          <Link href="/muzicllyos" className={styles.btnPrimary}>Music Growth OS →</Link>
         </div>
       </div>
     </div>

@@ -4,8 +4,8 @@ import Footer from "@/components/Footer/Footer";
 import { legalStyles as s } from "@/components/LegalContent/legal-styles";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | MUZICLLY",
-  description: "Read the terms and conditions for using the MUZICLLY platform.",
+  title: "Terms of Service | TRYVANTA MUSIC",
+  description: "Read the terms and conditions for using the TRYVANTA MUSIC platform.",
 };
 
 export default function TermsOfServicePage() {
@@ -20,7 +20,7 @@ export default function TermsOfServicePage() {
           <section style={s.section}>
             <h2 style={s.h2}>1. Acceptance of Terms</h2>
             <p>
-              By accessing or using the Muziclly platform, you agree to comply with and be bound by these Terms of
+              By accessing or using the Tryvanta Music platform, you agree to comply with and be bound by these Terms of
               Service. If you do not agree to these terms, you may not access or use the services.
             </p>
           </section>
@@ -28,7 +28,7 @@ export default function TermsOfServicePage() {
           <section style={s.section}>
             <h2 style={s.h2}>2. Description of Service</h2>
             <p>
-              Muziclly is an online music education platform providing structured music learning through live online
+              Tryvanta Music is an online music education platform providing structured music learning through live online
               classes and recorded content. While we strive to provide the best educational experience, we are an
               education platform and cannot guarantee specific learning outcomes, as progress depends on individual
               student effort and practice.
@@ -78,15 +78,15 @@ export default function TermsOfServicePage() {
           <section style={s.section}>
             <h2 style={s.h2}>7. Intellectual Property</h2>
             <p>
-              All course content, materials, and resources provided on Muziclly are the intellectual property of
-              Muziclly. You may not copy, distribute, modify, or sell any content without our prior written consent.
+              All course content, materials, and resources provided on Tryvanta Music are the intellectual property of
+              Tryvanta Music. You may not copy, distribute, modify, or sell any content without our prior written consent.
             </p>
           </section>
 
           <section style={s.section}>
             <h2 style={s.h2}>8. Termination</h2>
             <p>
-              Muziclly reserves the right to suspend or terminate your account if you violate these Terms of Service
+              Tryvanta Music reserves the right to suspend or terminate your account if you violate these Terms of Service
               or engage in any conduct that we determine to be inappropriate or harmful to the platform or its
               users.
             </p>
@@ -95,7 +95,7 @@ export default function TermsOfServicePage() {
           <section style={s.section}>
             <h2 style={s.h2}>9. Limitation of Liability</h2>
             <p>
-              To the maximum extent permitted by law, Muziclly shall not be liable for any indirect, incidental,
+              To the maximum extent permitted by law, Tryvanta Music shall not be liable for any indirect, incidental,
               special, consequential, or punitive damages, including without limitation, loss of profits, data, use,
               goodwill, or other intangible losses.
             </p>

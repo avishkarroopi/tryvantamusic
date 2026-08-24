@@ -23,7 +23,7 @@ import {
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Keyboard & Guitar Classes for Adults | Muziclly M-Hub",
+  title: "Keyboard & Guitar Classes for Adults | Tryvanta Music M-Hub",
   description: "Flexible, structured online learning designed for adults. Stress relief, creativity, and musical mastery at your own pace.",
 };
 
@@ -72,7 +72,7 @@ export default function AdultsKeyboardGuitarPage() {
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
-        <Image src="/logo-new.png" alt="Muziclly" width={160} height={40} className={styles.navLogo} />
+        <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={40} className={styles.navLogo} />
         <Link href="/forum-hub" className={styles.navBtn}>Book a Free Demo</Link>
       </nav>
 
@@ -125,7 +125,7 @@ export default function AdultsKeyboardGuitarPage() {
 
       <section className={styles.whySection} id="why">
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <h2 className={styles.sectionTitle}>Why Adults Choose Muziclly</h2>
+          <h2 className={styles.sectionTitle}>Why Adults Choose Tryvanta Music</h2>
           <div className={styles.whyGrid}>
             {why.map((w) => (
               <div className={styles.whyCard} key={w.title}>
@@ -143,7 +143,7 @@ export default function AdultsKeyboardGuitarPage() {
       <section className={styles.earsSection}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ position: "relative", display: "inline-block" }}>
-            <span className={styles.earsSubtitle}>Muziclly Methodology</span>
+            <span className={styles.earsSubtitle}>Tryvanta Music Methodology</span>
             <h2 className={styles.sectionTitle} style={{ marginBottom: "1rem", position: "relative", zIndex: 10 }}>
               The E.A.R.S™ Framework
             </h2>
@@ -170,7 +170,7 @@ export default function AdultsKeyboardGuitarPage() {
         <div className={styles.mlabCard}>
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
             <span style={{ padding: "0.25rem 0.75rem", background: "rgba(20,184,166,0.2)", color: "rgb(45,212,191)", borderRadius: 9999, fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
-              Muziclly Ecosystem
+              Tryvanta Music Ecosystem
             </span>
             <h2 className={styles.sectionTitle} style={{ marginTop: "1rem", marginBottom: "1rem" }}>Master with M-Lab™</h2>
             <p style={{ color: "rgb(156,163,175)", maxWidth: "36rem", margin: "0 auto" }}>
@@ -217,7 +217,7 @@ export default function AdultsKeyboardGuitarPage() {
           </div>
           <div className={styles.founderContent}>
             <h2 style={{ fontSize: "1.875rem", fontWeight: 800, marginBottom: "0.25rem" }}>Dr. Avishkar Roopi</h2>
-            <p style={{ color: "rgb(45,212,191)", fontWeight: 600, fontSize: "0.875rem", textTransform: "uppercase", marginBottom: "1rem" }}>Founder – Muziclly Global</p>
+            <p style={{ color: "rgb(45,212,191)", fontWeight: 600, fontSize: "0.875rem", textTransform: "uppercase", marginBottom: "1rem" }}>Founder – Tryvanta Music Global</p>
             <p style={{ color: "rgb(156,163,175)", fontStyle: "italic", fontSize: "1.125rem" }}>
               &quot;Creator of the E.A.R.S™ system, dedicated to bringing professional-grade music education to
               adults everywhere.&quot;
@@ -302,7 +302,7 @@ export default function AdultsKeyboardGuitarPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-new.png" alt="Muziclly" width={180} height={70} className={styles.footerLogo} />
+            <Image src="/logo-new.png" alt="Tryvanta Music" width={180} height={70} className={styles.footerLogo} />
             <p>Global platform for premium music learning for all ages.</p>
           </div>
           <div>
@@ -323,7 +323,7 @@ export default function AdultsKeyboardGuitarPage() {
           </div>
         </div>
         <div style={{ marginTop: "3rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)", textAlign: "center", opacity: 0.5 }}>
-          © 2026 Muziclly Global. All Rights Reserved.
+          © 2026 Tryvanta Music Global. All Rights Reserved.
         </div>
       </footer>
     </div>

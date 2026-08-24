@@ -78,7 +78,7 @@ function AuthPage() {
         <div className="absolute inset-0 opacity-30 bg-brand-gradient" />
         <div className="relative flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-brand-gradient" />
-          <span className="font-display text-lg font-bold">Muziclly Growth OS</span>
+          <span className="font-display text-lg font-bold">Music Growth OS</span>
         </div>
         <div className="relative max-w-md">
           <h2 className="font-display text-4xl font-bold leading-tight">
@@ -88,14 +88,14 @@ function AuthPage() {
             The intelligent growth engine that sits before enrollment — so no lead is ever lost.
           </p>
         </div>
-        <div className="relative text-xs opacity-60">© Muziclly · Phase 1</div>
+        <div className="relative text-xs opacity-60">© Music · Phase 1</div>
       </div>
 
       <div className="flex items-center justify-center p-6">
         <div className="w-full max-w-sm">
           <div className="lg:hidden flex items-center gap-2 mb-8">
             <div className="h-8 w-8 rounded-lg bg-brand-gradient" />
-            <span className="font-display text-lg font-bold">Muziclly Growth OS</span>
+            <span className="font-display text-lg font-bold">Music Growth OS</span>
           </div>
           <h1 className="font-display text-2xl font-bold">Welcome</h1>
           <p className="mt-1 text-sm text-muted-foreground">Sign in to your workspace.</p>

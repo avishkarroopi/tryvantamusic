@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import styles from "./page.module.css";
 
-// Rebuilt from the recovered "Muziclly Label" basic prototype (admin-store-label.zip)
+// Rebuilt from the recovered "Tryvanta Music Label" basic prototype (admin-store-label.zip)
 // into a full Next.js music-label showcase: artists, videos, releases, and a mock
 // bottom player bar (no real media files were provided in the recovered source —
 // preserved as a mock transport, matching the recovered evidence's own placeholder
@@ -55,8 +55,8 @@ export default function LabelPage() {
       <nav className={styles.nav}>
         <div className={styles.navInner}>
           <div className={styles.logoWrap} onClick={() => { setTab("home"); setOpenArtist(null); }}>
-            <div className={styles.logoMark}>M</div>
-            <span className={styles.logoText}>Muziclly<span className={styles.logoAccent}>Label</span></span>
+            <div className={styles.logoMark}>T</div>
+            <span className={styles.logoText}>Tryvanta Music <span className={styles.logoAccent}>Label</span></span>
           </div>
           <div className={styles.tabRow}>
             {([["home", Disc, "Home"], ["videos", Video, "Videos"], ["audio", Music, "Music"], ["artists", Users, "Artists"]] as const).map(([id, Icon, label]) => (
@@ -94,9 +94,9 @@ export default function LabelPage() {
           {tab === "home" && (
             <>
               <div className={styles.hero}>
-                <span className={styles.heroEyebrow}>Muziclly Label</span>
+                <span className={styles.heroEyebrow}>Tryvanta Music Label</span>
                 <h1 className={styles.heroTitle}>Original artists. Original sound.</h1>
-                <p className={styles.heroDesc}>The recording arm of Muziclly Global — releasing music and video from artists across our teaching network.</p>
+                <p className={styles.heroDesc}>The recording arm of Tryvanta Music Global — releasing music and video from artists across our teaching network.</p>
               </div>
               <div className={styles.section}>
                 <div className={styles.sectionHead}><span className={styles.sectionTitle}>Featured Artists</span></div>

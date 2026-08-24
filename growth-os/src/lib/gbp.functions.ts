@@ -286,7 +286,7 @@ export const generateReviewReply = createServerFn({ method: "POST" })
       .select("business_name, primary_category")
       .eq("user_id", context.userId)
       .maybeSingle();
-    const businessName = profileRes.data?.business_name ?? "Muziclly";
+    const businessName = profileRes.data?.business_name ?? "Music";
 
     const system = `You are the founder of ${businessName}, a premium music education academy. Write a ${data.tone} reply to a Google review. Rules:
 - 2 to 4 sentences, no fluff, no emojis unless the reviewer used one.
@@ -371,7 +371,7 @@ export const generatePostIdeas = createServerFn({ method: "POST" })
     const theme = data.theme?.trim() || "weekly mix";
     const result = await chatCompletionJson<{ posts: Array<{ post_type: string; title: string; body: string }> }>({
       messages: [
-        { role: "system", content: "You are the content strategist for Muziclly, a premium music education academy. Generate Google Business Profile posts. Return JSON: { posts: [{ post_type: 'update'|'event'|'offer'|'achievement', title: string (max 60 chars), body: string (150-300 chars, warm, specific, no generic emoji spam) }] }. Include a range: weekly update, student achievement (Trinity/festival), teaching tip, offer, event." },
+        { role: "system", content: "You are the content strategist for Music, a premium music education academy. Generate Google Business Profile posts. Return JSON: { posts: [{ post_type: 'update'|'event'|'offer'|'achievement', title: string (max 60 chars), body: string (150-300 chars, warm, specific, no generic emoji spam) }] }. Include a range: weekly update, student achievement (Trinity/festival), teaching tip, offer, event." },
         { role: "user", content: `Theme: ${theme}. Generate 6 posts.` },
       ],
       fallback: { posts: [] },

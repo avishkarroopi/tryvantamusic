@@ -4,8 +4,8 @@ import Footer from "@/components/Footer/Footer";
 import { legalStyles as s } from "@/components/LegalContent/legal-styles";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | MUZICLLY",
-  description: "Learn how MUZICLLY collects, uses, and protects your personal data.",
+  title: "Privacy Policy | TRYVANTA MUSIC",
+  description: "Learn how TRYVANTA MUSIC collects, uses, and protects your personal data.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
           <section style={s.section}>
             <h2 style={s.h2}>1. Introduction</h2>
             <p>
-              Welcome to Muziclly. We respect your privacy and are committed to protecting your personal data. This
+              Welcome to Tryvanta Music. We respect your privacy and are committed to protecting your personal data. This
               privacy policy will inform you as to how we look after your personal data when you visit our website
               and tell you about your privacy rights and how the law protects you.
             </p>

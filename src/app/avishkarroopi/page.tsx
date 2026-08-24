@@ -106,7 +106,7 @@ export default function AvishkarRoopiPage() {
                 Avishkar <br /> <span className={styles.textOrange}>Roopi</span>
               </h1>
               <p style={{ fontSize: "1.1rem", color: "var(--text-muted)", marginBottom: 20 }}>
-                Founder of <strong>Muziclly</strong> | KMMC (A.R. Rahman Academy) Alumni | Honorary Doctorate Awardee
+                Founder of <strong>Tryvanta Music</strong> | KMMC (A.R. Rahman Academy) Alumni | Honorary Doctorate Awardee
               </p>
               <p style={{ color: "var(--text-muted)" }}>
                 My mission is to empower the next generation of musicians and educators with a blend of classical
@@ -183,7 +183,7 @@ export default function AvishkarRoopiPage() {
                 <span className={styles.textOrange}>Musical Careers</span>
               </h2>
               <p style={{ color: "var(--text-muted)", fontSize: "1.1rem", marginBottom: 30 }}>
-                Established in 2013, Muziclly was founded with a vision to democratize high-quality music education.
+                Established in 2013, Tryvanta Music was founded with a vision to democratize high-quality music education.
                 I have successfully mentored over 20+ music teachers and trained students globally.
               </p>
               <div style={{ display: "flex", gap: 24, justifyContent: "center", flexWrap: "wrap" }}>
@@ -330,7 +330,7 @@ export default function AvishkarRoopiPage() {
         <div className={`${styles.container} ${styles.footerGrid}`}>
           <div>
             <h3 style={{ fontSize: "1.5rem", marginBottom: 10 }}>Avishkar Roopi</h3>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginBottom: 20, fontWeight: 500 }}>Muziclly Global</p>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginBottom: 20, fontWeight: 500 }}>Tryvanta Music Global</p>
             <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
               Empowering the next generation of musical talent with world-class education.
             </p>

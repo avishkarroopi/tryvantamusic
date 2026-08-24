@@ -344,7 +344,7 @@ export const competitiveIntelBrief = createServerFn({ method: "POST" })
       messages: [
         {
           role: "system",
-          content: "You are a competitive intelligence analyst for a premium music academy (Muziclly). Given our brand trend data, our Google Business profile, and competitor data (visibility score, review count/rating, active ad count), respond as JSON: { summary: string (3-4 sentences, reference real numbers), ourStrengths: string[] (3-5), competitorThreats: string[] (3-5, name specific competitors), opportunities: string[] (3-5), recommendedActions: string[] (3-5, specific and actionable) }. Never generic — always reference the actual data given.",
+          content: "You are a competitive intelligence analyst for a premium music academy (Music). Given our brand trend data, our Google Business profile, and competitor data (visibility score, review count/rating, active ad count), respond as JSON: { summary: string (3-4 sentences, reference real numbers), ourStrengths: string[] (3-5), competitorThreats: string[] (3-5, name specific competitors), opportunities: string[] (3-5), recommendedActions: string[] (3-5, specific and actionable) }. Never generic — always reference the actual data given.",
         },
         { role: "user", content: context_text },
       ],

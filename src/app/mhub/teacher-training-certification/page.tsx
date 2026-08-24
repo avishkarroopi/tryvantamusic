@@ -27,7 +27,7 @@ import {
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Teacher Training & Certification | Muziclly M-Hub",
+  title: "Teacher Training & Certification | Tryvanta Music M-Hub",
   description: "Turn your musical talent into a professional teaching career. Master global pedagogy, E.A.R.S™ framework, and digital tools.",
 };
 
@@ -55,7 +55,7 @@ const mlab = [
 ];
 
 const highlights = [
-  { Icon: ShieldCheck, color: "#c084fc", title: "Verified License", text: "Earn your Muziclly Global Teaching License." },
+  { Icon: ShieldCheck, color: "#c084fc", title: "Verified License", text: "Earn your Tryvanta Music Global Teaching License." },
   { Icon: Zap, color: "#2dd4bf", title: "Accelerated Track", text: "Go from performer to educator in 6 months." },
   { Icon: Banknote, color: "#fb7185", title: "Earning Potential", text: "Access high-paying global student pools." },
   { Icon: Globe, color: "#60a5fa", title: "Global Network", text: "Connect with educators across 20+ countries." },
@@ -90,7 +90,7 @@ export default function TeacherTrainingCertificationPage() {
     <div className={styles.container}>
       <nav className={styles.navbar}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Image src="/logo-new.png" alt="Muziclly" width={160} height={72} className={styles.navLogo} />
+          <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={72} className={styles.navLogo} />
         </div>
         <button style={{ padding: "0.75rem 1.5rem", borderRadius: 9999, background: "linear-gradient(90deg, rgb(192,132,252), rgb(236,72,153))", border: "none", color: "white", fontWeight: 700, cursor: "pointer", boxShadow: "rgba(192,132,252,0.4) 0px 4px 12px" }}>
           Book a Free Demo
@@ -125,7 +125,7 @@ export default function TeacherTrainingCertificationPage() {
 
       <section className={styles.whySection}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <h2 className={styles.sectionTitle}>Why Train with Muziclly?</h2>
+          <h2 className={styles.sectionTitle}>Why Train with Tryvanta Music?</h2>
           <div className={styles.gridGeneric} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
             {why.map((w) => (
               <div className={styles.featureCard} key={w.title}>
@@ -170,7 +170,7 @@ export default function TeacherTrainingCertificationPage() {
           <div className={styles.mlabCard}>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
               <span style={{ padding: "0.375rem 1rem", background: "rgba(45,212,191,0.2)", color: "rgb(45,212,191)", borderRadius: 9999, fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
-                Muziclly Ecosystem
+                Tryvanta Music Ecosystem
               </span>
               <h2 style={{ fontSize: "2.5rem", fontWeight: 900, marginTop: "1rem", lineHeight: 1.2 }}>Master the M-Lab™</h2>
               <p style={{ color: "rgb(156,163,175)", marginTop: "1rem", maxWidth: "42rem", marginInline: "auto" }}>
@@ -219,7 +219,7 @@ export default function TeacherTrainingCertificationPage() {
           <div style={{ textAlign: "left" }}>
             <h2 style={{ fontSize: "2.25rem", fontWeight: 800, marginBottom: "0.25rem" }}>Dr. Avishkar Roopi</h2>
             <p style={{ color: "rgb(45,212,191)", fontWeight: 600, fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1rem" }}>
-              Music Educator &amp; Founder – Muziclly
+              Music Educator &amp; Founder – Tryvanta Music
             </p>
             <ul style={{ marginBottom: "1rem", color: "rgb(209,213,219)", fontSize: "0.875rem", display: "flex", flexDirection: "column", gap: "0.5rem", listStyle: "none", padding: 0 }}>
               <li>🏆 Doctorate achievement recognition</li>
@@ -310,7 +310,7 @@ export default function TeacherTrainingCertificationPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-new.png" alt="Muziclly" width={180} height={70} style={{ marginBottom: "1.5rem", width: "10rem", height: "auto" }} />
+            <Image src="/logo-new.png" alt="Tryvanta Music" width={180} height={70} style={{ marginBottom: "1.5rem", width: "10rem", height: "auto" }} />
             <p>Global platform for standardized music education.</p>
           </div>
           <div>
@@ -329,7 +329,7 @@ export default function TeacherTrainingCertificationPage() {
           </div>
         </div>
         <div style={{ marginTop: "3rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)", textAlign: "center", opacity: 0.5, fontSize: "0.75rem" }}>
-          © 2026 Muziclly Global. All Rights Reserved.
+          © 2026 Tryvanta Music Global. All Rights Reserved.
         </div>
       </footer>
     </div>

@@ -9,7 +9,7 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <Image src="/logo-new.png" alt="Muziclly" width={140} height={40} className={styles.logoImage} />
+              <Image src="/logo-new.png" alt="Tryvanta Music" width={140} height={40} className={styles.logoImage} />
             </Link>
             <p className={styles.tagline}>
               Structured Music Learning.
@@ -111,7 +111,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p className={styles.copyright}>© {new Date().getFullYear()} MUZICLLY. All rights reserved.</p>
+          <p className={styles.copyright}>© {new Date().getFullYear()} TRYVANTA MUSIC. All rights reserved.</p>
           <div className={styles.bottomLinks}>
             <Link href="/career">Career</Link>
             <Link href="/privacy-policy">Privacy Policy</Link>

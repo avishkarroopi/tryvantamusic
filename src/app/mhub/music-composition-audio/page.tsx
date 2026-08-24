@@ -21,7 +21,7 @@ import {
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Music Composition, Audio Engineering & Mastering | Muziclly M-Hub",
+  title: "Music Composition, Audio Engineering & Mastering | Tryvanta Music M-Hub",
   description: "The definitive program to master the art of production. Build your portfolio and sound like a pro with industry-standard workflows.",
 };
 
@@ -77,7 +77,7 @@ export default function MusicCompositionAudioPage() {
   return (
     <div className={styles.container}>
       <nav style={{ position: "sticky", top: 0, zIndex: 1000, background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(0,0,0,0.05)", padding: "0.5rem 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Image src="/logo-new.png" alt="Muziclly" width={160} height={56} style={{ height: "3.5rem", width: "auto" }} />
+        <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={56} style={{ height: "3.5rem", width: "auto" }} />
         <button className={styles.btnPrimary} style={{ padding: "0.75rem 2rem", fontSize: "1rem", borderRadius: 9999, background: "linear-gradient(to right, rgb(168,85,247), rgb(236,72,153))", boxShadow: "rgba(168,85,247,0.4) 0px 4px 12px" }}>
           Book a Free Demo
         </button>
@@ -114,7 +114,7 @@ export default function MusicCompositionAudioPage() {
 
       <section className={styles.whySection}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <h2 className={styles.sectionTitle}>Why Producers Choose Muziclly</h2>
+          <h2 className={styles.sectionTitle}>Why Producers Choose Tryvanta Music</h2>
           <div className={styles.gridGeneric} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
             {why.map((w) => (
               <div className={styles.featureCard} key={w.title}>
@@ -159,7 +159,7 @@ export default function MusicCompositionAudioPage() {
           <div className={styles.mlabCard}>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
               <span style={{ padding: "0.375rem 1rem", background: "rgba(45,212,191,0.2)", color: "rgb(45,212,191)", borderRadius: 9999, fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
-                Muziclly Ecosystem
+                Tryvanta Music Ecosystem
               </span>
               <h2 style={{ fontSize: "2.5rem", fontWeight: 900, marginTop: "1rem", lineHeight: 1.2 }}>Master with M-Lab™</h2>
               <p style={{ color: "rgb(156,163,175)", marginTop: "1rem", maxWidth: "42rem", marginInline: "auto" }}>
@@ -208,7 +208,7 @@ export default function MusicCompositionAudioPage() {
           <div style={{ textAlign: "left" }}>
             <h2 style={{ fontSize: "2.25rem", fontWeight: 800, marginBottom: "0.25rem" }}>Dr. Avishkar Roopi</h2>
             <p style={{ color: "rgb(45,212,191)", fontWeight: 600, fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1rem" }}>
-              Music Educator &amp; Founder – Muziclly
+              Music Educator &amp; Founder – Tryvanta Music
             </p>
             <ul style={{ marginBottom: "1rem", color: "rgb(209,213,219)", fontSize: "0.875rem", display: "flex", flexDirection: "column", gap: "0.5rem", listStyle: "none", padding: 0 }}>
               <li>🏆 Doctorate achievement recognition</li>
@@ -289,7 +289,7 @@ export default function MusicCompositionAudioPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-new.png" alt="Muziclly" width={180} height={70} style={{ marginBottom: "1.5rem", width: "10rem", height: "auto" }} />
+            <Image src="/logo-new.png" alt="Tryvanta Music" width={180} height={70} style={{ marginBottom: "1.5rem", width: "10rem", height: "auto" }} />
             <p>Global standard for production education.</p>
           </div>
           <div>
@@ -309,7 +309,7 @@ export default function MusicCompositionAudioPage() {
           </div>
         </div>
         <div style={{ marginTop: "3rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)", textAlign: "center", opacity: 0.5, fontSize: "0.75rem" }}>
-          © 2026 Muziclly Global. All Rights Reserved.
+          © 2026 Tryvanta Music Global. All Rights Reserved.
         </div>
       </footer>
     </div>

@@ -34,7 +34,7 @@ function loadRazorpayScript(): Promise<void> {
   return razorpayScriptPromise;
 }
 
-// Rebuilt from the recovered "Muziclly Store v2" basic prototype (admin-store-label.zip)
+// Rebuilt from the recovered "Tryvanta Music Store v2" basic prototype (admin-store-label.zip)
 // into a full Next.js storefront: catalog, cart drawer, and checkout. Product catalog
 // ported verbatim from the recovered mock inventory (courses, instruments, books,
 // accessories, bundles).
@@ -56,17 +56,17 @@ const PRODUCTS: Product[] = [
   { id: "c-k-2", name: "Keyboard Mastery: Level 2", category: "courses", subCategory: "Keyboard", level: "Intermediate", price: 69.99, description: "Progressing to scales, arpeggios, and hand independence.", tint: "#dbeafe" },
   { id: "c-k-3", name: "Keyboard Mastery: Level 3", category: "courses", subCategory: "Keyboard", level: "Advanced", price: 89.99, description: "Professional techniques, improvisation, and complex theory.", tint: "#dbeafe" },
   { id: "c-g-1", name: "Guitar Fundamentals: Level 1", category: "courses", subCategory: "Guitar", level: "Basic", price: 49.99, description: "First steps: tuning, open chords, and strumming patterns.", tint: "#ffedd5" },
-  { id: "k-beg-1", name: "Muziclly Key-Start 61", category: "keyboards", subCategory: "Beginner", price: 199, description: "61-key portable keyboard. Perfect for Level 1 students.", stock: 20, tint: "#e2e8f0" },
-  { id: "k-int-1", name: "Muziclly Learn-88", category: "keyboards", subCategory: "Intermediate", price: 449, description: "88-key semi-weighted digital piano for serious practice.", stock: 12, tint: "#e2e8f0" },
-  { id: "k-adv-1", name: "Muziclly Pro-Grand", category: "keyboards", subCategory: "Advanced", price: 899, description: "Flagship hammer-action digital piano with realistic feel.", stock: 5, tint: "#cbd5e1" },
-  { id: "k-work-1", name: "Muziclly Synth-X Workstation", category: "keyboards", subCategory: "Workstation", price: 1299, description: "Professional production workstation with synthesis and sequencing.", stock: 3, tint: "#e9d5ff" },
-  { id: "g-beg-1", name: "Muziclly Acoustic G1", category: "guitars", subCategory: "Beginner", price: 149, description: "Dreadnought acoustic. Low action setup for easy learning.", stock: 15, tint: "#fef3c7" },
-  { id: "g-int-1", name: "Muziclly Acoustic G2 Solid", category: "guitars", subCategory: "Intermediate", price: 299, description: "Solid spruce top acoustic for richer tone and projection.", stock: 10, tint: "#fef3c7" },
-  { id: "g-adv-1", name: "Muziclly Luthier Series", category: "guitars", subCategory: "Advanced", price: 799, description: "Handcrafted all-wood construction for professional performance.", stock: 4, tint: "#fde68a" },
-  { id: "g-elec-1", name: "Muziclly Strat-E", category: "guitars", subCategory: "Electric Guitar", price: 249, description: "Versatile electric guitar with S-S-S pickup configuration.", stock: 8, tint: "#fecaca" },
-  { id: "g-class-1", name: "Muziclly Nylon-C", category: "guitars", subCategory: "Classical Guitar", price: 189, description: "Traditional nylon string guitar for classical repertoire.", stock: 6, tint: "#fed7aa" },
-  { id: "g-bass-1", name: "Muziclly Bass-4", category: "guitars", subCategory: "Bass Guitar", price: 279, description: "4-string precision bass with punchy low-end tone.", stock: 5, tint: "#c7d2fe" },
-  { id: "b-1", name: "Muziclly Theory: Level 1", category: "books", price: 19.99, description: "Essential theory workbook.", stock: 50, tint: "#f3f4f6" },
+  { id: "k-beg-1", name: "Tryvanta Music Key-Start 61", category: "keyboards", subCategory: "Beginner", price: 199, description: "61-key portable keyboard. Perfect for Level 1 students.", stock: 20, tint: "#e2e8f0" },
+  { id: "k-int-1", name: "Tryvanta Music Learn-88", category: "keyboards", subCategory: "Intermediate", price: 449, description: "88-key semi-weighted digital piano for serious practice.", stock: 12, tint: "#e2e8f0" },
+  { id: "k-adv-1", name: "Tryvanta Music Pro-Grand", category: "keyboards", subCategory: "Advanced", price: 899, description: "Flagship hammer-action digital piano with realistic feel.", stock: 5, tint: "#cbd5e1" },
+  { id: "k-work-1", name: "Tryvanta Music Synth-X Workstation", category: "keyboards", subCategory: "Workstation", price: 1299, description: "Professional production workstation with synthesis and sequencing.", stock: 3, tint: "#e9d5ff" },
+  { id: "g-beg-1", name: "Tryvanta Music Acoustic G1", category: "guitars", subCategory: "Beginner", price: 149, description: "Dreadnought acoustic. Low action setup for easy learning.", stock: 15, tint: "#fef3c7" },
+  { id: "g-int-1", name: "Tryvanta Music Acoustic G2 Solid", category: "guitars", subCategory: "Intermediate", price: 299, description: "Solid spruce top acoustic for richer tone and projection.", stock: 10, tint: "#fef3c7" },
+  { id: "g-adv-1", name: "Tryvanta Music Luthier Series", category: "guitars", subCategory: "Advanced", price: 799, description: "Handcrafted all-wood construction for professional performance.", stock: 4, tint: "#fde68a" },
+  { id: "g-elec-1", name: "Tryvanta Music Strat-E", category: "guitars", subCategory: "Electric Guitar", price: 249, description: "Versatile electric guitar with S-S-S pickup configuration.", stock: 8, tint: "#fecaca" },
+  { id: "g-class-1", name: "Tryvanta Music Nylon-C", category: "guitars", subCategory: "Classical Guitar", price: 189, description: "Traditional nylon string guitar for classical repertoire.", stock: 6, tint: "#fed7aa" },
+  { id: "g-bass-1", name: "Tryvanta Music Bass-4", category: "guitars", subCategory: "Bass Guitar", price: 279, description: "4-string precision bass with punchy low-end tone.", stock: 5, tint: "#c7d2fe" },
+  { id: "b-1", name: "Tryvanta Music Theory: Level 1", category: "books", price: 19.99, description: "Essential theory workbook.", stock: 50, tint: "#f3f4f6" },
   { id: "a-1", name: "Clip-on Tuner", category: "accessories", price: 14.99, description: "Chromatic tuner for guitar, bass, ukulele, and violin.", stock: 100, tint: "#f3f4f6" },
   { id: "bun-1", name: "Ultimate Beginner Piano Bundle", category: "bundles", price: 229, description: "Key-Start 61 + Course Level 1 + Stand.", stock: 5, tint: "#c7d2fe" },
 ];
@@ -149,7 +149,7 @@ export default function StorePage() {
         amount: order.amount,
         currency: order.currency,
         order_id: order.orderId,
-        name: "Muziclly Store",
+        name: "Tryvanta Music Store",
         description: `${cartCount} item${cartCount === 1 ? "" : "s"}`,
         prefill: { name: customer.name, email: customer.email },
         notes: { address: customer.address },
@@ -192,8 +192,8 @@ export default function StorePage() {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.logoWrap}>
-            <span className={styles.logoMark}>M</span>
-            <span className={styles.logoText}>Muziclly<span className={styles.logoLight}>Store</span></span>
+            <span className={styles.logoMark}>T</span>
+            <span className={styles.logoText}>Tryvanta Music <span className={styles.logoLight}>Store</span></span>
           </div>
           <div className={styles.headerRight}>
             <button className={styles.iconBtn} onClick={() => setCartOpen(true)} aria-label="Open cart">

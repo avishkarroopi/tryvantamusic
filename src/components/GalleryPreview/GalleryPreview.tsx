@@ -14,7 +14,7 @@ export default function GalleryPreview() {
         <div className={styles.header}>
           <span className={styles.label}>Our Community</span>
           <h2 className={styles.title}>
-            Life at <span className={styles.highlight}>Muziclly</span>
+            Life at <span className={styles.highlight}>Tryvanta Music</span>
           </h2>
           <p className={styles.description}>
             Join thousands of students discovering their musical potential. From first notes to stage performances,
@@ -28,7 +28,7 @@ export default function GalleryPreview() {
               <div className={styles.imageWrapper}>
                 <Image
                   src={`/muzzly_gallery/${n}.jpg`}
-                  alt={`Muziclly Community Moment ${i + 1}`}
+                  alt={`Tryvanta Music Community Moment ${i + 1}`}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className={styles.image}

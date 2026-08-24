@@ -1,6 +1,7 @@
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
+import { getAnalytics, isSupported, type Analytics } from "firebase/analytics";
 
 // Recovered verbatim from the original production bundle
 // (_next/static/chunks/c729ce39b21a1acd.js). This is the standard public
@@ -21,11 +22,21 @@ export const isFirebaseConfigured = Boolean(firebaseConfig.apiKey);
 let app: FirebaseApp | undefined;
 let auth: Auth | undefined;
 let db: Firestore | undefined;
+let analytics: Analytics | undefined;
 
 if (typeof window !== "undefined" && isFirebaseConfigured) {
   app = getApps().length ? getApps()[0]! : initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
+  // Analytics needs its own async support check (fails in some browsers/
+  // privacy modes with cookies blocked) — never let it block auth/db setup.
+  isSupported()
+    .then((supported) => {
+      if (supported && app) analytics = getAnalytics(app);
+    })
+    .catch(() => {
+      // analytics is a nice-to-have; swallow and move on
+    });
 }
 
-export { app, auth, db };
+export { app, auth, db, analytics };

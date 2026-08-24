@@ -92,7 +92,7 @@ export const askCopilot = createServerFn({ method: "POST" })
     // Persist user message immediately
     await supabase.from("copilot_messages").insert({ user_id: userId, role: "user", content: data.message });
 
-    const systemPrompt = `You are the Founder Copilot for Muziclly Growth OS — a premium music education platform. Answer the founder in a concise, decisive, founder-first tone. Use the LIVE BUSINESS CONTEXT JSON below as the source of truth; do NOT invent numbers. Cite specific numbers when relevant, and end with a suggested next action when useful.
+    const systemPrompt = `You are the Founder Copilot for Music Growth OS — a premium music education platform. Answer the founder in a concise, decisive, founder-first tone. Use the LIVE BUSINESS CONTEXT JSON below as the source of truth; do NOT invent numbers. Cite specific numbers when relevant, and end with a suggested next action when useful.
 
 If a question can't be answered from the provided context, say so and suggest what data to log.
 
@@ -134,7 +134,7 @@ export const generateBrief = createServerFn({ method: "POST" })
     const start = new Date(now.getTime() - days * 86400000);
     const ctx = await fetchBusinessContext(context.supabase);
 
-    const system = `You are the Founder Copilot writing a concise ${data.period} brief for the founder of Muziclly. Return strict JSON: {"summary":"2-3 sentence executive summary","highlights":["max 6 punchy bullet lines with specific numbers"],"next_actions":["max 3 imperative actions"]}. Base every number on the LIVE BUSINESS CONTEXT JSON. Do not invent metrics.
+    const system = `You are the Founder Copilot writing a concise ${data.period} brief for the founder of Music. Return strict JSON: {"summary":"2-3 sentence executive summary","highlights":["max 6 punchy bullet lines with specific numbers"],"next_actions":["max 3 imperative actions"]}. Base every number on the LIVE BUSINESS CONTEXT JSON. Do not invent metrics.
 
 LIVE BUSINESS CONTEXT (JSON):
 ${JSON.stringify(ctx)}`;

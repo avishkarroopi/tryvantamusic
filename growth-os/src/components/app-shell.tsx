@@ -69,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="flex items-center gap-2 px-5 h-16 border-b border-sidebar-border">
           <div className="h-7 w-7 rounded-md bg-brand-gradient" />
           <div className="leading-tight">
-            <div className="font-display text-sm font-bold">Muziclly</div>
+            <div className="font-display text-sm font-bold">Music</div>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
               Growth OS
             </div>
@@ -113,7 +113,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="md:hidden fixed inset-x-0 top-0 z-40 h-14 flex items-center justify-between px-4 border-b border-border bg-background/90 backdrop-blur">
         <div className="flex items-center gap-2">
           <div className="h-7 w-7 rounded-md bg-brand-gradient" />
-          <span className="font-display font-bold text-sm">Muziclly OS</span>
+          <span className="font-display font-bold text-sm">Music OS</span>
         </div>
         <Button variant="ghost" size="icon" onClick={() => setMobileOpen((v) => !v)}>
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

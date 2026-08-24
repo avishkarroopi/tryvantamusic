@@ -25,7 +25,7 @@ export default function Navbar() {
     <header id="global-main-navbar" className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo-new.png" alt="Muziclly" width={200} height={60} className={styles.logoImage} priority />
+          <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={60} className={styles.logoImage} priority />
         </Link>
 
         <div className={`${styles.navLinks} ${open ? styles.open : ""}`}>
@@ -85,7 +85,7 @@ export default function Navbar() {
           </div>
 
           <Button variant="primary" size="sm" href="/studio" id="nav-cta">
-            Muziclly Studio
+            Tryvanta Music Studio
           </Button>
         </div>
 

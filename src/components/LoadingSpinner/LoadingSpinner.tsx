@@ -12,7 +12,7 @@ export default function LoadingSpinner({ fullScreen = false, size = 100 }: Loadi
       <div className={styles.spinnerWrapper} style={{ width: size, height: size }}>
         <div className={styles.rotatingRing} />
         <div className={styles.logoContainer}>
-          <Image src="/logo.png" alt="Muziclly Loading" fill sizes="100vw" style={{ objectFit: "contain" }} />
+          <Image src="/logo.png" alt="Tryvanta Music Loading" fill sizes="100vw" style={{ objectFit: "contain" }} />
         </div>
       </div>
     </div>

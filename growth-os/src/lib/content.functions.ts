@@ -100,7 +100,7 @@ export const generateContent = createServerFn({ method: "POST" })
     }).parse(input),
   )
   .handler(async ({ data, context }) => {
-    const sys = `You write high-quality social/marketing content for Muziclly, a premium music education platform. Return strict JSON: {"items":[{"title":"...","body":"...","hashtags":["..."]}]} with exactly ${data.variants} items. Tone: ${data.tone ?? "warm, credible, founder-led"}. Keep it concise, human, and specific to music education for kids and adults.`;
+    const sys = `You write high-quality social/marketing content for Music, a premium music education platform. Return strict JSON: {"items":[{"title":"...","body":"...","hashtags":["..."]}]} with exactly ${data.variants} items. Tone: ${data.tone ?? "warm, credible, founder-led"}. Keep it concise, human, and specific to music education for kids and adults.`;
     const user = JSON.stringify({ kind: data.kind, topic: data.topic, platform: data.platform ?? null, audience: data.audience ?? null });
 
     let items: { title: string; body: string; hashtags?: string[] }[] = [];

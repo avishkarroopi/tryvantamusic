@@ -3,17 +3,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — Muziclly Growth OS" },
+      { title: "Privacy Policy — Music Growth OS" },
       {
         name: "description",
         content:
-          "Privacy Policy for Muziclly Growth OS describing what data we collect, how we use it, third-party services, retention, and your rights.",
+          "Privacy Policy for Music Growth OS describing what data we collect, how we use it, third-party services, retention, and your rights.",
       },
-      { property: "og:title", content: "Privacy Policy — Muziclly Growth OS" },
+      { property: "og:title", content: "Privacy Policy — Music Growth OS" },
       {
         property: "og:description",
         content:
-          "How Muziclly Growth OS collects, uses, stores, and protects personal data across Meta, WhatsApp, and Google integrations.",
+          "How Music Growth OS collects, uses, stores, and protects personal data across Meta, WhatsApp, and Google integrations.",
       },
       { property: "og:type", content: "article" },
       { name: "robots", content: "index,follow" },
@@ -24,8 +24,8 @@ export const Route = createFileRoute("/privacy")({
 
 const EFFECTIVE_DATE = "July 12, 2026";
 const CONTACT_EMAIL = "privacy@muziclly.com";
-const COMPANY = "Muziclly";
-const APP = "Muziclly Growth OS";
+const COMPANY = "Music";
+const APP = "Music Growth OS";
 
 function PrivacyPage() {
   return (

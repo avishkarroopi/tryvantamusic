@@ -72,10 +72,10 @@ export default function SignUpPage() {
         <div className={styles.container}>
           <div className={styles.illustrationSide}>
             <Link href="/" className={styles.logo}>
-              <Image src="/logo.png" alt="Muziclly" width={160} height={40} />
+              <Image src="/logo.png" alt="Tryvanta Music" width={160} height={40} />
             </Link>
             <div className={styles.illustrationContent}>
-              <h1 className={styles.welcomeTitle}>Join Muziclly Studio</h1>
+              <h1 className={styles.welcomeTitle}>Join Tryvanta Music Studio</h1>
               <p className={styles.welcomeText}>
                 Start your musical journey today. Whether you&apos;re a student eager to learn or a teacher ready to
                 inspire, we&apos;ve got a place for you.

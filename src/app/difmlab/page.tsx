@@ -5,7 +5,7 @@ import Section from "@/components/Section/Section";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "MLAB vs Traditional | MUZICLLY",
+  title: "MLAB vs Traditional | TRYVANTA MUSIC",
   description: "Don't just learn music. Master it with the power of AI and personalized adaptability.",
 };
 

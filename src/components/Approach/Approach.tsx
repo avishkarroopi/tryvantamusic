@@ -13,7 +13,7 @@ export default function Approach() {
     <div className={styles.container}>
       <div className={styles.header}>
         <span className={styles.label}>Your Journey</span>
-        <h2 className={styles.title}>The Muziclly Approach</h2>
+        <h2 className={styles.title}>The Tryvanta Music Approach</h2>
         <p className={styles.subtitle}>A clear, proven path from where you are to where you want to be.</p>
       </div>
 

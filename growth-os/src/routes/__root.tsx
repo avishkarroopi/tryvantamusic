@@ -80,14 +80,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Muziclly Growth OS — Intelligent Lead Acquisition & Conversion Engine" },
+      { title: "Music Growth OS — Intelligent Lead Acquisition & Conversion Engine" },
       {
         name: "description",
         content:
           "AI-powered lead acquisition, qualification, nurturing, and recovery platform built for premium music education.",
       },
-      { name: "author", content: "Muziclly" },
-      { property: "og:title", content: "Muziclly Growth OS — Intelligent Lead Acquisition & Conversion Engine" },
+      { name: "author", content: "Music" },
+      { property: "og:title", content: "Music Growth OS — Intelligent Lead Acquisition & Conversion Engine" },
       {
         property: "og:description",
         content:
@@ -95,7 +95,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Muziclly Growth OS — Intelligent Lead Acquisition & Conversion Engine" },
+      { name: "twitter:title", content: "Music Growth OS — Intelligent Lead Acquisition & Conversion Engine" },
       { name: "twitter:description", content: "AI-powered lead acquisition, qualification, nurturing, and recovery platform built for premium music education." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b99a2ac9-79b7-4177-b5de-598375efb638/id-preview-95d3567b--24be85bd-b434-4c06-956e-a10034e0fdf0.lovable.app-1783153188230.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b99a2ac9-79b7-4177-b5de-598375efb638/id-preview-95d3567b--24be85bd-b434-4c06-956e-a10034e0fdf0.lovable.app-1783153188230.png" },

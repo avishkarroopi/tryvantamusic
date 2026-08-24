@@ -48,7 +48,7 @@ export default function ProblemSolution() {
         <div className={styles.solutionSide}>
           <div className={styles.sideHeader}>
             <span className={styles.sideIconSolution}>✓</span>
-            <h3 className={styles.sideTitle}>The Muziclly Way</h3>
+            <h3 className={styles.sideTitle}>The Tryvanta Music Way</h3>
           </div>
           <div className={styles.solutionList}>
             {solutions.map((s) => (

@@ -5,10 +5,10 @@ import FloatingContact from "@/components/FloatingContact/FloatingContact";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MUZICLLY — Structured Music Learning. Real Mentorship. Lasting Skill.",
+  title: "TRYVANTA MUSIC — Structured Music Learning. Real Mentorship. Lasting Skill.",
   description:
     "Learn music the right way with structured learning paths, verified tutors, and real human mentorship. Book your free assessment today.",
-  authors: [{ name: "MUZICLLY" }],
+  authors: [{ name: "TRYVANTA MUSIC" }],
   keywords: [
     "music education",
     "online music lessons",
@@ -18,15 +18,15 @@ export const metadata: Metadata = {
     "verified music tutors",
   ],
   openGraph: {
-    title: "MUZICLLY — Structured Music Learning. Real Mentorship.",
+    title: "TRYVANTA MUSIC — Structured Music Learning. Real Mentorship.",
     description: "Human-led music education with structure, accountability, and real mentorship.",
-    siteName: "MUZICLLY",
+    siteName: "TRYVANTA MUSIC",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "MUZICLLY — Structured Music Learning",
+    title: "TRYVANTA MUSIC — Structured Music Learning",
     description: "Human-led music education with structure, accountability, and real mentorship.",
   },
 };

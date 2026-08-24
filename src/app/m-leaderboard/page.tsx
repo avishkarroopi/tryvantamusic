@@ -21,7 +21,7 @@ export default function LeaderboardPage() {
               <Trophy size={20} color="#fff" aria-hidden="true" />
             </div>
             <h1 className={styles.title}>
-              Muziclly <span className={styles.titleAccent}>Leaderboard</span>
+              Tryvanta Music <span className={styles.titleAccent}>Leaderboard</span>
             </h1>
           </div>
         </header>

@@ -33,10 +33,10 @@ export default function StudioPage() {
               ← Back to Home
             </Link>
             <div className={styles.logoSection}>
-              <Image src="/logo.png" alt="Muziclly" width={160} height={50} className={styles.logo} />
+              <Image src="/logo.png" alt="Tryvanta Music" width={160} height={50} className={styles.logo} />
               <span className={styles.studioLabel}>STUDIO</span>
             </div>
-            <h1 className={styles.title}>Muziclly Studio</h1>
+            <h1 className={styles.title}>Tryvanta Music Studio</h1>
             <p className={styles.subtitle}>Our upcoming all-in-one digital ecosystem.</p>
             <p className={styles.tagline}>Building the future of music education, practice, and career growth.</p>
           </header>
@@ -91,7 +91,7 @@ export default function StudioPage() {
 
           <div className={styles.ctaSection}>
             <h2 className={styles.ctaTitle}>Want early access?</h2>
-            <p className={styles.ctaText}>Join our waitlist to be the first to experience Muziclly Studio.</p>
+            <p className={styles.ctaText}>Join our waitlist to be the first to experience Tryvanta Music Studio.</p>
             <div className={styles.ctaButtons}>
               <Link href="/signup" className={styles.primaryBtn}>
                 Join Waitlist

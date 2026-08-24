@@ -25,7 +25,7 @@ import {
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Vocal Training | Muziclly M-Hub",
+  title: "Vocal Training | Tryvanta Music M-Hub",
   description: "Master your voice with ear-based training. Build pitch accuracy, range, and performance confidence through our proprietary global pedagogy.",
 };
 
@@ -101,7 +101,7 @@ export default function VocalTrainingPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <Image src="/logo-new.png" alt="Muziclly Logo" width={160} height={96} className={styles.navLogo} />
+          <Image src="/logo-new.png" alt="Tryvanta Music Logo" width={160} height={96} className={styles.navLogo} />
         </div>
       </header>
 
@@ -135,7 +135,7 @@ export default function VocalTrainingPage() {
 
       <section className={styles.whySection}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <h2 className={styles.sectionTitle}>Why Vocalists Choose Muziclly</h2>
+          <h2 className={styles.sectionTitle}>Why Vocalists Choose Tryvanta Music</h2>
           <div className={styles.gridGeneric}>
             {why.map((w) => (
               <div className={styles.featureCard} key={w.title}>
@@ -225,7 +225,7 @@ export default function VocalTrainingPage() {
           <div style={{ textAlign: "left" }}>
             <h2 style={{ fontSize: "2.25rem", fontWeight: 800, marginBottom: "0.25rem" }}>Dr. Avishkar Roopi</h2>
             <p style={{ color: "rgb(45,212,191)", fontWeight: 600, fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "1rem" }}>
-              Music Educator &amp; Founder – Muziclly
+              Music Educator &amp; Founder – Tryvanta Music
             </p>
             <ul style={{ marginBottom: "1rem", color: "rgb(209,213,219)", fontSize: "0.875rem", display: "flex", flexDirection: "column", gap: "0.5rem", listStyle: "none", padding: 0 }}>
               <li>🏆 Doctorate achievement recognition</li>
@@ -352,7 +352,7 @@ export default function VocalTrainingPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-new.png" alt="Muziclly" width={160} height={60} style={{ marginBottom: "1.5rem", width: "10rem", height: "auto" }} />
+            <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={60} style={{ marginBottom: "1.5rem", width: "10rem", height: "auto" }} />
             <p>The global benchmark for online music education.</p>
           </div>
           <div>
@@ -371,7 +371,7 @@ export default function VocalTrainingPage() {
           </div>
         </div>
         <div style={{ marginTop: "3rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)", textAlign: "center", opacity: 0.5, fontSize: "0.75rem" }}>
-          © 2026 Muziclly Global. All Rights Reserved.
+          © 2026 Tryvanta Music Global. All Rights Reserved.
         </div>
       </footer>
     </div>

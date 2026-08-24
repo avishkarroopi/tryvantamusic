@@ -19,7 +19,7 @@ import {
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Housewives Training & Placement | Muziclly M-Hub",
+  title: "Housewives Training & Placement | Tryvanta Music M-Hub",
   description: "Professional music training, certification, and home-based income opportunities designed specifically for Indian housewives.",
 };
 
@@ -69,7 +69,7 @@ export default function HousewivesTrainingPlacementPage() {
     <div className={styles.container}>
       <nav className={styles.navbar}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Image src="/logo-new.png" alt="Muziclly" width={160} height={40} className={styles.navLogo} />
+          <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={40} className={styles.navLogo} />
         </div>
         <button style={{ padding: "0.75rem 1.5rem", borderRadius: 9999, background: "rgb(219,39,119)", border: "none", color: "white", fontWeight: 700, cursor: "pointer", boxShadow: "rgba(219,39,119,0.3) 0px 4px 12px" }}>
           Start Free Demo
@@ -105,7 +105,7 @@ export default function HousewivesTrainingPlacementPage() {
         <div className={styles.introContainer}>
           <h2 className={styles.sectionTitle} style={{ marginBottom: "1.5rem" }}>Learn from Home, Grow with Dignity</h2>
           <p style={{ color: "rgb(75,85,99)", lineHeight: 1.6, marginBottom: "2.5rem" }}>
-            Muziclly offers a flexible, home-friendly environment where you can master your favorite instrument and
+            Tryvanta Music offers a flexible, home-friendly environment where you can master your favorite instrument and
             earn a professional certification between your family responsibilities.
           </p>
           <div className={styles.gridIntro}>
@@ -121,7 +121,7 @@ export default function HousewivesTrainingPlacementPage() {
 
       <section className={styles.whySection}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <h2 className={styles.sectionTitle}>Why Housewife Love Muziclly</h2>
+          <h2 className={styles.sectionTitle}>Why Housewife Love Tryvanta Music</h2>
           <div className={styles.gridThree}>
             {whyCards.map((w) => (
               <div className={styles.softCard} style={{ padding: "2rem", textAlign: "center" }} key={w.title}>
@@ -258,7 +258,7 @@ export default function HousewivesTrainingPlacementPage() {
         <div className={styles.footerGrid}>
           <div style={{ textAlign: "center" }}>
             <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-              <Image src="/logo-new.png" alt="Muziclly" width={160} height={60} className={styles.footerLogo} />
+              <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={60} className={styles.footerLogo} />
             </div>
             <ul style={{ listStyle: "none", padding: 0, display: "flex", gap: "2rem", justifyContent: "center", marginTop: "1rem" }}>
               <li style={{ fontWeight: 600, color: "rgb(31,41,55)" }}>Home</li>
@@ -268,7 +268,7 @@ export default function HousewivesTrainingPlacementPage() {
             </ul>
           </div>
         </div>
-        <p style={{ marginTop: "2rem", fontSize: "0.75rem", fontWeight: 500, color: "rgb(156,163,175)" }}>© 2026 Muziclly Global. All Rights Reserved.</p>
+        <p style={{ marginTop: "2rem", fontSize: "0.75rem", fontWeight: 500, color: "rgb(156,163,175)" }}>© 2026 Tryvanta Music Global. All Rights Reserved.</p>
       </footer>
     </div>
   );

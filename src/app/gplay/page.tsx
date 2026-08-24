@@ -5,8 +5,8 @@ import { Music, Mic2 as MicVocal, Sparkles, Bell, ArrowLeft } from "lucide-react
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Coming Soon to Android | MUZICLLY",
-  description: "We're fine-tuning the acoustics. The full Muziclly Studio Experience is coming to the Play Store soon.",
+  title: "Coming Soon to Android | TRYVANTA MUSIC",
+  description: "We're fine-tuning the acoustics. The full Tryvanta Music Studio Experience is coming to the Play Store soon.",
 };
 
 // Ported from the recovered original (_next/static/chunks/8999b71d2729d1c5.js).
@@ -63,7 +63,7 @@ export default function GPlayPage() {
                 background: "rgba(0,0,0,0.2)",
               }}
             >
-              <Image src="/logo-new.png" alt="Muziclly Logo" fill style={{ objectFit: "contain", padding: 4 }} priority />
+              <Image src="/logo-new.png" alt="Tryvanta Music Logo" fill style={{ objectFit: "contain", padding: 4 }} priority />
             </div>
             <div
               className={styles.animateBounce}
@@ -80,7 +80,7 @@ export default function GPlayPage() {
             <span className={styles.gradientText}>Stage</span> for Android
           </h1>
           <p className={styles.subtitle}>
-            We&apos;re fine-tuning the acoustics. The full Muziclly <span style={{ color: "#E8C547", fontWeight: 500 }}>Studio Experience</span>{" "}
+            We&apos;re fine-tuning the acoustics. The full Tryvanta Music <span style={{ color: "#E8C547", fontWeight: 500 }}>Studio Experience</span>{" "}
             is coming to the Play Store soon.
           </p>
         </div>

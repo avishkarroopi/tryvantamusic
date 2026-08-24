@@ -13,7 +13,7 @@ import {
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/agents")({
-  head: () => ({ meta: [{ title: "AI Workforce — Muziclly Growth OS" }] }),
+  head: () => ({ meta: [{ title: "AI Workforce — Music Growth OS" }] }),
   component: AgentsOverview,
 });
 

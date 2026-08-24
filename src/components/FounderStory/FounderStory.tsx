@@ -10,7 +10,7 @@ export default function FounderStory() {
           <div className={styles.backdropCircle} />
           <Image
             src="/founder-guitar.png"
-            alt="Dr. Avishkar Roopi Gurram - Founder of Muziclly"
+            alt="Dr. Avishkar Roopi Gurram - Founder of Tryvanta Music"
             width={450}
             height={562}
             className={styles.founderImage}
@@ -27,7 +27,7 @@ export default function FounderStory() {
             <h2 className={styles.title}>
               Meet <span className={styles.titleHighlight}>Dr. Avishkar Roopi Gurram</span>
             </h2>
-            <p className={styles.role}>Founder &amp; CEO, Muziclly</p>
+            <p className={styles.role}>Founder &amp; CEO, Tryvanta Music</p>
           </div>
 
           <p className={styles.description}>
@@ -44,7 +44,7 @@ export default function FounderStory() {
           </div>
 
           <p className={styles.description}>
-            He founded Muziclly to shift the focus from just &quot;playing songs&quot; to{" "}
+            He founded Tryvanta Music to shift the focus from just &quot;playing songs&quot; to{" "}
             <strong style={{ color: "var(--color-text-primary)" }}>truly understanding music</strong>. His structured
             approach focuses on:
           </p>

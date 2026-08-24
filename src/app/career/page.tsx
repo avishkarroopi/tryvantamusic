@@ -4,7 +4,7 @@ import Footer from "@/components/Footer/Footer";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Careers | MUZICLLY",
+  title: "Careers | TRYVANTA MUSIC",
   description: "Join a fast-growing team shaping music education with technology, creativity, and mentorship.",
 };
 
@@ -107,7 +107,7 @@ export default function CareerPage() {
         <div className={`container ${styles.page}`}>
           <section className={styles.hero}>
             <p className={styles.eyebrow}>WE ARE HIRING</p>
-            <h1 className={styles.title}>Build your career with Muziclly</h1>
+            <h1 className={styles.title}>Build your career with Tryvanta Music</h1>
             <p className={styles.subtitle}>
               Join a fast-growing team shaping music education with technology, creativity, and mentorship. Explore
               open roles and apply directly through email.

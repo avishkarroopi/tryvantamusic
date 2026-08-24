@@ -4,17 +4,17 @@ import { useState } from "react";
 export const Route = createFileRoute("/data-deletion")({
   head: () => ({
     meta: [
-      { title: "Data Deletion Instructions — Muziclly Growth OS" },
+      { title: "Data Deletion Instructions — Music Growth OS" },
       {
         name: "description",
         content:
-          "How to request deletion of your personal data from Muziclly Growth OS, including Meta / Facebook / Instagram / WhatsApp data.",
+          "How to request deletion of your personal data from Music Growth OS, including Meta / Facebook / Instagram / WhatsApp data.",
       },
-      { property: "og:title", content: "Data Deletion — Muziclly Growth OS" },
+      { property: "og:title", content: "Data Deletion — Music Growth OS" },
       {
         property: "og:description",
         content:
-          "Request deletion of your personal data from Muziclly Growth OS in accordance with Meta Platform Policy and GDPR/CCPA.",
+          "Request deletion of your personal data from Music Growth OS in accordance with Meta Platform Policy and GDPR/CCPA.",
       },
       { property: "og:type", content: "article" },
       { name: "robots", content: "index,follow" },
@@ -40,9 +40,9 @@ function DataDeletionPage() {
   };
 
   const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-    "Data Deletion Request — Muziclly Growth OS"
+    "Data Deletion Request — Music Growth OS"
   )}&body=${encodeURIComponent(
-    "Hello Muziclly,\n\nI request deletion of all personal data associated with my account and any connected Meta / Facebook / Instagram / WhatsApp assets.\n\nAccount email: \nConnected Facebook Page (if any): \nConnected Instagram username (if any): \nWhatsApp business phone (if any): \n\nThank you."
+    "Hello Music,\n\nI request deletion of all personal data associated with my account and any connected Meta / Facebook / Instagram / WhatsApp assets.\n\nAccount email: \nConnected Facebook Page (if any): \nConnected Instagram username (if any): \nWhatsApp business phone (if any): \n\nThank you."
   )}`;
 
   return (
@@ -58,7 +58,7 @@ function DataDeletionPage() {
           Data Deletion Instructions
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Muziclly Growth OS — compliant with Meta Platform Policy, GDPR, and
+          Music Growth OS — compliant with Meta Platform Policy, GDPR, and
           CCPA.
         </p>
       </header>
@@ -66,7 +66,7 @@ function DataDeletionPage() {
       <div className="space-y-8 text-[15px] leading-relaxed">
         <section>
           <p>
-            You can request deletion of your personal data held by Muziclly
+            You can request deletion of your personal data held by Music
             Growth OS at any time. This includes data obtained through
             Facebook Login, Instagram Graph API, Facebook Marketing API, and
             the WhatsApp Business Cloud API.
@@ -78,7 +78,7 @@ function DataDeletionPage() {
             Option 1 — Delete from within the app
           </h2>
           <ol className="mt-2 list-decimal pl-6 space-y-1">
-            <li>Sign in to Muziclly Growth OS.</li>
+            <li>Sign in to Music Growth OS.</li>
             <li>
               Go to <strong>Settings → Integrations</strong> and disconnect
               Meta, WhatsApp, and Google connections you want removed.
@@ -111,7 +111,7 @@ function DataDeletionPage() {
               </a>
               .
             </li>
-            <li>Locate <strong>Muziclly Growth OS</strong> and click Remove.</li>
+            <li>Locate <strong>Music Growth OS</strong> and click Remove.</li>
             <li>
               Check <em>"Delete all posts, videos or events…"</em> if
               available, then confirm.

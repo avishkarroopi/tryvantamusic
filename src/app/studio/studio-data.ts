@@ -16,7 +16,7 @@ export interface StudioFeature {
 export const studioFeatures: StudioFeature[] = [
   {
     icon: "👨‍🏫",
-    title: "Muziclly Mentor Section",
+    title: "Tryvanta Music Mentor Section",
     desc: "Connect with expert mentors for 1-on-1 guidance, feedback, and personalized roadmaps.",
     subItems: [
       { title: "Career and job portal", link: "#" },
@@ -25,8 +25,8 @@ export const studioFeatures: StudioFeature[] = [
       { title: "House wife program", link: "#" },
     ],
   },
-  { icon: "🛒", title: "Muziclly Store", desc: "Your one-stop shop for expertly curated instruments, accessories, and exclusive merchandise.", link: "/mstore" },
-  { icon: "💿", title: "Muziclly Label", desc: "Get discovered, distributed, and managed like a pro with our in-house record label." },
+  { icon: "🛒", title: "Tryvanta Music Store", desc: "Your one-stop shop for expertly curated instruments, accessories, and exclusive merchandise.", link: "/mstore" },
+  { icon: "💿", title: "Tryvanta Music Label", desc: "Get discovered, distributed, and managed like a pro with our in-house record label." },
   {
     icon: "🎸",
     title: "M- Jam",

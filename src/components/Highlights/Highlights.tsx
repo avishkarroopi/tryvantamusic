@@ -12,7 +12,7 @@ const highlights = [
 export default function Highlights() {
   return (
     <>
-      <h3 className={styles.title}>Why Choose Muziclly?</h3>
+      <h3 className={styles.title}>Why Choose Tryvanta Music?</h3>
       <div className={styles.grid}>
         {highlights.map((h) => (
           <div className={styles.card} key={h.title}>

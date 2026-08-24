@@ -6,8 +6,8 @@ import styles from "@/components/TeamProfile/TeamProfile.module.css";
 // executive-profile page sharing the same bespoke dark/gold theme as
 // /trideep (own inline styles, no site Navbar/Footer), matching evidence.
 export const metadata: Metadata = {
-  title: "Rajanikanth Mattepally | Muziclly Global",
-  description: "Chief Strategic Relations Officer at Muziclly Global.",
+  title: "Rajanikanth Mattepally | Tryvanta Music Global",
+  description: "Chief Strategic Relations Officer at Tryvanta Music Global.",
 };
 
 const wireItems = [
@@ -16,7 +16,7 @@ const wireItems = [
   "25+ Years Journalism Leadership",
   "National Council Member, Indian Journalists Union",
   "Strategic Partnerships Specialist",
-  "CSRO, Muziclly Global",
+  "CSRO, Tryvanta Music Global",
 ];
 
 const mission = [
@@ -36,11 +36,11 @@ const collaboration = [
 ];
 
 const achievements = [
-  { tag: "Journalism", title: "25+ Years of Journalism Leadership", desc: "Two and a half decades reporting on, and shaping, the institutions he now brings into partnership with Muziclly Global." },
+  { tag: "Journalism", title: "25+ Years of Journalism Leadership", desc: "Two and a half decades reporting on, and shaping, the institutions he now brings into partnership with Tryvanta Music Global." },
   { tag: "Institutional", title: "National Council Member — Indian Journalists Union", desc: "A seat at the national table for the profession, reflecting sustained standing among peers." },
   { tag: "National Honor", title: "Bharat Gaurav Ratna Samman Award", desc: "Recognized for distinguished contribution and service at a national level." },
   { tag: "Recognition", title: "Honorary Doctorate — WEAPC", desc: "Conferred in recognition of leadership and public service contribution." },
-  { tag: "Present", title: "Media Leadership & Strategic Advisory", desc: "Now directing partnership strategy, relationship development, and public affairs for Muziclly Global." },
+  { tag: "Present", title: "Media Leadership & Strategic Advisory", desc: "Now directing partnership strategy, relationship development, and public affairs for Tryvanta Music Global." },
 ];
 
 const why = [
@@ -70,7 +70,7 @@ export default function RajanikanthPage() {
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
-            <span className={styles.eyebrow}>Muziclly Global · Office of Strategic Relations</span>
+            <span className={styles.eyebrow}>Tryvanta Music Global · Office of Strategic Relations</span>
             <h1>
               Rajanikanth
               <br />
@@ -79,7 +79,7 @@ export default function RajanikanthPage() {
             <p className={styles.heroRole}>Chief Strategic Relations Officer</p>
             <p className={styles.heroTagline}>
               Building strategic partnerships, media relations, institutional collaborations, and growth
-              opportunities for Muziclly Global — with a 25-year foundation in journalism and public affairs.
+              opportunities for Tryvanta Music Global — with a 25-year foundation in journalism and public affairs.
             </p>
             <div className={styles.heroCta}>
               <a href="#contact" className={`${styles.btn} ${styles.btnSolid}`}>
@@ -120,7 +120,7 @@ export default function RajanikanthPage() {
                 education, media, business, and civil society.
               </p>
               <p>
-                As Chief Strategic Relations Officer at Muziclly Global, he leads strategic partnerships,
+                As Chief Strategic Relations Officer at Tryvanta Music Global, he leads strategic partnerships,
                 institutional alliances, sponsorship initiatives, public affairs engagement, and growth opportunities
                 that support the organization&apos;s mission of transforming music education globally.
               </p>
@@ -151,7 +151,7 @@ export default function RajanikanthPage() {
       <section className={styles.tintedSection}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionHead}>
-            <span className={styles.eyebrow}>Why Muziclly Global</span>
+            <span className={styles.eyebrow}>Why Tryvanta Music Global</span>
             <h2>Building the future of music education</h2>
             <p>Rajanikanth works closely with stakeholders who wish to contribute to this mission through partnerships, sponsorships, investments, and institutional collaborations.</p>
           </div>
@@ -171,7 +171,7 @@ export default function RajanikanthPage() {
         <div className={styles.sectionInner}>
           <div className={styles.sectionHead}>
             <span className={styles.eyebrow}>Areas of Collaboration</span>
-            <h2>Four doors into Muziclly Global</h2>
+            <h2>Four doors into Tryvanta Music Global</h2>
           </div>
           <div className={styles.collabGrid}>
             {collaboration.map((c) => (
@@ -254,7 +254,7 @@ export default function RajanikanthPage() {
 
       <footer className={styles.footer}>
         <div className={styles.fMark}>
-          Muziclly <span>Global</span>
+          Tryvanta Music <span>Global</span>
         </div>
         <div className={styles.fTag}>Building Partnerships. Creating Opportunities. Advancing Music Education.</div>
       </footer>

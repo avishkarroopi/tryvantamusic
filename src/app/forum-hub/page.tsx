@@ -66,7 +66,7 @@ export default function ForumHubPage() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Forum Hub</h1>
-        <p className={styles.subtitle}>Connect, Enroll, and Grow. Choose the right form below to get started with Muziclly.</p>
+        <p className={styles.subtitle}>Connect, Enroll, and Grow. Choose the right form below to get started with Tryvanta Music.</p>
       </div>
 
       <div className={styles.contentWrapper}>
