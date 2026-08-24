@@ -25,7 +25,8 @@ export default function Navbar() {
     <header id="global-main-navbar" className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={60} className={styles.logoImage} priority />
+          <Image src="/logo-icon.png" alt="Tryvanta Music" width={40} height={40} className={styles.logoImage} priority />
+          <span className={styles.logoText}>Tryvanta Music</span>
         </Link>
 
         <div className={`${styles.navLinks} ${open ? styles.open : ""}`}>

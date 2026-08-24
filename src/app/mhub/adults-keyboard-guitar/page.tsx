@@ -72,7 +72,8 @@ export default function AdultsKeyboardGuitarPage() {
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
-        <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={40} className={styles.navLogo} />
+        <Image src="/logo-icon.png" alt="Tryvanta Music" width={36} height={36} style={{ objectFit: "contain" }} />
+        <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.1rem", color: "inherit" }}>Tryvanta Music</span>
         <Link href="/forum-hub" className={styles.navBtn}>Book a Free Demo</Link>
       </nav>
 
@@ -302,7 +303,8 @@ export default function AdultsKeyboardGuitarPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-new.png" alt="Tryvanta Music" width={180} height={70} className={styles.footerLogo} />
+            <Image src="/logo-icon.png" alt="Tryvanta Music" width={44} height={44} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
+            <div style={{ fontWeight: 700, fontSize: "1.2rem", marginBottom: "1rem" }}>Tryvanta Music</div>
             <p>Global platform for premium music learning for all ages.</p>
           </div>
           <div>

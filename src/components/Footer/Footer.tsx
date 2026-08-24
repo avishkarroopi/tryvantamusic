@@ -9,7 +9,8 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <Image src="/logo-new.png" alt="Tryvanta Music" width={140} height={40} className={styles.logoImage} />
+              <Image src="/logo-icon.png" alt="Tryvanta Music" width={36} height={36} className={styles.logoImage} />
+              <span className={styles.logoText}>Tryvanta Music</span>
             </Link>
             <p className={styles.tagline}>
               Structured Music Learning.

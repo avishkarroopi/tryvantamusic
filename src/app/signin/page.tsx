@@ -62,7 +62,8 @@ export default function SignInPage() {
         <div className={styles.container}>
           <div className={styles.illustrationSide}>
             <Link href="/" className={styles.logo}>
-              <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={80} />
+              <Image src="/logo-icon.png" alt="Tryvanta Music" width={44} height={44} style={{ objectFit: "contain" }} />
+        <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.25rem", color: "inherit" }}>Tryvanta Music</span>
             </Link>
             <div className={styles.illustrationContent}>
               <h1 className={styles.welcomeTitle}>Welcome Back</h1>

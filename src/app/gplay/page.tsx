@@ -63,7 +63,7 @@ export default function GPlayPage() {
                 background: "rgba(0,0,0,0.2)",
               }}
             >
-              <Image src="/logo-new.png" alt="Tryvanta Music Logo" fill style={{ objectFit: "contain", padding: 4 }} priority />
+              <Image src="/logo-icon.png" alt="Tryvanta Music" fill style={{ objectFit: "contain", padding: 4 }} priority />
             </div>
             <div
               className={styles.animateBounce}

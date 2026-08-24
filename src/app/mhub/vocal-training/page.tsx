@@ -101,7 +101,8 @@ export default function VocalTrainingPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <Image src="/logo-new.png" alt="Tryvanta Music Logo" width={160} height={96} className={styles.navLogo} />
+          <Image src="/logo-icon.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain" }} />
+        <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.3rem", color: "inherit" }}>Tryvanta Music</span>
         </div>
       </header>
 
@@ -352,7 +353,8 @@ export default function VocalTrainingPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={60} style={{ marginBottom: "1.5rem", width: "10rem", height: "auto" }} />
+            <Image src="/logo-icon.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
+            <div style={{ fontWeight: 700, fontSize: "1.25rem", marginBottom: "1rem" }}>Tryvanta Music</div>
             <p>The global benchmark for online music education.</p>
           </div>
           <div>

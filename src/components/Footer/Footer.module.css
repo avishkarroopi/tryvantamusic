@@ -35,10 +35,8 @@
 }
 .logoImage {
   object-fit: contain;
-  transform-origin: 0;
-  width: auto;
-  height: 80px;
-  transform: scale(2);
+  width: 36px;
+  height: 36px;
 }
 .tagline {
   font-size: var(--text-sm);

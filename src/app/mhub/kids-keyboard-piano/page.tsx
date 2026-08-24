@@ -56,7 +56,8 @@ export default function KidsKeyboardPianoPage() {
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
-        <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={80} className={styles.navLogo} />
+        <Image src="/logo-icon.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain" }} />
+        <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.3rem", color: "inherit" }}>Tryvanta Music</span>
         <a href="#book-demo" className={styles.navCta}>Book Free Demo</a>
       </nav>
 
@@ -348,7 +349,8 @@ export default function KidsKeyboardPianoPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div>
-            <Image src="/logo-new.png" alt="Tryvanta Music" width={200} height={120} className={styles.footerLogo} />
+            <Image src="/logo-icon.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
+            <div style={{ fontWeight: 700, fontSize: "1.25rem", marginBottom: "1rem" }}>Tryvanta Music</div>
             <p>Empowering the next generation of musicians.</p>
           </div>
           <div>

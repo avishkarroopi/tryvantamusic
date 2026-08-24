@@ -66,7 +66,8 @@ export default function MHubPage() {
     <div>
       <div className={styles.topBar}>
         <Link href="/" className={styles.logoLink}>
-          <Image src="/logo-new.png" alt="Tryvanta Music" width={140} height={40} priority />
+          <Image src="/logo-icon.png" alt="Tryvanta Music" width={38} height={38} style={{ objectFit: "contain" }} />
+        <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.15rem", color: "inherit" }}>Tryvanta Music</span>
         </Link>
         <Link href="/" className={styles.backHome}>
           ← Back to Home

@@ -69,7 +69,8 @@ export default function HousewivesTrainingPlacementPage() {
     <div className={styles.container}>
       <nav className={styles.navbar}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={40} className={styles.navLogo} />
+          <Image src="/logo-icon.png" alt="Tryvanta Music" width={36} height={36} style={{ objectFit: "contain" }} />
+        <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.1rem", color: "inherit" }}>Tryvanta Music</span>
         </div>
         <button style={{ padding: "0.75rem 1.5rem", borderRadius: 9999, background: "rgb(219,39,119)", border: "none", color: "white", fontWeight: 700, cursor: "pointer", boxShadow: "rgba(219,39,119,0.3) 0px 4px 12px" }}>
           Start Free Demo
@@ -258,7 +259,8 @@ export default function HousewivesTrainingPlacementPage() {
         <div className={styles.footerGrid}>
           <div style={{ textAlign: "center" }}>
             <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-              <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={60} className={styles.footerLogo} />
+              <Image src="/logo-icon.png" alt="Tryvanta Music" width={40} height={40} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
+            <div style={{ fontWeight: 700, fontSize: "1.15rem", marginBottom: "1rem" }}>Tryvanta Music</div>
             </div>
             <ul style={{ listStyle: "none", padding: 0, display: "flex", gap: "2rem", justifyContent: "center", marginTop: "1rem" }}>
               <li style={{ fontWeight: 600, color: "rgb(31,41,55)" }}>Home</li>

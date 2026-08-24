@@ -47,7 +47,8 @@ export default function ForgotPasswordPage() {
 
         <div className={styles.authCard}>
           <Link href="/" className={styles.logo}>
-            <Image src="/logo.png" alt="Tryvanta Music" width={160} height={40} />
+            <Image src="/logo-icon.png" alt="Tryvanta Music" width={36} height={36} style={{ objectFit: "contain" }} />
+        <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.1rem", color: "inherit" }}>Tryvanta Music</span>
           </Link>
 
           <h1 className={styles.title}>Reset Password</h1>

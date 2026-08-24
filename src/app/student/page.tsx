@@ -39,7 +39,8 @@ export default function StudentBridgePage() {
     return (
       <div className={styles.container}>
         <div className={styles.card}>
-          <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={48} className={styles.logo} />
+          <Image src="/logo-icon.png" alt="Tryvanta Music" width={40} height={40} style={{ objectFit: "contain" }} />
+          <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.15rem", color: "inherit" }}>Tryvanta Music</span>
           <h1 className={styles.title}>Sign in required</h1>
           <p className={styles.desc}>You need to sign in as a student to open your dashboard.</p>
           <Link href="/signin" className={styles.link}>
@@ -54,7 +55,8 @@ export default function StudentBridgePage() {
     return (
       <div className={styles.container}>
         <div className={styles.card}>
-          <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={48} className={styles.logo} />
+          <Image src="/logo-icon.png" alt="Tryvanta Music" width={40} height={40} style={{ objectFit: "contain" }} />
+          <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.15rem", color: "inherit" }}>Tryvanta Music</span>
           <h1 className={styles.title}>Wrong account type</h1>
           <div className={styles.errorBox}>This account is registered as a {user.role}, not a student.</div>
           <Link href="/signin" className={styles.link}>
@@ -68,7 +70,8 @@ export default function StudentBridgePage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <Image src="/logo-new.png" alt="Tryvanta Music" width={160} height={48} className={styles.logo} />
+        <Image src="/logo-icon.png" alt="Tryvanta Music" width={40} height={40} style={{ objectFit: "contain" }} />
+          <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.15rem", color: "inherit" }}>Tryvanta Music</span>
         <h1 className={styles.title}>Opening your dashboard…</h1>
         <p className={styles.desc}>
           {redirecting ? "Redirecting you to the Tryvanta Music Student Dashboard." : "Signing you in…"}

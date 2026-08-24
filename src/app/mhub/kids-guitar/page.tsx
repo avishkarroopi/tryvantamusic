@@ -273,7 +273,8 @@ export default function KidsGuitarPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div>
-            <Image src="/logo-new.png" alt="Tryvanta Music" width={140} height={42} className={styles.footerLogo} />
+            <Image src="/logo-icon.png" alt="Tryvanta Music" width={36} height={36} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
+            <div style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: "1rem" }}>Tryvanta Music</div>
             <p style={{ maxWidth: 300, lineHeight: 1.6 }}>
               The global benchmark for online music education. Creating a generation of skilled, passionate
               musicians.
