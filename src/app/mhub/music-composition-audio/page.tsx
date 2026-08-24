@@ -77,7 +77,7 @@ export default function MusicCompositionAudioPage() {
   return (
     <div className={styles.container}>
       <nav style={{ position: "sticky", top: 0, zIndex: 1000, background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(0,0,0,0.05)", padding: "0.5rem 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Image src="/logo-icon.png" alt="Tryvanta Music" width={44} height={44} style={{ objectFit: "contain" }} />
+        <Image src="/logo-icon-dark.png" alt="Tryvanta Music" width={44} height={44} style={{ objectFit: "contain" }} />
         <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.25rem", color: "inherit" }}>Tryvanta Music</span>
         <button className={styles.btnPrimary} style={{ padding: "0.75rem 2rem", fontSize: "1rem", borderRadius: 9999, background: "linear-gradient(to right, rgb(168,85,247), rgb(236,72,153))", boxShadow: "rgba(168,85,247,0.4) 0px 4px 12px" }}>
           Book a Free Demo
@@ -290,7 +290,7 @@ export default function MusicCompositionAudioPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-icon.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
+            <Image src="/logo-icon-dark.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
             <div style={{ fontWeight: 700, fontSize: "1.25rem", marginBottom: "1rem" }}>Tryvanta Music</div>
             <p>Global standard for production education.</p>
           </div>

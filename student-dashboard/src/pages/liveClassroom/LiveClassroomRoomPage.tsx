@@ -8,6 +8,7 @@ import { MCAM_API_BASE, MCAM_WS_BASE } from "@/mcam/integration/config";
 import { useClassroom } from "@/mcam/features/classroom/hooks/useClassroom";
 import { useRealtime } from "@/mcam/features/classroom/hooks/useRealtime";
 import { useMusicRoom } from "@/mcam/features/classroom/hooks/useMusicRoom";
+import { useMedia } from "@/mcam/features/classroom/hooks/useMedia";
 import { ChatPanel } from "@/mcam/features/classroom/components/ChatPanel";
 import { ControlBar } from "@/mcam/features/classroom/components/ControlBar";
 import { ParticipantList } from "@/mcam/features/classroom/components/ParticipantList";
@@ -18,6 +19,7 @@ import { Whiteboard } from "@/mcam/features/whiteboard/components/Whiteboard";
 import { FloatingToolbar } from "@/mcam/features/toolkit/components/FloatingToolbar";
 import { student } from "@/mocks/seed";
 import { useToast } from "@/hooks/useToast";
+import { useFirebaseIdentity } from "@/hooks/useFirebaseIdentity";
 
 type Tab = "classroom" | "whiteboard";
 
@@ -34,7 +36,14 @@ export function LiveClassroomRoomPage() {
   const { enrollmentId } = useParams<{ enrollmentId: string }>();
   const navigate = useNavigate();
   const sessionId = mcamSessionIdForBatch(enrollmentId!);
-  const auth = useMcamAuth({ id: student.id, name: student.name });
+  // Real, verified identity when this session arrived via the main site's
+  // sign-in handoff; falls back to the mock student only if that never
+  // happened (e.g. the dashboard's own standalone mock-login flow).
+  const firebaseIdentity = useFirebaseIdentity();
+  const currentStudent = firebaseIdentity.identity
+    ? { id: firebaseIdentity.identity.uid, name: firebaseIdentity.identity.name }
+    : { id: student.id, name: student.name };
+  const auth = useMcamAuth(currentStudent);
 
   return (
     <div
@@ -50,7 +59,7 @@ export function LiveClassroomRoomPage() {
         ) : auth.loading || !auth.token ? (
           <RoomLoading label="Signing in to M-CAM…" />
         ) : (
-          <RoomInner sessionId={sessionId} token={auth.token} />
+          <RoomInner sessionId={sessionId} token={auth.token} currentStudent={currentStudent} />
         )}
       </div>
     </div>
@@ -104,7 +113,7 @@ function RoomError({ message }: { message: string }) {
 
 /** Mounted only once `token` is a real, guaranteed string — every hook below
  *  depends on it, keeping hook order unconditional. */
-function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
+function RoomInner({ sessionId, token, currentStudent }: { sessionId: string; token: string; currentStudent: { id: string; name: string } }) {
   const navigate = useNavigate();
   const { push } = useToast();
   const [tab, setTab] = useState<Tab>("classroom");
@@ -116,8 +125,9 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
   const startedAt = useMemo(() => Date.now(), []);
 
   const classroom = useClassroom(MCAM_API_BASE, token, sessionId);
-  const rt = useRealtime({ wsBase: MCAM_WS_BASE, token, sessionId, role: "student", name: student.name });
+  const rt = useRealtime({ wsBase: MCAM_WS_BASE, token, sessionId, role: "student", name: currentStudent.name });
   const musicRoom = useMusicRoom({ apiBase: MCAM_API_BASE, accessToken: token, sessionId, role: "student" });
+  const media = useMedia(musicRoom.roomRef.current);
 
   // Poll until the teacher has started the classroom (backend 404s /join
   // until then — that's an expected, not an error, outcome here).
@@ -127,7 +137,7 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
 
     async function attempt() {
       try {
-        await classroom.join(student.name, "student");
+        await classroom.join(currentStudent.name, "student");
         if (cancelled) return;
         setWaiting(false);
         classroom.refreshRoster();
@@ -230,14 +240,32 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
           handRaised={handRaised}
           recording={false}
           onToggleMic={() => {
+            if (!musicRoom.roomRef.current) {
+              push({ kind: "info", title: "Not connected yet", description: "Connect audio/video first." });
+              return;
+            }
+            musicRoom.toggleMute(); // actually mutes/unmutes the published LiveKit audio tracks
             const next = !mic;
             setMic(next);
             rt.setMediaState({ mic_on: next, cam_on: cam, sharing: false });
           }}
-          onToggleCam={() => {
-            const next = !cam;
-            setCam(next);
-            rt.setMediaState({ mic_on: mic, cam_on: next, sharing: false });
+          onToggleCam={async () => {
+            if (!musicRoom.roomRef.current) {
+              push({ kind: "info", title: "Not connected yet", description: "Connect audio/video first." });
+              return;
+            }
+            try {
+              await media.toggleCam(); // actually publishes/unpublishes the camera track over LiveKit
+              const next = !cam;
+              setCam(next);
+              rt.setMediaState({ mic_on: mic, cam_on: next, sharing: false });
+            } catch (err) {
+              push({
+                kind: "error",
+                title: "Couldn't access your camera",
+                description: err instanceof Error ? err.message : "Check camera permissions and try again.",
+              });
+            }
           }}
           onToggleShare={() => push({ kind: "info", title: "Screen share needs a connected media session", description: "Connect audio/video first." })}
           onToggleHand={() => {
@@ -264,7 +292,7 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
           <ChatPanel
             messages={rt.messages}
             typing={rt.typing}
-            selfId={student.id}
+            selfId={currentStudent.id}
             canAnnounce={false}
             onSend={rt.sendChat}
             onTyping={rt.setTypingState}

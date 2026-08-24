@@ -10,7 +10,10 @@ export default function Footer() {
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
               <Image src="/logo-icon.png" alt="Tryvanta Music" width={36} height={36} className={styles.logoImage} />
-              <span className={styles.logoText}>Tryvanta Music</span>
+              <span className={styles.logoText}>
+                <span style={{ fontFamily: "var(--font-tryvanta-sans)", letterSpacing: "0.08em" }}>TRYVANTA</span>{" "}
+                <span style={{ fontFamily: "var(--font-music-script)", fontSize: "1.3em" }}>Music</span>
+              </span>
             </Link>
             <p className={styles.tagline}>
               Structured Music Learning.

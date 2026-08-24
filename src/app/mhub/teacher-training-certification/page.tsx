@@ -90,7 +90,7 @@ export default function TeacherTrainingCertificationPage() {
     <div className={styles.container}>
       <nav className={styles.navbar}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Image src="/logo-icon.png" alt="Tryvanta Music" width={44} height={44} style={{ objectFit: "contain" }} />
+          <Image src="/logo-icon-dark.png" alt="Tryvanta Music" width={44} height={44} style={{ objectFit: "contain" }} />
         <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.25rem", color: "inherit" }}>Tryvanta Music</span>
         </div>
         <button style={{ padding: "0.75rem 1.5rem", borderRadius: 9999, background: "linear-gradient(90deg, rgb(192,132,252), rgb(236,72,153))", border: "none", color: "white", fontWeight: 700, cursor: "pointer", boxShadow: "rgba(192,132,252,0.4) 0px 4px 12px" }}>
@@ -311,7 +311,7 @@ export default function TeacherTrainingCertificationPage() {
       <footer className={styles.footer}>
         <div className={styles.footerGrid}>
           <div style={{ gridColumn: "span 2" }}>
-            <Image src="/logo-icon.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
+            <Image src="/logo-icon-dark.png" alt="Tryvanta Music" width={48} height={48} style={{ objectFit: "contain", marginBottom: "0.75rem" }} />
             <div style={{ fontWeight: 700, fontSize: "1.25rem", marginBottom: "1rem" }}>Tryvanta Music</div>
             <p>Global platform for standardized music education.</p>
           </div>

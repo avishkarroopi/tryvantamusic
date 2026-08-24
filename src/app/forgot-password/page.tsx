@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
 
         <div className={styles.authCard}>
           <Link href="/" className={styles.logo}>
-            <Image src="/logo-icon.png" alt="Tryvanta Music" width={36} height={36} style={{ objectFit: "contain" }} />
+            <Image src="/logo-icon-dark.png" alt="Tryvanta Music" width={36} height={36} style={{ objectFit: "contain" }} />
         <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.1rem", color: "inherit" }}>Tryvanta Music</span>
           </Link>
 

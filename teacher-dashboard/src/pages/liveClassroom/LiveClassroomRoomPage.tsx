@@ -10,6 +10,7 @@ import { MCAM_API_BASE, MCAM_WS_BASE } from "@/mcam/integration/config";
 import { useClassroom } from "@/mcam/features/classroom/hooks/useClassroom";
 import { useRealtime } from "@/mcam/features/classroom/hooks/useRealtime";
 import { useMusicRoom } from "@/mcam/features/classroom/hooks/useMusicRoom";
+import { useMedia } from "@/mcam/features/classroom/hooks/useMedia";
 import { useStudio } from "@/mcam/features/studio/hooks/useStudio";
 import { useMultiCamera } from "@/mcam/features/studio/hooks/useMultiCamera";
 import { ChatPanel } from "@/mcam/features/classroom/components/ChatPanel";
@@ -24,6 +25,7 @@ import { StudioCanvas } from "@/mcam/features/studio/components/StudioCanvas";
 import { FloatingToolbar } from "@/mcam/features/toolkit/components/FloatingToolbar";
 import { teacher } from "@/mocks/seed";
 import { useToast } from "@/hooks/useToast";
+import { useFirebaseIdentity } from "@/hooks/useFirebaseIdentity";
 
 type Tab = "classroom" | "whiteboard" | "studio";
 
@@ -39,7 +41,15 @@ export function LiveClassroomRoomPage() {
   const { batchId } = useParams<{ batchId: string }>();
   const navigate = useNavigate();
   const sessionId = mcamSessionIdForBatch(batchId!);
-  const auth = useMcamAuth({ id: teacher.id, name: teacher.name });
+  // Real, verified identity when this session arrived via the main site's
+  // sign-in handoff; falls back to the mock teacher only if that never
+  // happened (e.g. the dashboard's own standalone mock-login flow) — so
+  // the real path is fixed without breaking that unrelated existing one.
+  const firebaseIdentity = useFirebaseIdentity();
+  const currentTeacher = firebaseIdentity.identity
+    ? { id: firebaseIdentity.identity.uid, name: firebaseIdentity.identity.name }
+    : { id: teacher.id, name: teacher.name };
+  const auth = useMcamAuth(currentTeacher);
   const [starting, setStarting] = useState(true);
   const [startError, setStartError] = useState<Error>();
 
@@ -76,7 +86,7 @@ export function LiveClassroomRoomPage() {
         ) : auth.loading || starting || !auth.token ? (
           <RoomLoading label={auth.loading ? "Signing in to M-CAM…" : "Starting classroom…"} />
         ) : (
-          <RoomInner sessionId={sessionId} token={auth.token} />
+          <RoomInner sessionId={sessionId} token={auth.token} currentTeacher={currentTeacher} />
         )}
       </div>
     </div>
@@ -131,7 +141,7 @@ function RoomError({ message }: { message: string }) {
 /** Mounted only once `token` is a real, guaranteed string — every hook below
  *  depends on it, so this split keeps hook order unconditional (see
  *  M-CAM_PRODUCTION_INTEGRATION_STATUS.md for why). */
-function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
+function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; token: string; currentTeacher: { id: string; name: string } }) {
   const navigate = useNavigate();
   const { push } = useToast();
   const [tab, setTab] = useState<Tab>("classroom");
@@ -141,13 +151,14 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
   const startedAt = useMemo(() => Date.now(), []);
 
   const classroom = useClassroom(MCAM_API_BASE, token, sessionId);
-  const rt = useRealtime({ wsBase: MCAM_WS_BASE, token, sessionId, role: "teacher", name: teacher.name });
+  const rt = useRealtime({ wsBase: MCAM_WS_BASE, token, sessionId, role: "teacher", name: currentTeacher.name });
   const musicRoom = useMusicRoom({ apiBase: MCAM_API_BASE, accessToken: token, sessionId, role: "teacher" });
+  const media = useMedia(musicRoom.roomRef.current);
   const studio = useStudio(MCAM_API_BASE, token, sessionId);
   const camera = useMultiCamera();
 
   useEffect(() => {
-    classroom.join(teacher.name, "teacher").then(() => classroom.refreshRoster());
+    classroom.join(currentTeacher.name, "teacher").then(() => classroom.refreshRoster());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -303,14 +314,32 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
           handRaised={handRaised}
           recording={false}
           onToggleMic={() => {
+            if (!musicRoom.roomRef.current) {
+              push({ kind: "info", title: "Not connected yet", description: "Connect audio/video first." });
+              return;
+            }
+            musicRoom.toggleMute(); // actually mutes/unmutes the published LiveKit audio tracks
             const next = !mic;
             setMic(next);
             rt.setMediaState({ mic_on: next, cam_on: cam, sharing: false });
           }}
-          onToggleCam={() => {
-            const next = !cam;
-            setCam(next);
-            rt.setMediaState({ mic_on: mic, cam_on: next, sharing: false });
+          onToggleCam={async () => {
+            if (!musicRoom.roomRef.current) {
+              push({ kind: "info", title: "Not connected yet", description: "Connect audio/video first." });
+              return;
+            }
+            try {
+              await media.toggleCam(); // actually publishes/unpublishes the camera track over LiveKit
+              const next = !cam;
+              setCam(next);
+              rt.setMediaState({ mic_on: mic, cam_on: next, sharing: false });
+            } catch (err) {
+              push({
+                kind: "error",
+                title: "Couldn't access your camera",
+                description: err instanceof Error ? err.message : "Check camera permissions and try again.",
+              });
+            }
           }}
           onToggleShare={() => push({ kind: "info", title: "Screen share needs a connected media session", description: "Connect audio/video first." })}
           onToggleHand={() => {
@@ -339,7 +368,7 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
           <ChatPanel
             messages={rt.messages}
             typing={rt.typing}
-            selfId={teacher.id}
+            selfId={currentTeacher.id}
             canAnnounce
             onSend={rt.sendChat}
             onTyping={rt.setTypingState}

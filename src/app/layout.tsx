@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { outfit, italianno } from "./fonts";
+import { outfit, italianno, tryvantaSans, musicScript } from "./fonts";
 import { AuthProvider } from "@/context/AuthContext";
 import FloatingContact from "@/components/FloatingContact/FloatingContact";
 import "./globals.css";
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${outfit.variable} ${italianno.variable}`}>
+    <html lang="en" className={`${outfit.variable} ${italianno.variable} ${tryvantaSans.variable} ${musicScript.variable}`}>
       <body>
         <AuthProvider>
           {children}

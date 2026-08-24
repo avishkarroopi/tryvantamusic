@@ -33,7 +33,7 @@ export default function StudioPage() {
               ← Back to Home
             </Link>
             <div className={styles.logoSection}>
-              <Image src="/logo-icon.png" alt="Tryvanta Music" width={40} height={40} style={{ objectFit: "contain" }} />
+              <Image src="/logo-icon-dark.png" alt="Tryvanta Music" width={40} height={40} style={{ objectFit: "contain" }} />
         <span style={{ marginLeft: 8, fontWeight: 700, fontSize: "1.15rem", color: "inherit" }}>Tryvanta Music</span>
               <span className={styles.studioLabel}>STUDIO</span>
             </div>

@@ -26,7 +26,10 @@ export default function Navbar() {
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
           <Image src="/logo-icon.png" alt="Tryvanta Music" width={40} height={40} className={styles.logoImage} priority />
-          <span className={styles.logoText}>Tryvanta Music</span>
+          <span className={styles.logoText}>
+            <span style={{ fontFamily: "var(--font-tryvanta-sans)", letterSpacing: "0.08em" }}>TRYVANTA</span>{" "}
+            <span style={{ fontFamily: "var(--font-music-script)", fontSize: "1.3em" }}>Music</span>
+          </span>
         </Link>
 
         <div className={`${styles.navLinks} ${open ? styles.open : ""}`}>
