@@ -389,7 +389,10 @@ function AddCameraSourceButton({
   camera, onAdd, children,
 }: {
   camera: ReturnType<typeof useMultiCamera>;
-  onAdd: (device: MediaDeviceInfo) => void;
+  // Deliberately not MediaDeviceInfo — its deviceId/label/etc. are getters
+  // on the prototype, not own properties, so spreading an instance (as an
+  // earlier version of this did) silently drops them all. Plain data only.
+  onAdd: (device: { deviceId: string; label: string }) => void;
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -427,9 +430,10 @@ function AddCameraSourceButton({
                   key={d.deviceId}
                   onClick={async () => {
                     setOpen(false);
+                    const deviceId = d.deviceId;
                     const label = d.label || `Camera ${i + 1}`;
-                    await camera.openCamera(d.deviceId, label);
-                    onAdd({ ...d, label } as MediaDeviceInfo);
+                    await camera.openCamera(deviceId, label);
+                    onAdd({ deviceId, label });
                   }}
                   style={{
                     display: "block", width: "100%", textAlign: "left", padding: "10px 14px", fontSize: 13,
