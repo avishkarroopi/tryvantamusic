@@ -12,6 +12,8 @@ export function CameraWindow(p: {
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const dragRef = useRef<{ x: number; y: number; rect: Source["rect"] } | null>(null);
+  const resizeRef = useRef<{ x: number; y: number; rect: Source["rect"] } | null>(null);
+  const MIN_SIZE = 0.06;
 
   const attach = (el: HTMLVideoElement | null) => {
     if (el && p.stream && el.srcObject !== p.stream) el.srcObject = p.stream;
@@ -33,6 +35,31 @@ export function CameraWindow(p: {
   };
   const onPointerUp = () => { dragRef.current = null; };
 
+  const onResizePointerDown = (e: React.PointerEvent) => {
+    if (!p.editable) return;
+    e.stopPropagation(); // don't also trigger the move-drag on the parent
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    resizeRef.current = { x: e.clientX, y: e.clientY, rect: p.source.rect };
+    p.onSelect();
+  };
+  const onResizePointerMove = (e: React.PointerEvent) => {
+    if (!resizeRef.current) return;
+    const stage = (e.currentTarget.closest('[data-studio-stage="true"]') as HTMLElement | null)?.getBoundingClientRect();
+    if (!stage) return;
+    const dw = (e.clientX - resizeRef.current.x) / stage.width;
+    const dh = (e.clientY - resizeRef.current.y) / stage.height;
+    const r = resizeRef.current.rect;
+    p.onChange({
+      ...r,
+      w: Math.max(MIN_SIZE, Math.min(1 - r.x, r.w + dw)),
+      h: Math.max(MIN_SIZE, Math.min(1 - r.y, r.h + dh)),
+    });
+  };
+  const onResizePointerUp = (e: React.PointerEvent) => {
+    resizeRef.current = null;
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+  };
+
   const s = p.source.settings;
   return (
     <div onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
@@ -50,6 +77,19 @@ export function CameraWindow(p: {
           width: "100%", height: "100%", objectFit: "cover",
           filter: filterString(s), transform: transformString(s), clipPath: clipPath(s),
         }} />
+      {p.editable && p.selected && (
+        <div
+          onPointerDown={onResizePointerDown}
+          onPointerMove={onResizePointerMove}
+          onPointerUp={onResizePointerUp}
+          title="Drag to resize"
+          style={{
+            position: "absolute", right: 2, bottom: 2, width: 16, height: 16, borderRadius: 4,
+            background: color.signal, cursor: "nwse-resize", zIndex: 2,
+            border: `2px solid ${color.stage}`,
+          }}
+        />
+      )}
       {p.showLabel && (
         <span style={{
           position: "absolute", left: 8, bottom: 8, padding: "3px 8px", borderRadius: 6,

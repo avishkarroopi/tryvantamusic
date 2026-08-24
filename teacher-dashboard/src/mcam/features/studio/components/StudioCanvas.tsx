@@ -15,7 +15,7 @@ export function StudioCanvas(p: {
   }
   const sources = [...p.scene.config.sources].filter((s) => s.visible).sort((a, b) => a.z - b.z);
   return (
-    <div style={{
+    <div data-studio-stage="true" style={{
       position: "relative", width: "100%", aspectRatio: "16 / 9", borderRadius: 16, overflow: "hidden",
       background: "#000", border: `1px solid ${color.hairline}`,
     }}>

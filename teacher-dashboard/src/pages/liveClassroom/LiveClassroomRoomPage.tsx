@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  AlertTriangle, ArrowLeft, LayoutGrid, MessageSquareText, Mic, Music4, PenTool,
+  AlertTriangle, ArrowLeft, LayoutGrid, MessageSquareText, Mic, Music4, PenTool, Video, Trash2,
 } from "lucide-react";
 import { color, font } from "@/mcam/design-system/tokens";
 import { useMcamAuth } from "@/mcam/integration/mcamAuth";
@@ -15,6 +15,8 @@ import { useRoomVideoTracks } from "@/mcam/features/classroom/hooks/useRoomVideo
 import { VideoGrid } from "@/mcam/features/classroom/components/VideoGrid";
 import { useStudio } from "@/mcam/features/studio/hooks/useStudio";
 import { useMultiCamera } from "@/mcam/features/studio/hooks/useMultiCamera";
+import { useStudioBroadcast } from "@/mcam/features/studio/hooks/useStudioBroadcast";
+import { layoutRects, type Source } from "@/mcam/features/studio/model";
 import { ChatPanel } from "@/mcam/features/classroom/components/ChatPanel";
 import { ControlBar } from "@/mcam/features/classroom/components/ControlBar";
 import { ParticipantList } from "@/mcam/features/classroom/components/ParticipantList";
@@ -24,6 +26,8 @@ import { SessionTimer } from "@/mcam/features/classroom/components/SessionTimer"
 import { Whiteboard } from "@/mcam/features/whiteboard/components/Whiteboard";
 import { SceneManager } from "@/mcam/features/studio/components/SceneManager";
 import { StudioCanvas } from "@/mcam/features/studio/components/StudioCanvas";
+import { CameraControls } from "@/mcam/features/studio/components/CameraControls";
+import { LayoutPicker } from "@/mcam/features/studio/components/LayoutPicker";
 import { FloatingToolbar } from "@/mcam/features/toolkit/components/FloatingToolbar";
 import { teacher } from "@/mocks/seed";
 import { useToast } from "@/hooks/useToast";
@@ -159,6 +163,48 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
   const videoTiles = useRoomVideoTracks(musicRoom.roomRef.current);
   const studio = useStudio(MCAM_API_BASE, token, sessionId);
   const camera = useMultiCamera();
+  const broadcast = useStudioBroadcast(musicRoom.roomRef.current);
+  const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
+  const selectedSource = studio.active?.config.sources.find((s) => s.id === selectedSourceId) ?? null;
+
+  /** A camera stays "open" in useMultiCamera until explicitly closed — scene
+   *  deletion and source removal need to release any camera no OTHER scene
+   *  still references, or it's stuck unavailable in the "add camera" picker
+   *  forever (confirmed bug: delete a scene, its camera can never be
+   *  re-added). */
+  const releaseIfOrphaned = (deviceIds: (string | undefined)[], excludingSceneId: string) => {
+    const stillUsed = new Set(
+      studio.scenes
+        .filter((s) => s.id !== excludingSceneId)
+        .flatMap((s) => s.config.sources.map((src) => src.deviceId).filter(Boolean)),
+    );
+    deviceIds.forEach((id) => { if (id && !stillUsed.has(id)) camera.closeCamera(id); });
+  };
+
+  const handleDeleteScene = async (id: string) => {
+    const target = studio.scenes.find((s) => s.id === id);
+    if (target) releaseIfOrphaned(target.config.sources.map((s) => s.deviceId), id);
+    await studio.deleteScene(id);
+  };
+
+  const handleRemoveSource = (sourceId: string) => {
+    const src = studio.active?.config.sources.find((s) => s.id === sourceId);
+    setSelectedSourceId(null);
+    studio.patchConfig((c) => ({ ...c, sources: c.sources.filter((s) => s.id !== sourceId) }));
+    // Check against every OTHER scene (this one already has the source
+    // removed from local state above, but that update hasn't landed in
+    // `studio.scenes` yet within this closure — exclude by sourceId
+    // instead of relying on it).
+    if (src?.deviceId && studio.activeId) {
+      const stillUsedElsewhere = studio.scenes.some(
+        (s) => s.id !== studio.activeId && s.config.sources.some((x) => x.deviceId === src.deviceId),
+      );
+      const stillUsedInActiveScene = studio.active?.config.sources.some(
+        (x) => x.id !== sourceId && x.deviceId === src.deviceId,
+      );
+      if (!stillUsedElsewhere && !stillUsedInActiveScene) camera.closeCamera(src.deviceId);
+    }
+  };
 
   useEffect(() => {
     classroom.join(currentTeacher.name, "teacher").then(() => classroom.refreshRoster());
@@ -196,6 +242,12 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
     camera.feeds.forEach((f) => m.set(f.deviceId, f.stream));
     return m;
   }, [camera.feeds]);
+
+  // Keep the broadcast render loop's data current without restarting it —
+  // it reads from refs internally, this just refreshes them.
+  useEffect(() => {
+    broadcast.update(studio.active, streamsMap);
+  }, [broadcast, studio.active, streamsMap]);
 
   return (
     <div style={{ display: "flex", height: "100%" }}>
@@ -250,7 +302,7 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
           )}
 
           {tab === "studio" && (
-            <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 16, height: "100%" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "220px 1fr 260px", gap: 16, height: "100%" }}>
               <SceneManager
                 scenes={studio.scenes}
                 activeId={studio.activeId}
@@ -258,18 +310,24 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
                 onCreate={studio.createScene}
                 onDuplicate={studio.duplicateScene}
                 onRename={studio.renameScene}
-                onDelete={studio.deleteScene}
+                onDelete={handleDeleteScene}
                 onReorder={studio.reorderScene}
               />
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <AddCameraSourceButton
-                  camera={camera}
-                  onAdd={(device) => {
-                    studio.patchConfig((c) => ({
-                      ...c,
-                      sources: [
-                        ...c.sources,
-                        {
+                <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                  <AddCameraSourceButton
+                    camera={camera}
+                    onAdd={(device) => {
+                      studio.patchConfig((c) => {
+                        const nextCount = c.sources.length + 1;
+                        // "single" only makes sense for one source — auto-upgrade to
+                        // picture-in-picture the moment a second camera shows up, the
+                        // exact piano-teacher case (face full-frame, instrument in the
+                        // corner). Any other named layout just gets recomputed for the
+                        // new count; "custom" (the user has manually dragged/resized)
+                        // is left alone so we never fight their own arrangement.
+                        const layout = c.layout === "single" && nextCount > 1 ? "pip" : c.layout;
+                        const newSource: Source = {
                           id: `src_${Date.now()}`, kind: "camera", label: device.label || "Camera",
                           deviceId: device.deviceId, rect: { x: 0, y: 0, w: 1, h: 1 }, z: c.sources.length,
                           visible: true,
@@ -277,26 +335,85 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
                             brightness: 1, contrast: 1, saturation: 1, exposure: 1, zoom: 1, rotation: 0,
                             mirror: false, flip: false, crop: null, blur: 0, greenScreen: false, chromaColor: "#00b140",
                           },
-                        },
-                      ],
-                    }));
-                  }}
-                >
-                  <LayoutGrid size={15} /> Add camera source
-                </AddCameraSourceButton>
+                        };
+                        const allSources = [...c.sources, newSource];
+                        const positioned = layout === "custom"
+                          ? allSources
+                          : allSources.map((s, i) => ({ ...s, rect: layoutRects(layout, allSources.length)[i] ?? s.rect }));
+                        return { ...c, layout, sources: positioned };
+                      });
+                    }}
+                  >
+                    <LayoutGrid size={15} /> Add camera source
+                  </AddCameraSourceButton>
+                  <button
+                    onClick={() => (broadcast.live ? broadcast.stop() : broadcast.start())}
+                    style={broadcast.live ? liveBtn : connectBtn}
+                    title={broadcast.live ? "Stop publishing Studio to the classroom" : "Publish this Studio scene as your classroom camera"}
+                  >
+                    <Video size={15} /> {broadcast.live ? "Live in classroom — Stop" : "Publish to classroom"}
+                  </button>
+                </div>
+                {broadcast.error && <p style={{ fontSize: 12, color: color.redzone, margin: 0 }}>{broadcast.error}</p>}
                 <StudioCanvas
                   scene={studio.active}
                   streams={streamsMap}
                   editable
-                  selectedSourceId={null}
-                  onSelectSource={() => {}}
+                  selectedSourceId={selectedSourceId}
+                  onSelectSource={setSelectedSourceId}
                   onMoveSource={(id, rect) =>
                     studio.patchConfig((c) => ({
                       ...c,
+                      layout: "custom",
                       sources: c.sources.map((s) => (s.id === id ? { ...s, rect } : s)),
                     }))
                   }
                 />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, overflowY: "auto" }}>
+                <div style={{ background: color.surface, border: `1px solid ${color.hairline}`, borderRadius: 12 }}>
+                  <LayoutPicker
+                    active={studio.active?.config.layout ?? "single"}
+                    presets={[]}
+                    onSavePreset={() => {}}
+                    onLoadPreset={() => {}}
+                    onPick={(kind) => studio.patchConfig((c) => {
+                      const rects = layoutRects(kind, c.sources.length);
+                      return { ...c, layout: kind, sources: c.sources.map((s, i) => ({ ...s, rect: rects[i] ?? s.rect })) };
+                    })}
+                  />
+                </div>
+                {selectedSource ? (
+                  <div style={{ background: color.surface, border: `1px solid ${color.hairline}`, borderRadius: 12 }}>
+                    <div style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "10px 14px", borderBottom: `1px solid ${color.hairline}`,
+                    }}>
+                      <span style={{ fontFamily: font.display, fontSize: 14 }}>{selectedSource.label}</span>
+                      <button
+                        onClick={() => handleRemoveSource(selectedSource.id)}
+                        title="Remove this source"
+                        style={{ background: "transparent", border: "none", cursor: "pointer", color: color.redzone }}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                    <CameraControls
+                      settings={selectedSource.settings}
+                      onChange={(patch) => studio.patchConfig((c) => ({
+                        ...c,
+                        sources: c.sources.map((s) => (s.id === selectedSource.id ? { ...s, settings: { ...s.settings, ...patch } } : s)),
+                      }))}
+                    />
+                  </div>
+                ) : (
+                  <div style={{
+                    padding: 16, fontSize: 13, color: color.scoreMuted, textAlign: "center",
+                    background: color.surface, border: `1px dashed ${color.hairline}`, borderRadius: 12,
+                  }}>
+                    Click a camera on the stage to adjust or remove it.
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -486,4 +603,8 @@ function RoomTabs({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void }) {
 const connectBtn: React.CSSProperties = {
   display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 16px", borderRadius: 10,
   cursor: "pointer", background: color.signal, color: color.stage, border: "none", fontWeight: 600, fontSize: 13,
+};
+const liveBtn: React.CSSProperties = {
+  display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 16px", borderRadius: 10,
+  cursor: "pointer", background: color.redzone, color: color.score, border: "none", fontWeight: 600, fontSize: 13,
 };
