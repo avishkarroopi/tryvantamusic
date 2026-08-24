@@ -10,7 +10,7 @@
  * The two-track split is deliberate: the violin ships raw; "okay, try bar 12"
  * ships speech-processed. That is the whole product in one hook.
  */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import {
   Room,
   RoomEvent,
@@ -48,6 +48,11 @@ interface UseMusicRoom {
   muted: boolean;
   health: Health;
   pitch: { note: string; cents: number } | null;
+  /** The live LiveKit Room instance once connected — e.g. so the toolkit
+   *  (Virtual Light) can attach a TrackProcessor to the published camera
+   *  track. `roomRef` (not a plain value) since it mutates outside React's
+   *  render cycle; read `.current` at the point of use. */
+  roomRef: RefObject<Room | null>;
 }
 
 export function useMusicRoom(opts: {
@@ -165,5 +170,5 @@ export function useMusicRoom(opts: {
 
   useEffect(() => () => disconnect(), [disconnect]);
 
-  return { connect, disconnect, toggleMute, state, muted, health, pitch };
+  return { connect, disconnect, toggleMute, state, muted, health, pitch, roomRef };
 }

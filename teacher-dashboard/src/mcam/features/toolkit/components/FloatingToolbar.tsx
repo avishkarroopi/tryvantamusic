@@ -6,25 +6,32 @@
  *  isn't meaningful outside a live classroom. */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Wrench, NotebookPen } from "lucide-react";
+import { X, Wrench, NotebookPen, Sun } from "lucide-react";
+import type { Room } from "livekit-client";
 import { color, font } from "../../../design-system/tokens";
 import { LessonPlanner } from "./LessonPlanner";
+import { VirtualLightControl } from "./VirtualLightControl";
 import { TOOL_REGISTRY, getTool } from "../toolRegistry";
 
-type ToolId = string | "planner";
+type ToolId = string | "planner" | "virtuallight";
 
 export function FloatingToolbar(props: {
   analyser: AnalyserNode | null; apiBase: string; token: string; sessionId: string;
+  /** The live LiveKit room, when connected — lets Virtual Light attach to
+   *  the real published camera track instead of only previewing locally.
+   *  Optional: the toolbar (and Virtual Light itself) work fine without it. */
+  room?: Room | null;
 }) {
   const [open, setOpen] = useState(false);
   const [tool, setTool] = useState<ToolId | null>(null);
 
-  const registryTool = tool && tool !== "planner" ? getTool(tool) : undefined;
-  const isLarge = tool === "planner" ? false : registryTool?.size === "large";
-  const toolLabel = tool === "planner" ? "Planner" : (registryTool?.name ?? tool);
+  const registryTool = tool && tool !== "planner" && tool !== "virtuallight" ? getTool(tool) : undefined;
+  const isLarge = tool === "planner" || tool === "virtuallight" ? false : registryTool?.size === "large";
+  const toolLabel = tool === "planner" ? "Planner" : tool === "virtuallight" ? "Virtual Light" : (registryTool?.name ?? tool);
 
   const render = () => {
     if (tool === "planner") return <LessonPlanner apiBase={props.apiBase} token={props.token} sessionId={props.sessionId} />;
+    if (tool === "virtuallight") return <VirtualLightControl room={props.room} />;
     return registryTool?.render(props.analyser) ?? null;
   };
 
@@ -81,6 +88,10 @@ export function FloatingToolbar(props: {
             <button onClick={() => setTool("planner")} title="Lesson Planner"
               style={{ ...dockBtn, ...(tool === "planner" ? { borderColor: color.signal, color: color.signal } : {}) }}>
               <NotebookPen size={20} />
+            </button>
+            <button onClick={() => setTool("virtuallight")} title="Virtual Light"
+              style={{ ...dockBtn, ...(tool === "virtuallight" ? { borderColor: color.signal, color: color.signal } : {}) }}>
+              <Sun size={20} />
             </button>
           </motion.div>
         )}

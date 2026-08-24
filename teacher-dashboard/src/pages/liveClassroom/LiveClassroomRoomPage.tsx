@@ -349,7 +349,7 @@ function RoomInner({ sessionId, token }: { sessionId: string; token: string }) {
         </div>
       </div>
 
-      <FloatingToolbar analyser={null} apiBase={MCAM_API_BASE} token={token} sessionId={sessionId} />
+      <FloatingToolbar analyser={null} apiBase={MCAM_API_BASE} token={token} sessionId={sessionId} room={musicRoom.roomRef.current} />
     </div>
   );
 }
