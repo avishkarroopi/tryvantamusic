@@ -262,24 +262,16 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
                 onReorder={studio.reorderScene}
               />
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <button
-                  onClick={async () => {
-                    if (camera.devices.length === 0) {
-                      await camera.refreshDevices();
-                    }
-                    const first = camera.devices[0];
-                    if (!first) {
-                      push({ kind: "warning", title: "No camera found" });
-                      return;
-                    }
-                    await camera.openCamera(first.deviceId, first.label || "Camera");
+                <AddCameraSourceButton
+                  camera={camera}
+                  onAdd={(device) => {
                     studio.patchConfig((c) => ({
                       ...c,
                       sources: [
                         ...c.sources,
                         {
-                          id: `src_${Date.now()}`, kind: "camera", label: first.label || "Camera",
-                          deviceId: first.deviceId, rect: { x: 0, y: 0, w: 1, h: 1 }, z: c.sources.length,
+                          id: `src_${Date.now()}`, kind: "camera", label: device.label || "Camera",
+                          deviceId: device.deviceId, rect: { x: 0, y: 0, w: 1, h: 1 }, z: c.sources.length,
                           visible: true,
                           settings: {
                             brightness: 1, contrast: 1, saturation: 1, exposure: 1, zoom: 1, rotation: 0,
@@ -289,10 +281,9 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
                       ],
                     }));
                   }}
-                  style={connectBtn}
                 >
                   <LayoutGrid size={15} /> Add camera source
-                </button>
+                </AddCameraSourceButton>
                 <StudioCanvas
                   scene={studio.active}
                   streams={streamsMap}
@@ -385,6 +376,74 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
       </div>
 
       <FloatingToolbar analyser={null} apiBase={MCAM_API_BASE} token={token} sessionId={sessionId} room={musicRoom.roomRef.current} />
+    </div>
+  );
+}
+
+/** "Add camera source" — was always opening the same first-detected camera
+ *  (hardcoded `devices[0]`, no way to pick a different one, so a second
+ *  click just no-opped since that device was already open). This actually
+ *  lets you pick which plugged-in camera to add — e.g. a piano teacher's
+ *  face cam AND a separate overhead/instrument cam. */
+function AddCameraSourceButton({
+  camera, onAdd, children,
+}: {
+  camera: ReturnType<typeof useMultiCamera>;
+  onAdd: (device: MediaDeviceInfo) => void;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  const openDeviceIds = new Set(camera.feeds.map((f) => f.deviceId));
+  const available = camera.devices.filter((d) => !openDeviceIds.has(d.deviceId));
+
+  return (
+    <div style={{ position: "relative" }}>
+      <button
+        onClick={() => {
+          if (camera.devices.length === 0) void camera.refreshDevices();
+          setOpen((o) => !o);
+        }}
+        style={connectBtn}
+      >
+        {children}
+      </button>
+      {open && (
+        <>
+          <div style={{ position: "fixed", inset: 0, zIndex: 19 }} onClick={() => setOpen(false)} />
+          <div
+            style={{
+              position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 20, minWidth: 240,
+              background: color.surfaceRaised, border: `1px solid ${color.hairline}`, borderRadius: 10,
+              overflow: "hidden", boxShadow: "0 12px 30px rgba(0,0,0,0.4)",
+            }}
+          >
+            {available.length === 0 ? (
+              <div style={{ padding: "12px 14px", fontSize: 13, color: color.scoreMuted }}>
+                {camera.devices.length === 0 ? "No cameras found — check your device is plugged in." : "All detected cameras are already added."}
+              </div>
+            ) : (
+              available.map((d, i) => (
+                <button
+                  key={d.deviceId}
+                  onClick={async () => {
+                    setOpen(false);
+                    const label = d.label || `Camera ${i + 1}`;
+                    await camera.openCamera(d.deviceId, label);
+                    onAdd({ ...d, label } as MediaDeviceInfo);
+                  }}
+                  style={{
+                    display: "block", width: "100%", textAlign: "left", padding: "10px 14px", fontSize: 13,
+                    color: color.score, background: "transparent", border: "none", cursor: "pointer",
+                    borderBottom: `1px solid ${color.hairline}`,
+                  }}
+                >
+                  {d.label || `Camera ${i + 1}`}
+                </button>
+              ))
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
