@@ -9,6 +9,8 @@ import { useClassroom } from "@/mcam/features/classroom/hooks/useClassroom";
 import { useRealtime } from "@/mcam/features/classroom/hooks/useRealtime";
 import { useMusicRoom } from "@/mcam/features/classroom/hooks/useMusicRoom";
 import { useMedia } from "@/mcam/features/classroom/hooks/useMedia";
+import { useRoomVideoTracks } from "@/mcam/features/classroom/hooks/useRoomVideoTracks";
+import { VideoGrid } from "@/mcam/features/classroom/components/VideoGrid";
 import { ChatPanel } from "@/mcam/features/classroom/components/ChatPanel";
 import { ControlBar } from "@/mcam/features/classroom/components/ControlBar";
 import { ParticipantList } from "@/mcam/features/classroom/components/ParticipantList";
@@ -128,6 +130,7 @@ function RoomInner({ sessionId, token, currentStudent }: { sessionId: string; to
   const rt = useRealtime({ wsBase: MCAM_WS_BASE, token, sessionId, role: "student", name: currentStudent.name });
   const musicRoom = useMusicRoom({ apiBase: MCAM_API_BASE, accessToken: token, sessionId, role: "student" });
   const media = useMedia(musicRoom.roomRef.current);
+  const videoTiles = useRoomVideoTracks(musicRoom.roomRef.current);
 
   // Poll until the teacher has started the classroom (backend 404s /join
   // until then — that's an expected, not an error, outcome here).
@@ -195,14 +198,16 @@ function RoomInner({ sessionId, token, currentStudent }: { sessionId: string; to
                   border: `1px solid ${color.hairline}`, display: "grid", placeItems: "center", overflow: "hidden",
                 }}
               >
+                <VideoGrid tiles={videoTiles} />
                 <ReactionsLayer reactions={rt.reactions} />
+                {videoTiles.length === 0 && (
                 <div style={{ textAlign: "center", color: color.scoreMuted }}>
                   <p style={{ fontFamily: font.display, fontSize: 18, color: color.score, marginBottom: 6 }}>
                     {musicRoom.state === "connected" ? "Live" : "Stage"}
                   </p>
                   <p style={{ fontSize: 13, marginBottom: 12 }}>
                     {musicRoom.state === "connected"
-                      ? `Connected · quality ${musicRoom.health.quality} · ${musicRoom.health.rttMs}ms RTT`
+                      ? `Connected · quality ${musicRoom.health.quality} · ${musicRoom.health.rttMs}ms RTT · camera is off`
                       : "Audio/video isn't connected yet"}
                   </p>
                   {musicRoom.state !== "connected" && (
@@ -217,6 +222,7 @@ function RoomInner({ sessionId, token, currentStudent }: { sessionId: string; to
                     </p>
                   )}
                 </div>
+                )}
               </div>
               <div style={{ height: 240 }}>
                 <PollCard poll={rt.poll} isTeacher={false} onCreate={rt.createPoll} onVote={rt.vote} />

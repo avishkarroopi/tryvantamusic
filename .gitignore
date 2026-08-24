@@ -45,3 +45,6 @@ next-env.d.ts
 # includes a raw crawl mirror with third-party scraped assets)
 /Recovered Data/
 dev.log
+
+# SSH deploy key — never commit
+.deploy-keys/

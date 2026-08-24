@@ -11,6 +11,8 @@ import { useClassroom } from "@/mcam/features/classroom/hooks/useClassroom";
 import { useRealtime } from "@/mcam/features/classroom/hooks/useRealtime";
 import { useMusicRoom } from "@/mcam/features/classroom/hooks/useMusicRoom";
 import { useMedia } from "@/mcam/features/classroom/hooks/useMedia";
+import { useRoomVideoTracks } from "@/mcam/features/classroom/hooks/useRoomVideoTracks";
+import { VideoGrid } from "@/mcam/features/classroom/components/VideoGrid";
 import { useStudio } from "@/mcam/features/studio/hooks/useStudio";
 import { useMultiCamera } from "@/mcam/features/studio/hooks/useMultiCamera";
 import { ChatPanel } from "@/mcam/features/classroom/components/ChatPanel";
@@ -154,6 +156,7 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
   const rt = useRealtime({ wsBase: MCAM_WS_BASE, token, sessionId, role: "teacher", name: currentTeacher.name });
   const musicRoom = useMusicRoom({ apiBase: MCAM_API_BASE, accessToken: token, sessionId, role: "teacher" });
   const media = useMedia(musicRoom.roomRef.current);
+  const videoTiles = useRoomVideoTracks(musicRoom.roomRef.current);
   const studio = useStudio(MCAM_API_BASE, token, sessionId);
   const camera = useMultiCamera();
 
@@ -208,28 +211,31 @@ function RoomInner({ sessionId, token, currentTeacher }: { sessionId: string; to
                   border: `1px solid ${color.hairline}`, display: "grid", placeItems: "center", overflow: "hidden",
                 }}
               >
+                <VideoGrid tiles={videoTiles} />
                 <ReactionsLayer reactions={rt.reactions} />
-                <div style={{ textAlign: "center", color: color.scoreMuted }}>
-                  <p style={{ fontFamily: font.display, fontSize: 18, color: color.score, marginBottom: 6 }}>
-                    {musicRoom.state === "connected" ? "Live" : "Stage"}
-                  </p>
-                  <p style={{ fontSize: 13, marginBottom: 12 }}>
-                    {musicRoom.state === "connected"
-                      ? `Connected · quality ${musicRoom.health.quality} · ${musicRoom.health.rttMs}ms RTT`
-                      : "Audio/video isn't connected yet"}
-                  </p>
-                  {musicRoom.state !== "connected" && (
-                    <button onClick={handleConnectMedia} style={connectBtn}>
-                      <Mic size={15} /> Connect audio/video
-                    </button>
-                  )}
-                  {musicRoom.pitch && (
-                    <p style={{ marginTop: 10, fontSize: 12, color: color.signal }}>
-                      Detected pitch: {musicRoom.pitch.note} ({musicRoom.pitch.cents > 0 ? "+" : ""}
-                      {musicRoom.pitch.cents}c)
+                {videoTiles.length === 0 && (
+                  <div style={{ textAlign: "center", color: color.scoreMuted }}>
+                    <p style={{ fontFamily: font.display, fontSize: 18, color: color.score, marginBottom: 6 }}>
+                      {musicRoom.state === "connected" ? "Live" : "Stage"}
                     </p>
-                  )}
-                </div>
+                    <p style={{ fontSize: 13, marginBottom: 12 }}>
+                      {musicRoom.state === "connected"
+                        ? `Connected · quality ${musicRoom.health.quality} · ${musicRoom.health.rttMs}ms RTT · camera is off`
+                        : "Audio/video isn't connected yet"}
+                    </p>
+                    {musicRoom.state !== "connected" && (
+                      <button onClick={handleConnectMedia} style={connectBtn}>
+                        <Mic size={15} /> Connect audio/video
+                      </button>
+                    )}
+                    {musicRoom.pitch && (
+                      <p style={{ marginTop: 10, fontSize: 12, color: color.signal }}>
+                        Detected pitch: {musicRoom.pitch.note} ({musicRoom.pitch.cents > 0 ? "+" : ""}
+                        {musicRoom.pitch.cents}c)
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
               <div style={{ height: 240 }}>
                 <PollCard poll={rt.poll} isTeacher onCreate={rt.createPoll} onVote={rt.vote} />
