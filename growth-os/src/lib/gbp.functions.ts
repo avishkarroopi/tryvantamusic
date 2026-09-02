@@ -300,6 +300,8 @@ Review: ${r.content ?? "(no text)"}`;
     const reply = await chatCompletion({
       messages: [{ role: "system", content: system }, { role: "user", content: user }],
       temperature: 0.7,
+      purpose: "gbp-review-reply",
+      supa: context.supabase,
     });
     return { reply: reply.trim() };
   });

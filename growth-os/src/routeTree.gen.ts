@@ -18,6 +18,7 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedReviewsRouteImport } from './routes/_authenticated/reviews'
 import { Route as AuthenticatedRevenueRouteImport } from './routes/_authenticated/revenue'
 import { Route as AuthenticatedReengagementRouteImport } from './routes/_authenticated/reengagement'
+import { Route as AuthenticatedOperationsRouteImport } from './routes/_authenticated/operations'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedLeadsRouteImport } from './routes/_authenticated/leads'
 import { Route as AuthenticatedKnowledgeRouteImport } from './routes/_authenticated/knowledge'
@@ -32,7 +33,6 @@ import { Route as AuthenticatedAgentsRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedAdsRouteImport } from './routes/_authenticated/ads'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings.index'
 import { Route as AuthenticatedLeadsIndexRouteImport } from './routes/_authenticated/leads.index'
-import { Route as ApiPublicMetaAuditRouteImport } from './routes/api/public/meta-audit'
 import { Route as ApiMetaWebhookRouteImport } from './routes/api/meta/webhook'
 import { Route as AuthenticatedLeadsNewRouteImport } from './routes/_authenticated/leads.new'
 import { Route as AuthenticatedLeadsIdRouteImport } from './routes/_authenticated/leads.$id'
@@ -88,6 +88,11 @@ const AuthenticatedReengagementRoute =
     path: '/reengagement',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOperationsRoute = AuthenticatedOperationsRouteImport.update({
+  id: '/operations',
+  path: '/operations',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedNotificationsRoute =
   AuthenticatedNotificationsRouteImport.update({
     id: '/notifications',
@@ -162,11 +167,6 @@ const AuthenticatedLeadsIndexRoute = AuthenticatedLeadsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedLeadsRoute,
 } as any)
-const ApiPublicMetaAuditRoute = ApiPublicMetaAuditRouteImport.update({
-  id: '/api/public/meta-audit',
-  path: '/api/public/meta-audit',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiMetaWebhookRoute = ApiMetaWebhookRouteImport.update({
   id: '/api/meta/webhook',
   path: '/api/meta/webhook',
@@ -232,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/knowledge': typeof AuthenticatedKnowledgeRoute
   '/leads': typeof AuthenticatedLeadsRouteWithChildren
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/operations': typeof AuthenticatedOperationsRoute
   '/reengagement': typeof AuthenticatedReengagementRoute
   '/revenue': typeof AuthenticatedRevenueRoute
   '/reviews': typeof AuthenticatedReviewsRoute
@@ -242,7 +243,6 @@ export interface FileRoutesByFullPath {
   '/leads/$id': typeof AuthenticatedLeadsIdRoute
   '/leads/new': typeof AuthenticatedLeadsNewRoute
   '/api/meta/webhook': typeof ApiMetaWebhookRoute
-  '/api/public/meta-audit': typeof ApiPublicMetaAuditRoute
   '/leads/': typeof AuthenticatedLeadsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/settings/integrations/google': typeof AuthenticatedSettingsIntegrationsGoogleRoute
@@ -265,6 +265,7 @@ export interface FileRoutesByTo {
   '/intelligence': typeof AuthenticatedIntelligenceRoute
   '/knowledge': typeof AuthenticatedKnowledgeRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/operations': typeof AuthenticatedOperationsRoute
   '/reengagement': typeof AuthenticatedReengagementRoute
   '/revenue': typeof AuthenticatedRevenueRoute
   '/reviews': typeof AuthenticatedReviewsRoute
@@ -274,7 +275,6 @@ export interface FileRoutesByTo {
   '/leads/$id': typeof AuthenticatedLeadsIdRoute
   '/leads/new': typeof AuthenticatedLeadsNewRoute
   '/api/meta/webhook': typeof ApiMetaWebhookRoute
-  '/api/public/meta-audit': typeof ApiPublicMetaAuditRoute
   '/leads': typeof AuthenticatedLeadsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/settings/integrations/google': typeof AuthenticatedSettingsIntegrationsGoogleRoute
@@ -300,6 +300,7 @@ export interface FileRoutesById {
   '/_authenticated/knowledge': typeof AuthenticatedKnowledgeRoute
   '/_authenticated/leads': typeof AuthenticatedLeadsRouteWithChildren
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/operations': typeof AuthenticatedOperationsRoute
   '/_authenticated/reengagement': typeof AuthenticatedReengagementRoute
   '/_authenticated/revenue': typeof AuthenticatedRevenueRoute
   '/_authenticated/reviews': typeof AuthenticatedReviewsRoute
@@ -310,7 +311,6 @@ export interface FileRoutesById {
   '/_authenticated/leads/$id': typeof AuthenticatedLeadsIdRoute
   '/_authenticated/leads/new': typeof AuthenticatedLeadsNewRoute
   '/api/meta/webhook': typeof ApiMetaWebhookRoute
-  '/api/public/meta-audit': typeof ApiPublicMetaAuditRoute
   '/_authenticated/leads/': typeof AuthenticatedLeadsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/settings/integrations/google': typeof AuthenticatedSettingsIntegrationsGoogleRoute
@@ -336,6 +336,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/leads'
     | '/notifications'
+    | '/operations'
     | '/reengagement'
     | '/revenue'
     | '/reviews'
@@ -346,7 +347,6 @@ export interface FileRouteTypes {
     | '/leads/$id'
     | '/leads/new'
     | '/api/meta/webhook'
-    | '/api/public/meta-audit'
     | '/leads/'
     | '/settings/'
     | '/settings/integrations/google'
@@ -369,6 +369,7 @@ export interface FileRouteTypes {
     | '/intelligence'
     | '/knowledge'
     | '/notifications'
+    | '/operations'
     | '/reengagement'
     | '/revenue'
     | '/reviews'
@@ -378,7 +379,6 @@ export interface FileRouteTypes {
     | '/leads/$id'
     | '/leads/new'
     | '/api/meta/webhook'
-    | '/api/public/meta-audit'
     | '/leads'
     | '/settings'
     | '/settings/integrations/google'
@@ -403,6 +403,7 @@ export interface FileRouteTypes {
     | '/_authenticated/knowledge'
     | '/_authenticated/leads'
     | '/_authenticated/notifications'
+    | '/_authenticated/operations'
     | '/_authenticated/reengagement'
     | '/_authenticated/revenue'
     | '/_authenticated/reviews'
@@ -413,7 +414,6 @@ export interface FileRouteTypes {
     | '/_authenticated/leads/$id'
     | '/_authenticated/leads/new'
     | '/api/meta/webhook'
-    | '/api/public/meta-audit'
     | '/_authenticated/leads/'
     | '/_authenticated/settings/'
     | '/_authenticated/settings/integrations/google'
@@ -428,7 +428,6 @@ export interface RootRouteChildren {
   DataDeletionRoute: typeof DataDeletionRoute
   PrivacyRoute: typeof PrivacyRoute
   ApiMetaWebhookRoute: typeof ApiMetaWebhookRoute
-  ApiPublicMetaAuditRoute: typeof ApiPublicMetaAuditRoute
   ApiPublicLeadsCaptureRoute: typeof ApiPublicLeadsCaptureRoute
   ApiPublicGoogleOauthCallbackRoute: typeof ApiPublicGoogleOauthCallbackRoute
 }
@@ -496,6 +495,13 @@ declare module '@tanstack/react-router' {
       path: '/reengagement'
       fullPath: '/reengagement'
       preLoaderRoute: typeof AuthenticatedReengagementRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/operations': {
+      id: '/_authenticated/operations'
+      path: '/operations'
+      fullPath: '/operations'
+      preLoaderRoute: typeof AuthenticatedOperationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/notifications': {
@@ -595,13 +601,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/leads/'
       preLoaderRoute: typeof AuthenticatedLeadsIndexRouteImport
       parentRoute: typeof AuthenticatedLeadsRoute
-    }
-    '/api/public/meta-audit': {
-      id: '/api/public/meta-audit'
-      path: '/api/public/meta-audit'
-      fullPath: '/api/public/meta-audit'
-      preLoaderRoute: typeof ApiPublicMetaAuditRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/api/meta/webhook': {
       id: '/api/meta/webhook'
@@ -737,6 +736,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedKnowledgeRoute: typeof AuthenticatedKnowledgeRoute
   AuthenticatedLeadsRoute: typeof AuthenticatedLeadsRouteWithChildren
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedOperationsRoute: typeof AuthenticatedOperationsRoute
   AuthenticatedReengagementRoute: typeof AuthenticatedReengagementRoute
   AuthenticatedRevenueRoute: typeof AuthenticatedRevenueRoute
   AuthenticatedReviewsRoute: typeof AuthenticatedReviewsRoute
@@ -757,6 +757,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedKnowledgeRoute: AuthenticatedKnowledgeRoute,
   AuthenticatedLeadsRoute: AuthenticatedLeadsRouteWithChildren,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedOperationsRoute: AuthenticatedOperationsRoute,
   AuthenticatedReengagementRoute: AuthenticatedReengagementRoute,
   AuthenticatedRevenueRoute: AuthenticatedRevenueRoute,
   AuthenticatedReviewsRoute: AuthenticatedReviewsRoute,
@@ -773,7 +774,6 @@ const rootRouteChildren: RootRouteChildren = {
   DataDeletionRoute: DataDeletionRoute,
   PrivacyRoute: PrivacyRoute,
   ApiMetaWebhookRoute: ApiMetaWebhookRoute,
-  ApiPublicMetaAuditRoute: ApiPublicMetaAuditRoute,
   ApiPublicLeadsCaptureRoute: ApiPublicLeadsCaptureRoute,
   ApiPublicGoogleOauthCallbackRoute: ApiPublicGoogleOauthCallbackRoute,
 }

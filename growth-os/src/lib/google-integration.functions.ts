@@ -89,7 +89,7 @@ export const refreshGoogleDiscovery = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     await assertAdmin(context);
     const { runDiscoveryForUser } = await import("./google-integration/discovery-runner.server");
-    return runDiscoveryForUser(context.userId);
+    return runDiscoveryForUser(context.userId, context.supabase);
   });
 
 // ---- disconnect ----
@@ -98,6 +98,6 @@ export const disconnectGoogleIntegration = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     await assertAdmin(context);
     const { disconnectForUser } = await import("./google-integration/discovery-runner.server");
-    await disconnectForUser(context.userId);
+    await disconnectForUser(context.userId, context.supabase);
     return { ok: true };
   });

@@ -189,36 +189,160 @@ export type Database = {
       }
       agents_events: {
         Row: {
+          causation_event_id: string | null
           created_at: string
           event_type: string
+          fan_out_depth: number
           from_agent: string
           id: string
           payload: Json
           processed: boolean
+          processed_at: string | null
           run_id: string | null
           to_agent: string | null
         }
         Insert: {
+          causation_event_id?: string | null
           created_at?: string
           event_type: string
+          fan_out_depth?: number
           from_agent: string
           id?: string
           payload?: Json
           processed?: boolean
+          processed_at?: string | null
           run_id?: string | null
           to_agent?: string | null
         }
         Update: {
+          causation_event_id?: string | null
           created_at?: string
           event_type?: string
+          fan_out_depth?: number
           from_agent?: string
           id?: string
           payload?: Json
           processed?: boolean
+          processed_at?: string | null
           run_id?: string | null
           to_agent?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "agents_events_causation_event_id_fkey"
+            columns: ["causation_event_id"]
+            isOneToOne: false
+            referencedRelation: "agents_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agents_subscriptions: {
+        Row: {
+          active: boolean
+          agent_slug: string
+          category: string
+          created_at: string
+          event_type: string
+          id: string
+        }
+        Insert: {
+          active?: boolean
+          agent_slug: string
+          category?: string
+          created_at?: string
+          event_type: string
+          id?: string
+        }
+        Update: {
+          active?: boolean
+          agent_slug?: string
+          category?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agents_subscriptions_agent_slug_fkey"
+            columns: ["agent_slug"]
+            isOneToOne: false
+            referencedRelation: "agents_registry"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      approval_requests: {
+        Row: {
+          action_payload: Json
+          action_type: string
+          after_state: Json | null
+          agent_slug: string
+          before_state: Json | null
+          decided_at: string | null
+          decided_by: string | null
+          executed_at: string | null
+          execution_result: Json | null
+          expires_at: string
+          id: string
+          reasoning: string | null
+          requested_at: string
+          risk_level: string
+          run_id: string | null
+          status: string
+        }
+        Insert: {
+          action_payload?: Json
+          action_type: string
+          after_state?: Json | null
+          agent_slug: string
+          before_state?: Json | null
+          decided_at?: string | null
+          decided_by?: string | null
+          executed_at?: string | null
+          execution_result?: Json | null
+          expires_at?: string
+          id?: string
+          reasoning?: string | null
+          requested_at?: string
+          risk_level: string
+          run_id?: string | null
+          status?: string
+        }
+        Update: {
+          action_payload?: Json
+          action_type?: string
+          after_state?: Json | null
+          agent_slug?: string
+          before_state?: Json | null
+          decided_at?: string | null
+          decided_by?: string | null
+          executed_at?: string | null
+          execution_result?: Json | null
+          expires_at?: string
+          id?: string
+          reasoning?: string | null
+          requested_at?: string
+          risk_level?: string
+          run_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "approval_requests_agent_slug_fkey"
+            columns: ["agent_slug"]
+            isOneToOne: false
+            referencedRelation: "agents_registry"
+            referencedColumns: ["slug"]
+          },
+          {
+            foreignKeyName: "approval_requests_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "agents_runs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       agents_knowledge: {
         Row: {
@@ -375,6 +499,7 @@ export type Database = {
           integrations: Json
           kpis: Json
           last_run_at: string | null
+          max_retries: number
           mission: string | null
           mode: string
           name: string
@@ -399,6 +524,7 @@ export type Database = {
           integrations?: Json
           kpis?: Json
           last_run_at?: string | null
+          max_retries?: number
           mission?: string | null
           mode?: string
           name: string
@@ -423,6 +549,7 @@ export type Database = {
           integrations?: Json
           kpis?: Json
           last_run_at?: string | null
+          max_retries?: number
           mission?: string | null
           mode?: string
           name?: string
@@ -440,13 +567,18 @@ export type Database = {
         Row: {
           agent_slug: string
           attempt: number
+          causation_event_id: string | null
           created_at: string
           duration_ms: number | null
           error: string | null
           finished_at: string | null
+          heartbeat_at: string | null
           id: string
           input: Json
+          max_retries: number
+          next_retry_at: string | null
           output: Json | null
+          retry_count: number
           started_at: string
           status: string
           trigger: string
@@ -454,13 +586,18 @@ export type Database = {
         Insert: {
           agent_slug: string
           attempt?: number
+          causation_event_id?: string | null
           created_at?: string
           duration_ms?: number | null
           error?: string | null
           finished_at?: string | null
+          heartbeat_at?: string | null
           id?: string
           input?: Json
+          max_retries?: number
+          next_retry_at?: string | null
           output?: Json | null
+          retry_count?: number
           started_at?: string
           status?: string
           trigger?: string
@@ -468,13 +605,18 @@ export type Database = {
         Update: {
           agent_slug?: string
           attempt?: number
+          causation_event_id?: string | null
           created_at?: string
           duration_ms?: number | null
           error?: string | null
           finished_at?: string | null
+          heartbeat_at?: string | null
           id?: string
           input?: Json
+          max_retries?: number
+          next_retry_at?: string | null
           output?: Json | null
+          retry_count?: number
           started_at?: string
           status?: string
           trigger?: string
@@ -487,6 +629,13 @@ export type Database = {
             referencedRelation: "agents_registry"
             referencedColumns: ["slug"]
           },
+          {
+            foreignKeyName: "agents_runs_causation_event_fkey"
+            columns: ["causation_event_id"]
+            isOneToOne: false
+            referencedRelation: "agents_events"
+            referencedColumns: ["id"]
+          },
         ]
       }
       agents_tasks: {
@@ -497,6 +646,7 @@ export type Database = {
           id: string
           kind: string
           payload: Json
+          priority: string
           scheduled_for: string | null
           status: string
           title: string
@@ -509,6 +659,7 @@ export type Database = {
           id?: string
           kind?: string
           payload?: Json
+          priority?: string
           scheduled_for?: string | null
           status?: string
           title: string
@@ -521,6 +672,7 @@ export type Database = {
           id?: string
           kind?: string
           payload?: Json
+          priority?: string
           scheduled_for?: string | null
           status?: string
           title?: string
@@ -1718,6 +1870,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      worker_heartbeats: {
+        Row: {
+          id: string
+          last_tick_at: string | null
+          last_tick_error: string | null
+          started_at: string
+          status: string
+          ticks: number
+          totals: Json
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          last_tick_at?: string | null
+          last_tick_error?: string | null
+          started_at?: string
+          status?: string
+          ticks?: number
+          totals?: Json
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          last_tick_at?: string | null
+          last_tick_error?: string | null
+          started_at?: string
+          status?: string
+          ticks?: number
+          totals?: Json
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {

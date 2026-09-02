@@ -108,6 +108,8 @@ export const generateContent = createServerFn({ method: "POST" })
       const raw = await chatCompletion({
         messages: [{ role: "system", content: sys }, { role: "user", content: user }],
         jsonMode: true,
+        purpose: "content-generation",
+        supa: context.supabase,
       });
       const parsed = JSON.parse(raw) as { items?: { title: string; body: string; hashtags?: string[] }[] };
       items = parsed.items ?? [];

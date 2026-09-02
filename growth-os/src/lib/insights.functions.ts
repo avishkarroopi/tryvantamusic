@@ -139,6 +139,8 @@ export const generateInsights = createServerFn({ method: "POST" })
             { role: "system", content: "You are a growth analyst. Summarise the following signals into ONE punchy, founder-friendly insight (max 2 sentences). Return plain text only." },
             { role: "user", content: JSON.stringify(seeds.map((s) => s.title)) },
           ],
+          purpose: "insights-narrative",
+          supa: context.supabase,
         });
         if (summary.trim()) {
           seeds.unshift({

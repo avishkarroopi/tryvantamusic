@@ -55,8 +55,17 @@ export const Route = createFileRoute("/api/public/google/oauth/callback")({
           const info = await fetchUserinfo(tokens.access_token);
           const enc = encryptToken(tokens.refresh_token);
 
-          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-          const { error: upsertErr } = await supabaseAdmin.from("google_integrations").upsert(
+          // This route has no user session by design (Google redirects here
+          // directly) -- can't use context.supabase, and supabaseAdmin can
+          // never authenticate on Lovable Cloud (confirmed 2026-09-02, no
+          // service-role key exposed, permanently). getServiceSupabase()
+          // signs in as a real, dedicated 'admin'-role account instead;
+          // RLS on google_integrations is role-based (has_role(...,'admin')),
+          // not row-ownership-based, so it can legitimately write on behalf
+          // of payload.u (already verified by the HMAC-signed state token above).
+          const { getServiceSupabase } = await import("@/lib/service-auth.server");
+          const serviceSupa = await getServiceSupabase();
+          const { error: upsertErr } = await serviceSupa.from("google_integrations").upsert(
             {
               user_id: payload.u,
               google_email: info.email,
@@ -72,7 +81,7 @@ export const Route = createFileRoute("/api/public/google/oauth/callback")({
 
           // Kick off discovery immediately so the user sees resources on return.
           const { runDiscoveryForUser } = await import("@/lib/google-integration/discovery-runner.server");
-          const disc = await runDiscoveryForUser(payload.u).catch((e) => ({
+          const disc = await runDiscoveryForUser(payload.u, serviceSupa).catch((e) => ({
             ok: false,
             perProduct: {} as Record<string, number>,
             activatedAgents: [] as string[],

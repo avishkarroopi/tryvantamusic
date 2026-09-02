@@ -21,6 +21,7 @@ import {
   Bot,
   BookOpen,
   Radar,
+  ShieldCheck,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -39,6 +40,7 @@ const nav = [
   { to: "/gbp", label: "Google Business", icon: MapPin },
   { to: "/competitive-intelligence", label: "Competitive Intel", icon: Radar },
   { to: "/agents", label: "Agents", icon: Bot },
+  { to: "/operations", label: "Operations", icon: ShieldCheck },
   { to: "/knowledge", label: "Knowledge", icon: BookOpen },
   { to: "/reengagement", label: "Re-engagement", icon: RefreshCcw },
   { to: "/notifications", label: "Notifications", icon: Bell },
@@ -102,7 +104,12 @@ export function AppShell({ children }: { children: ReactNode }) {
               <div className="text-[10px] text-muted-foreground">Team member</div>
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleSignOut}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start"
+            onClick={handleSignOut}
+          >
             <LogOut className="h-4 w-4" />
             Sign out
           </Button>
@@ -128,9 +135,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               onClick={() => setMobileOpen(false)}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-3 text-sm font-medium",
-                isActive(item.to)
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground",
+                isActive(item.to) ? "bg-accent text-accent-foreground" : "text-muted-foreground",
               )}
             >
               <item.icon className="h-4 w-4" />

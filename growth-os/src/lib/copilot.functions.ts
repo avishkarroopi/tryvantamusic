@@ -108,6 +108,8 @@ ${JSON.stringify(ctx)}
           ...history.map((h) => ({ role: h.role === "system" ? "user" : h.role, content: h.content })),
           { role: "user", content: data.message },
         ],
+        purpose: "founder-copilot-chat",
+        supa: supabase,
       });
     } catch (err) {
       assistantContent = `⚠️ ${err instanceof Error ? err.message : "Copilot temporarily unavailable"}`;
@@ -144,6 +146,8 @@ ${JSON.stringify(ctx)}`;
       const raw = await chatCompletion({
         messages: [{ role: "system", content: system }, { role: "user", content: `Write the ${data.period} founder brief.` }],
         jsonMode: true,
+        purpose: "founder-brief",
+        supa: context.supabase,
       });
       parsed = JSON.parse(raw);
     } catch (err) {

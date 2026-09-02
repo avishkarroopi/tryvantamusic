@@ -2,6 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { chatCompletion } from "@/lib/ai.server";
+import { executeAgent } from "@/lib/agent-execution.server";
+import { listCampaigns, campaignInsights } from "@/lib/meta-ads.server";
+import {
+  refreshKeywordSerp,
+  crawlCompetitorPage,
+  detectContentGaps,
+} from "@/lib/seo-intelligence.server";
 import {
   fbPageOverview,
   igAccountOverview,
@@ -26,6 +33,7 @@ export type AgentRow = {
   version: number;
   last_run_at: string | null;
   next_run_at: string | null;
+  max_retries: number;
   created_at: string;
   updated_at: string;
   mission: string | null;
@@ -47,12 +55,36 @@ export type IntegrationStatus = {
 
 const INTEGRATION_CATALOG: Array<Omit<IntegrationStatus, "status">> = [
   { key: "meta", label: "Meta (Facebook / Instagram)", envVars: ["META_ACCESS_TOKEN"] },
-  { key: "google_ads", label: "Google Ads", envVars: ["GOOGLE_ADS_DEVELOPER_TOKEN", "GOOGLE_ADS_REFRESH_TOKEN"] },
-  { key: "google_analytics", label: "Google Analytics", envVars: ["GA4_PROPERTY_ID", "GOOGLE_SERVICE_ACCOUNT_JSON"] },
-  { key: "google_search_console", label: "Google Search Console", envVars: ["GSC_SITE_URL", "GOOGLE_SERVICE_ACCOUNT_JSON"] },
-  { key: "google_business_profile", label: "Google Business Profile", envVars: ["GBP_ACCOUNT_ID", "GBP_LOCATION_ID"] },
-  { key: "gmail", label: "Gmail", envVars: ["GMAIL_CLIENT_ID", "GMAIL_CLIENT_SECRET", "GMAIL_REFRESH_TOKEN"] },
-  { key: "whatsapp", label: "WhatsApp Business", envVars: ["WHATSAPP_PHONE_ID", "WHATSAPP_ACCESS_TOKEN"] },
+  {
+    key: "google_ads",
+    label: "Google Ads",
+    envVars: ["GOOGLE_ADS_DEVELOPER_TOKEN", "GOOGLE_ADS_REFRESH_TOKEN"],
+  },
+  {
+    key: "google_analytics",
+    label: "Google Analytics",
+    envVars: ["GA4_PROPERTY_ID", "GOOGLE_SERVICE_ACCOUNT_JSON"],
+  },
+  {
+    key: "google_search_console",
+    label: "Google Search Console",
+    envVars: ["GSC_SITE_URL", "GOOGLE_SERVICE_ACCOUNT_JSON"],
+  },
+  {
+    key: "google_business_profile",
+    label: "Google Business Profile",
+    envVars: ["GBP_ACCOUNT_ID", "GBP_LOCATION_ID"],
+  },
+  {
+    key: "gmail",
+    label: "Gmail",
+    envVars: ["GMAIL_CLIENT_ID", "GMAIL_CLIENT_SECRET", "GMAIL_REFRESH_TOKEN"],
+  },
+  {
+    key: "whatsapp",
+    label: "WhatsApp Business",
+    envVars: ["WHATSAPP_PHONE_ID", "WHATSAPP_ACCESS_TOKEN"],
+  },
   { key: "github", label: "GitHub", envVars: ["GITHUB_TOKEN"] },
   { key: "cloudflare", label: "Cloudflare", envVars: ["CLOUDFLARE_API_TOKEN"] },
   { key: "stripe", label: "Stripe", envVars: ["STRIPE_SECRET_KEY"] },
@@ -85,14 +117,37 @@ export const getAgent = createServerFn({ method: "POST" })
     if (!agent) throw new Error("Agent not found");
 
     const [runsRes, tasksRes, logsRes, metricsRes, eventsRes] = await Promise.all([
-      supa.from("agents_runs").select("*").eq("agent_slug", data.slug).order("started_at", { ascending: false }).limit(20),
-      supa.from("agents_tasks").select("*").eq("agent_slug", data.slug).order("created_at", { ascending: false }).limit(20),
-      supa.from("agents_logs").select("*").eq("agent_slug", data.slug).order("created_at", { ascending: false }).limit(50),
-      supa.from("agents_metrics").select("*").eq("agent_slug", data.slug).order("date", { ascending: false }).limit(14),
+      supa
+        .from("agents_runs")
+        .select("*")
+        .eq("agent_slug", data.slug)
+        .order("started_at", { ascending: false })
+        .limit(20),
+      supa
+        .from("agents_tasks")
+        .select("*")
+        .eq("agent_slug", data.slug)
+        .order("created_at", { ascending: false })
+        .limit(20),
+      supa
+        .from("agents_logs")
+        .select("*")
+        .eq("agent_slug", data.slug)
+        .order("created_at", { ascending: false })
+        .limit(50),
+      supa
+        .from("agents_metrics")
+        .select("*")
+        .eq("agent_slug", data.slug)
+        .order("date", { ascending: false })
+        .limit(14),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (supa as any).from("agents_events").select("*")
+      (supa as any)
+        .from("agents_events")
+        .select("*")
         .or(`from_agent.eq.${data.slug},to_agent.eq.${data.slug}`)
-        .order("created_at", { ascending: false }).limit(30),
+        .order("created_at", { ascending: false })
+        .limit(30),
     ]);
     return {
       agent: agent as unknown as AgentRow,
@@ -106,7 +161,9 @@ export const getAgent = createServerFn({ method: "POST" })
 
 export const setAgentEnabled = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ slug: z.string(), enabled: z.boolean() }).parse(input))
+  .inputValidator((input: unknown) =>
+    z.object({ slug: z.string(), enabled: z.boolean() }).parse(input),
+  )
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
       .from("agents_registry")
@@ -142,41 +199,100 @@ type HandlerCtx = {
   log: (level: "info" | "warn" | "error", message: string, extra?: Json) => Promise<void>;
   emit: (event_type: string, payload: Json, to?: string | null) => Promise<void>;
   createTask: (title: string, priority?: "low" | "medium" | "high") => Promise<void>;
-  knowledge: (category?: string) => Promise<Array<{ title: string; content: string; category: string }>>;
+  knowledge: (
+    category?: string,
+  ) => Promise<Array<{ title: string; content: string; category: string }>>;
 };
 
 // ---------- CEO ----------
 // Continuously monitors every other agent, assigns priorities, detects
 // bottlenecks and generates an executive dashboard with recommendations.
 async function handleCEO(ctx: HandlerCtx): Promise<Json> {
-  const [regRes, runsRes, eventsRes, tasksRes] = await Promise.all([
-    ctx.supa.from("agents_registry").select("slug,name,enabled,mode,last_run_at,health_score,category"),
-    ctx.supa.from("agents_runs").select("agent_slug,status,started_at,duration_ms,error").order("started_at", { ascending: false }).limit(200),
-    ctx.supa.from("agents_events").select("*").eq("processed", false).order("created_at", { ascending: false }).limit(50),
+  const [regRes, runsRes, eventsRes, tasksRes, heartbeatRes, approvalsRes] = await Promise.all([
+    ctx.supa
+      .from("agents_registry")
+      .select("slug,name,enabled,mode,last_run_at,health_score,category"),
+    ctx.supa
+      .from("agents_runs")
+      .select("agent_slug,status,started_at,duration_ms,error")
+      .order("started_at", { ascending: false })
+      .limit(200),
+    ctx.supa
+      .from("agents_events")
+      .select("*")
+      .eq("processed", false)
+      .order("created_at", { ascending: false })
+      .limit(50),
     ctx.supa.from("agents_tasks").select("agent_slug,priority,status").eq("status", "pending"),
+    // Phase 18 — worker health, straight from the DB fact the worker itself
+    // writes every tick (see growth-os-worker/index.ts), not the worker's
+    // own localhost /health endpoint (which this handler, running inside
+    // Postgres/the app, has no way to reach anyway).
+    ctx.supa.from("worker_heartbeats").select("*").eq("id", "singleton").maybeSingle(),
+    // Phase 18 — approval backlog: pending human decisions the workforce is
+    // currently blocked on, especially anything sitting unresolved a while.
+    ctx.supa
+      .from("approval_requests")
+      .select("id,agent_slug,action_type,risk_level,requested_at")
+      .eq("status", "pending"),
   ]);
   const registry = regRes.data ?? [];
   const runs = runsRes.data ?? [];
   const openEvents = eventsRes.data ?? [];
   const pendingTasks = tasksRes.data ?? [];
+  const heartbeat = heartbeatRes.data as { status: string; last_tick_at: string | null } | null;
+  const pendingApprovals = (approvalsRes.data ?? []) as Array<{
+    id: string;
+    agent_slug: string;
+    action_type: string;
+    risk_level: string;
+    requested_at: string;
+  }>;
+
+  const workerStatus = (() => {
+    if (!heartbeat || !heartbeat.last_tick_at) return "never_seen" as const;
+    const staleMinutes = (Date.now() - new Date(heartbeat.last_tick_at).getTime()) / 60_000;
+    if (staleMinutes > 5) return "stale" as const; // worker's own tick interval defaults to 30s; 5min of silence is a real problem, not noise
+    return heartbeat.status === "degraded" ? ("degraded" as const) : ("healthy" as const);
+  })();
+  const oldestPendingApprovalHours =
+    pendingApprovals.length > 0
+      ? Math.max(
+          ...pendingApprovals.map(
+            (a) => (Date.now() - new Date(a.requested_at).getTime()) / 3_600_000,
+          ),
+        )
+      : 0;
 
   const activeCount = registry.filter((a: { enabled: boolean }) => a.enabled).length;
   const disabledCount = registry.length - activeCount;
   const failures = runs.filter((r: { status: string }) => r.status === "failed").length;
-  const health = runs.length === 0 ? 100 : Math.max(0, Math.round(100 - (failures / runs.length) * 100));
+  const health =
+    runs.length === 0 ? 100 : Math.max(0, Math.round(100 - (failures / runs.length) * 100));
 
   // Per-agent scorecard
-  const scorecards = registry.map((a: { slug: string; name: string; enabled: boolean; last_run_at: string | null }) => {
-    const agentRuns = runs.filter((r: { agent_slug: string }) => r.agent_slug === a.slug);
-    const agentFails = agentRuns.filter((r: { status: string }) => r.status === "failed").length;
-    const highPri = pendingTasks.filter((t: { agent_slug: string; priority: string }) => t.agent_slug === a.slug && t.priority === "high").length;
-    const staleHours = a.last_run_at ? (Date.now() - new Date(a.last_run_at).getTime()) / 3_600_000 : Infinity;
-    return {
-      slug: a.slug, name: a.name, enabled: a.enabled,
-      runs_total: agentRuns.length, failures: agentFails,
-      pending_high: highPri, hours_since_run: Number.isFinite(staleHours) ? Math.round(staleHours) : null,
-    };
-  });
+  const scorecards = registry.map(
+    (a: { slug: string; name: string; enabled: boolean; last_run_at: string | null }) => {
+      const agentRuns = runs.filter((r: { agent_slug: string }) => r.agent_slug === a.slug);
+      const agentFails = agentRuns.filter((r: { status: string }) => r.status === "failed").length;
+      const highPri = pendingTasks.filter(
+        (t: { agent_slug: string; priority: string }) =>
+          t.agent_slug === a.slug && t.priority === "high",
+      ).length;
+      const staleHours = a.last_run_at
+        ? (Date.now() - new Date(a.last_run_at).getTime()) / 3_600_000
+        : Infinity;
+      return {
+        slug: a.slug,
+        name: a.name,
+        enabled: a.enabled,
+        runs_total: agentRuns.length,
+        failures: agentFails,
+        pending_high: highPri,
+        hours_since_run: Number.isFinite(staleHours) ? Math.round(staleHours) : null,
+      };
+    },
+  );
 
   // AI-generated executive brief (falls back to deterministic summary)
   let summary = `Workforce: ${activeCount} active / ${disabledCount} disabled. ${runs.length} recent runs, ${failures} failures. ${openEvents.length} unprocessed events, ${pendingTasks.length} pending tasks.`;
@@ -185,44 +301,124 @@ async function handleCEO(ctx: HandlerCtx): Promise<Json> {
   try {
     const ai = await chatCompletion({
       messages: [
-        { role: "system", content: "You are the CEO of an AI workforce. Return strict JSON: {\"summary\":\"2-3 sentences\",\"recommendations\":[{\"action\":\"...\",\"agent\":\"slug\"}]}. Focus on the single highest-impact action per agent." },
-        { role: "user", content: JSON.stringify({ scorecards, open_events: openEvents.slice(0, 10), pending_tasks: pendingTasks.length }) },
+        {
+          role: "system",
+          content:
+            'You are the CEO of an AI workforce. Return strict JSON: {"summary":"2-3 sentences","recommendations":[{"action":"...","agent":"slug"}]}. Focus on the single highest-impact action per agent.',
+        },
+        {
+          role: "user",
+          content: JSON.stringify({
+            scorecards,
+            open_events: openEvents.slice(0, 10),
+            pending_tasks: pendingTasks.length,
+            worker_status: workerStatus,
+            pending_approvals: pendingApprovals.length,
+            oldest_pending_approval_hours: Math.round(oldestPendingApprovalHours),
+          }),
+        },
       ],
-      jsonMode: true, temperature: 0.3,
+      jsonMode: true,
+      temperature: 0.3,
+      purpose: "ceo-brief",
+      supa: ctx.supa,
     });
-    const parsed = JSON.parse(ai) as { summary?: string; recommendations?: Array<{ action: string; agent?: string }> };
+    const parsed = JSON.parse(ai) as {
+      summary?: string;
+      recommendations?: Array<{ action: string; agent?: string }>;
+    };
     if (parsed.summary) summary = parsed.summary;
     if (Array.isArray(parsed.recommendations)) recommendations = parsed.recommendations.slice(0, 6);
     reasoning = "Generated via Lovable AI Gateway.";
-  } catch { /* fall back */ }
+  } catch {
+    /* fall back */
+  }
 
   // Priorities: agents that are enabled, have high-priority tasks or are stale
   const priorities = scorecards
-    .filter((s: { enabled: boolean; slug: string; pending_high: number; hours_since_run: number | null }) =>
-      s.enabled && s.slug !== "ceo" && (s.pending_high > 0 || s.hours_since_run === null || (s.hours_since_run ?? 0) > 24))
-    .sort((a: { pending_high: number }, b: { pending_high: number }) => b.pending_high - a.pending_high)
+    .filter(
+      (s: {
+        enabled: boolean;
+        slug: string;
+        pending_high: number;
+        hours_since_run: number | null;
+      }) =>
+        s.enabled &&
+        s.slug !== "ceo" &&
+        (s.pending_high > 0 || s.hours_since_run === null || (s.hours_since_run ?? 0) > 24),
+    )
+    .sort(
+      (a: { pending_high: number }, b: { pending_high: number }) => b.pending_high - a.pending_high,
+    )
     .slice(0, 5)
-    .map((s: { slug: string; name: string; pending_high: number; hours_since_run: number | null }) => ({
-      slug: s.slug, name: s.name,
-      reason: s.pending_high > 0
-        ? `${s.pending_high} high-priority task(s)`
-        : s.hours_since_run === null ? "Never run — needs kickoff" : `Stale for ${s.hours_since_run}h`,
-    }));
+    .map(
+      (s: {
+        slug: string;
+        name: string;
+        pending_high: number;
+        hours_since_run: number | null;
+      }) => ({
+        slug: s.slug,
+        name: s.name,
+        reason:
+          s.pending_high > 0
+            ? `${s.pending_high} high-priority task(s)`
+            : s.hours_since_run === null
+              ? "Never run — needs kickoff"
+              : `Stale for ${s.hours_since_run}h`,
+      }),
+    );
 
   const bottlenecks: Json = [];
   if (disabledCount > 0) bottlenecks.push({ note: `${disabledCount} agent(s) disabled` });
   if (failures > 0) bottlenecks.push({ note: `${failures} failed run(s) in recent history` });
-  const missingIntegrations = INTEGRATION_DEFS.filter((d) => d.requiredEnv.some((v) => !process.env[v]));
+  const missingIntegrations = INTEGRATION_DEFS.filter((d) =>
+    d.requiredEnv.some((v) => !process.env[v]),
+  );
   if (missingIntegrations.length > 0) {
-    bottlenecks.push({ note: `${missingIntegrations.length} integration(s) missing credentials`, keys: missingIntegrations.map((m) => m.key) });
+    bottlenecks.push({
+      note: `${missingIntegrations.length} integration(s) missing credentials`,
+      keys: missingIntegrations.map((m) => m.key),
+    });
+  }
+  // Phase 18 — worker/approval awareness.
+  if (workerStatus === "never_seen") {
+    bottlenecks.push({
+      note: "The 24/7 worker has never reported a heartbeat — scheduled/event/task/retry execution is not running.",
+    });
+  } else if (workerStatus === "stale") {
+    bottlenecks.push({
+      note: `The worker's last heartbeat was over 5 minutes ago (last_tick_at=${heartbeat?.last_tick_at}) — it may be down.`,
+    });
+  } else if (workerStatus === "degraded") {
+    bottlenecks.push({
+      note: "The worker reported a degraded tick (an error occurred during its last scheduler/event/task/retry pass) — check its logs.",
+    });
+  }
+  if (pendingApprovals.length > 0) {
+    bottlenecks.push({
+      note:
+        `${pendingApprovals.length} action(s) awaiting human approval` +
+        (oldestPendingApprovalHours > 24
+          ? `, oldest pending ${Math.round(oldestPendingApprovalHours)}h`
+          : ""),
+      approvals: pendingApprovals
+        .slice(0, 5)
+        .map((a) => ({ id: a.id, agent: a.agent_slug, action: a.action_type, risk: a.risk_level })),
+    });
   }
 
   await ctx.supa.from("agents_briefs").insert({
-    summary, priorities, bottlenecks,
-    recommended_actions: recommendations.length > 0 ? recommendations : [
-      { action: "Run Marketing → Sales → Customer Success daily loop" },
-      { action: "Unblock disabled agents or provide missing credentials" },
-    ],
+    summary,
+    priorities,
+    bottlenecks,
+    recommended_actions:
+      recommendations.length > 0
+        ? recommendations
+        : [
+            { action: "Run Marketing → Sales → Customer Success daily loop" },
+            { action: "Unblock disabled agents or provide missing credentials" },
+          ],
     workforce_health: health,
   });
 
@@ -231,7 +427,17 @@ async function handleCEO(ctx: HandlerCtx): Promise<Json> {
     await ctx.emit("ceo.priority", { slug: p.slug, reason: p.reason } as Json, p.slug);
   }
 
-  return { reasoning, summary, health, priorities, bottlenecks, recommendations, scorecards: scorecards.slice(0, 20) };
+  return {
+    reasoning,
+    summary,
+    health,
+    priorities,
+    bottlenecks,
+    recommendations,
+    worker_status: workerStatus,
+    pending_approvals: pendingApprovals.length,
+    scorecards: scorecards.slice(0, 20),
+  };
 }
 
 // ---------- Marketing (Meta + Instagram) ----------
@@ -242,12 +448,21 @@ async function handleMarketing(ctx: HandlerCtx): Promise<Json> {
   const out: Record<string, Json> = {};
   if (fb.ok) {
     const posts = fb.data.recentPosts;
-    const engaged = posts.reduce((a, p) =>
-      a + (p.reactions?.summary?.total_count ?? 0) + (p.comments?.summary?.total_count ?? 0) + (p.shares?.count ?? 0), 0);
+    const engaged = posts.reduce(
+      (a, p) =>
+        a +
+        (p.reactions?.summary?.total_count ?? 0) +
+        (p.comments?.summary?.total_count ?? 0) +
+        (p.shares?.count ?? 0),
+      0,
+    );
     out.facebook = { page: fb.data.page, posts_scanned: posts.length, total_engagement: engaged };
     await ctx.supa.from("agents_metrics").insert({
-      agent_slug: "marketing", date: new Date().toISOString().slice(0, 10),
-      metric_key: "fb_engagement_7d", value: engaged, meta: { posts: posts.length },
+      agent_slug: "marketing",
+      date: new Date().toISOString().slice(0, 10),
+      metric_key: "fb_engagement_7d",
+      value: engaged,
+      meta: { posts: posts.length },
     });
   } else {
     out.facebook = { error: fb.error };
@@ -260,41 +475,84 @@ async function handleMarketing(ctx: HandlerCtx): Promise<Json> {
     const comments = media.reduce((a, m) => a + (m.comments_count ?? 0), 0);
     out.instagram = { account: ig.data.account, posts_scanned: media.length, likes, comments };
     await ctx.supa.from("agents_metrics").insert({
-      agent_slug: "marketing", date: new Date().toISOString().slice(0, 10),
-      metric_key: "ig_engagement_7d", value: likes + comments, meta: { posts: media.length },
+      agent_slug: "marketing",
+      date: new Date().toISOString().slice(0, 10),
+      metric_key: "ig_engagement_7d",
+      value: likes + comments,
+      meta: { posts: media.length },
     });
   } else {
     out.instagram = { error: ig.error };
     await ctx.log("warn", `Instagram overview failed: ${ig.error}`);
   }
 
-  // AI content-strategy suggestion based on real post data
+  // Phase 6, wired in for the first time here: real Meta Marketing API
+  // campaign data, now that real credentials exist. Read-only (listCampaigns/
+  // campaignInsights) -- no approval needed. Budget/status CHANGES still go
+  // through proposeMetaAction (Phase 5's approval gate); this handler only
+  // ever reports on what's already there, it never proposes an action, so
+  // there's nothing here for a human to approve yet.
+  const metaCampaigns = await listCampaigns();
+  if (metaCampaigns.ok) {
+    const campaignsWithInsights = await Promise.all(
+      metaCampaigns.data.map(async (c) => {
+        const insights = c.status === "ACTIVE" ? await campaignInsights(c.id, "last_7d") : null;
+        return { ...c, insights_7d: insights?.ok ? insights.data : null };
+      }),
+    );
+    out.meta_ads = { campaigns: campaignsWithInsights };
+  } else {
+    out.meta_ads = { error: metaCampaigns.error };
+    if (metaCampaigns.error !== "missing_env:MARKETING_API_TOKEN" && metaCampaigns.error !== "missing_env:META_AD_ACCOUNT_ID") {
+      await ctx.log("warn", `Meta Ads campaign fetch failed: ${metaCampaigns.error}`);
+    }
+  }
+
+  // AI content-strategy suggestion based on real post + ad campaign data
   let strategy = "";
   try {
     strategy = await chatCompletion({
       messages: [
-        { role: "system", content: "You are a growth marketer for a music education business. Given recent Facebook + Instagram post metrics, output 3 concise, prioritised recommendations (bullet list, max 40 words each)." },
+        {
+          role: "system",
+          content:
+            "You are a growth marketer for a music education business. Given recent Facebook + Instagram post metrics and Meta Ads campaign data, output 3 concise, prioritised recommendations (bullet list, max 40 words each). If a campaign is paused, that's a real fact -- note it plainly, don't assume it's running.",
+        },
         { role: "user", content: JSON.stringify(out).slice(0, 4000) },
       ],
       temperature: 0.5,
+      purpose: "marketing-content-strategy",
+      supa: ctx.supa,
     });
-  } catch { /* optional */ }
+  } catch {
+    /* optional */
+  }
   if (strategy) {
     await ctx.createTask(`Apply this week's growth playbook (see brief)`, "medium");
   }
 
   await ctx.emit("marketing.snapshot", out as Json, "sales");
-  return { reasoning: "Pulled live Meta + Instagram engagement and generated strategy brief.", ...out, strategy };
+  return {
+    reasoning: "Pulled live Meta + Instagram engagement and generated strategy brief.",
+    ...out,
+    strategy,
+  };
 }
 
 // ---------- Sales (WhatsApp) ----------
 async function handleSales(ctx: HandlerCtx): Promise<Json> {
   const { data: leads } = await ctx.supa
-    .from("leads").select("id,name,phone,status,score,created_at")
-    .order("score", { ascending: false }).limit(25);
-  const openLeads = (leads ?? []).filter((l: { status: string }) => l.status !== "won" && l.status !== "lost");
+    .from("leads")
+    .select("id,name,phone,status,score,created_at")
+    .order("score", { ascending: false })
+    .limit(25);
+  const openLeads = (leads ?? []).filter(
+    (l: { status: string }) => l.status !== "won" && l.status !== "lost",
+  );
   const hot = openLeads.filter((l: { score: number }) => (l.score ?? 0) >= 70).slice(0, 5);
-  const warm = openLeads.filter((l: { score: number }) => (l.score ?? 0) >= 40 && (l.score ?? 0) < 70).slice(0, 5);
+  const warm = openLeads
+    .filter((l: { score: number }) => (l.score ?? 0) >= 40 && (l.score ?? 0) < 70)
+    .slice(0, 5);
 
   // Confirm WhatsApp is configured & fetch approved templates (does not send).
   const templates = await waListTemplates();
@@ -311,7 +569,11 @@ async function handleSales(ctx: HandlerCtx): Promise<Json> {
     await ctx.createTask(`Nurture warm lead: ${l.name} (score ${l.score})`, "medium");
   }
 
-  await ctx.emit("sales.pipeline_snapshot", { hot: hot.length, warm: warm.length, templates_ready: readyTemplates.length } as Json, "customer_success");
+  await ctx.emit(
+    "sales.pipeline_snapshot",
+    { hot: hot.length, warm: warm.length, templates_ready: readyTemplates.length } as Json,
+    "customer_success",
+  );
 
   return {
     reasoning: `Prioritised ${hot.length} hot / ${warm.length} warm lead(s). WhatsApp ${templates.ok ? "connected" : "unavailable"}${templates.ok ? `, ${readyTemplates.length} approved template(s)` : ""}.`,
@@ -333,7 +595,8 @@ export const salesSendWhatsApp = createServerFn({ method: "POST" })
     const res = await waSendText(data.to, data.message);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (context.supabase as any).from("agents_logs").insert({
-      agent_slug: "sales", level: res.ok ? "info" : "error",
+      agent_slug: "sales",
+      level: res.ok ? "info" : "error",
       message: res.ok ? `Sent WhatsApp to ${data.to}` : `WhatsApp send failed: ${res.error}`,
       data: { to: data.to, ok: res.ok } as Json,
     });
@@ -346,22 +609,41 @@ async function handleContent(ctx: HandlerCtx): Promise<Json> {
   // Generate a 5-post calendar draft grounded in current engagement data.
   const [fb, ig] = await Promise.all([fbPageOverview(), igAccountOverview()]);
   const context = {
-    fb_recent: fb.ok ? fb.data.recentPosts.slice(0, 5).map((p) => ({ msg: (p.message ?? "").slice(0, 200), engagement: (p.reactions?.summary?.total_count ?? 0) + (p.comments?.summary?.total_count ?? 0) })) : [],
-    ig_recent: ig.ok ? ig.data.recentMedia.slice(0, 5).map((m) => ({ caption: (m.caption ?? "").slice(0, 200), likes: m.like_count ?? 0 })) : [],
+    fb_recent: fb.ok
+      ? fb.data.recentPosts.slice(0, 5).map((p) => ({
+          msg: (p.message ?? "").slice(0, 200),
+          engagement:
+            (p.reactions?.summary?.total_count ?? 0) + (p.comments?.summary?.total_count ?? 0),
+        }))
+      : [],
+    ig_recent: ig.ok
+      ? ig.data.recentMedia
+          .slice(0, 5)
+          .map((m) => ({ caption: (m.caption ?? "").slice(0, 200), likes: m.like_count ?? 0 }))
+      : [],
   };
 
   let calendar: Array<{ day: string; channel: string; hook: string; body: string }> = [];
   try {
     const raw = await chatCompletion({
       messages: [
-        { role: "system", content: "You are a social media content director for a music education brand. Return strict JSON: {\"posts\":[{\"day\":\"Mon\",\"channel\":\"instagram|facebook\",\"hook\":\"...\",\"body\":\"...\"}]} with exactly 5 posts. Vary channels and formats. Draw on the engagement context." },
+        {
+          role: "system",
+          content:
+            'You are a social media content director for a music education brand. Return strict JSON: {"posts":[{"day":"Mon","channel":"instagram|facebook","hook":"...","body":"..."}]} with exactly 5 posts. Vary channels and formats. Draw on the engagement context.',
+        },
         { role: "user", content: JSON.stringify(context).slice(0, 4000) },
       ],
-      jsonMode: true, temperature: 0.7,
+      jsonMode: true,
+      temperature: 0.7,
+      purpose: "content-calendar",
+      supa: ctx.supa,
     });
     const parsed = JSON.parse(raw) as { posts?: typeof calendar };
     calendar = parsed.posts ?? [];
-  } catch { /* fall back to task */ }
+  } catch {
+    /* fall back to task */
+  }
 
   if (calendar.length > 0) {
     await ctx.supa.from("agents_knowledge").insert({
@@ -376,14 +658,23 @@ async function handleContent(ctx: HandlerCtx): Promise<Json> {
   }
 
   await ctx.emit("content.calendar_ready", { count: calendar.length } as Json, "marketing");
-  return { reasoning: `Drafted ${calendar.length}-post content calendar grounded in live engagement data.`, calendar };
+  return {
+    reasoning: `Drafted ${calendar.length}-post content calendar grounded in live engagement data.`,
+    calendar,
+  };
 }
 
 async function handleGoogleBusiness(ctx: HandlerCtx): Promise<Json> {
-  const { data: reviews } = await ctx.supa.from("gbp_reviews")
-    .select("id,rating,reply_status").order("created_at", { ascending: false }).limit(20);
-  const unreplied = (reviews ?? []).filter((r: { reply_status: string }) => r.reply_status !== "sent").length;
-  if (unreplied > 0) await ctx.createTask(`Draft replies to ${unreplied} unanswered review(s)`, "high");
+  const { data: reviews } = await ctx.supa
+    .from("gbp_reviews")
+    .select("id,rating,reply_status")
+    .order("created_at", { ascending: false })
+    .limit(20);
+  const unreplied = (reviews ?? []).filter(
+    (r: { reply_status: string }) => r.reply_status !== "sent",
+  ).length;
+  if (unreplied > 0)
+    await ctx.createTask(`Draft replies to ${unreplied} unanswered review(s)`, "high");
   await ctx.emit("gbp.review_status", { unreplied }, "customer_success");
   return { reasoning: `${unreplied} unanswered review(s) detected.`, unreplied };
 }
@@ -391,11 +682,21 @@ async function handleGoogleBusiness(ctx: HandlerCtx): Promise<Json> {
 // ---------- Customer Success ----------
 async function handleCustomerSuccess(ctx: HandlerCtx): Promise<Json> {
   const { data: enrollments } = await ctx.supa
-    .from("enrollments").select("id,student_name,status,last_activity_at,risk_score").limit(100);
-  const list = (enrollments ?? []) as Array<{ id: string; student_name: string; status: string; last_activity_at: string | null; risk_score: number | null }>;
+    .from("enrollments")
+    .select("id,student_name,status,last_activity_at,risk_score")
+    .limit(100);
+  const list = (enrollments ?? []) as Array<{
+    id: string;
+    student_name: string;
+    status: string;
+    last_activity_at: string | null;
+    risk_score: number | null;
+  }>;
   const now = Date.now();
   const atRisk = list.filter((e) => {
-    const stale = e.last_activity_at ? (now - new Date(e.last_activity_at).getTime()) / 86_400_000 : 999;
+    const stale = e.last_activity_at
+      ? (now - new Date(e.last_activity_at).getTime()) / 86_400_000
+      : 999;
     return e.status === "active" && (stale > 14 || (e.risk_score ?? 0) >= 70);
   });
 
@@ -403,12 +704,23 @@ async function handleCustomerSuccess(ctx: HandlerCtx): Promise<Json> {
     await ctx.createTask(`Re-engage at-risk student: ${e.student_name}`, "high");
   }
 
-  await ctx.emit("cs.health_snapshot", { active: list.filter((e) => e.status === "active").length, at_risk: atRisk.length } as Json, "ceo");
-  return { reasoning: `Reviewed ${list.length} enrollment(s); ${atRisk.length} at-risk flagged for outreach.`, at_risk: atRisk.length };
+  await ctx.emit(
+    "cs.health_snapshot",
+    { active: list.filter((e) => e.status === "active").length, at_risk: atRisk.length } as Json,
+    "ceo",
+  );
+  return {
+    reasoning: `Reviewed ${list.length} enrollment(s); ${atRisk.length} at-risk flagged for outreach.`,
+    at_risk: atRisk.length,
+  };
 }
 
 async function handleAnalytics(ctx: HandlerCtx): Promise<Json> {
-  await ctx.emit("analytics.weekly_insight", { note: "Insight card pending GA4/Ads credentials" }, "ceo");
+  await ctx.emit(
+    "analytics.weekly_insight",
+    { note: "Insight card pending GA4/Ads credentials" },
+    "ceo",
+  );
   return { reasoning: "Weekly insight card queued (waiting on GA4/Ads credentials)." };
 }
 
@@ -418,8 +730,11 @@ async function handleFinance(ctx: HandlerCtx): Promise<Json> {
 }
 
 async function handleOperations(ctx: HandlerCtx): Promise<Json> {
-  const { data: tasks } = await ctx.supa.from("agents_tasks")
-    .select("id,status,scheduled_for").eq("status", "pending").limit(200);
+  const { data: tasks } = await ctx.supa
+    .from("agents_tasks")
+    .select("id,status,scheduled_for")
+    .eq("status", "pending")
+    .limit(200);
   await ctx.emit("ops.sla_snapshot", { pending: (tasks ?? []).length }, "ceo");
   return { reasoning: `Snapshot: ${(tasks ?? []).length} pending task(s) across workforce.` };
 }
@@ -448,12 +763,20 @@ async function handleResearch(ctx: HandlerCtx): Promise<Json> {
     try {
       brief = await chatCompletion({
         messages: [
-          { role: "system", content: "You are a market research analyst. Synthesize the following search results into a 5-bullet weekly brief for a music education business. No fluff." },
+          {
+            role: "system",
+            content:
+              "You are a market research analyst. Synthesize the following search results into a 5-bullet weekly brief for a music education business. No fluff.",
+          },
           { role: "user", content: JSON.stringify(allHits).slice(0, 6000) },
         ],
         temperature: 0.3,
+        purpose: "research-weekly-brief",
+        supa: ctx.supa,
       });
-    } catch { /* optional */ }
+    } catch {
+      /* optional */
+    }
     if (brief) {
       await ctx.supa.from("agents_knowledge").insert({
         category: "research-brief",
@@ -464,22 +787,86 @@ async function handleResearch(ctx: HandlerCtx): Promise<Json> {
     }
   }
 
-  await ctx.emit("research.weekly_brief", { queries: results.length, hits: allHits.length } as Json, "ceo");
-  return { reasoning: `Ran ${queries.length} research queries; ${allHits.length} total hits.`, results };
+  await ctx.emit(
+    "research.weekly_brief",
+    { queries: results.length, hits: allHits.length } as Json,
+    "ceo",
+  );
+  return {
+    reasoning: `Ran ${queries.length} research queries; ${allHits.length} total hits.`,
+    results,
+  };
 }
 
 async function handleKnowledge(ctx: HandlerCtx): Promise<Json> {
   const { data } = await ctx.supa.from("agents_knowledge").select("id,category,updated_at");
-  const stale = (data ?? []).filter((k: { updated_at: string }) =>
-    Date.now() - new Date(k.updated_at).getTime() > 1000 * 60 * 60 * 24 * 90,
+  const stale = (data ?? []).filter(
+    (k: { updated_at: string }) =>
+      Date.now() - new Date(k.updated_at).getTime() > 1000 * 60 * 60 * 24 * 90,
   ).length;
-  if (stale > 0) await ctx.createTask(`Review ${stale} knowledge entry(ies) older than 90 days`, "low");
+  if (stale > 0)
+    await ctx.createTask(`Review ${stale} knowledge entry(ies) older than 90 days`, "low");
   return { reasoning: `${(data ?? []).length} knowledge entries indexed, ${stale} stale.` };
 }
 
 async function handleSEO(ctx: HandlerCtx): Promise<Json> {
-  await ctx.createTask("Audit top 10 landing pages for on-page SEO", "low");
-  return { reasoning: "SEO audit task queued (Search Console credential pending)." };
+  // Search Console/GA4 (Part 8/9) still need an active Google connection --
+  // but keyword SERP tracking (SerpAPI) and competitor crawling (Firecrawl)
+  // need neither, and both are real, connected providers. Runs both now
+  // instead of the old stub, and still flags the GSC/GA4 gap explicitly
+  // rather than silently pretending nothing is missing.
+  const seedKeywords = [
+    "online guitar lessons",
+    "music classes near me",
+    "learn piano online india",
+  ];
+  const serpResults: Array<
+    | { keyword: string; ourPosition: number | null; competitorHits: number }
+    | { keyword: string; error: string }
+  > = [];
+  for (const kw of seedKeywords) {
+    const r = await refreshKeywordSerp(ctx.supa, kw);
+    serpResults.push(
+      r.ok
+        ? {
+            keyword: kw,
+            ourPosition: r.data.ourPosition,
+            competitorHits: r.data.competitorPositions.length,
+          }
+        : { keyword: kw, error: r.error },
+    );
+  }
+
+  const { data: competitors } = await ctx.supa
+    .from("gbp_competitors")
+    .select("id, user_id, url")
+    .not("url", "is", null)
+    .limit(5);
+  let crawled = 0;
+  const crawlErrors: string[] = [];
+  for (const comp of (competitors ?? []) as Array<{ id: string; user_id: string; url: string }>) {
+    const r = await crawlCompetitorPage(ctx.supa, comp.user_id, comp.id, comp.url);
+    if (r.ok) crawled++;
+    else crawlErrors.push(`${comp.url}: ${r.error}`);
+  }
+
+  const gapResult = await detectContentGaps(ctx.supa);
+  const gapsCreated = gapResult.ok ? gapResult.data.created : 0;
+  if (gapsCreated > 0)
+    await ctx.createTask(`Review ${gapsCreated} new SEO content gap(s) detected`, "medium");
+
+  await ctx.log(
+    "info",
+    "GA4/Search Console reporting APIs are not yet usable: no active Google OAuth connection (google_integrations is empty). Keyword/competitor signals above come from SerpAPI/Firecrawl only, which don't need it.",
+  );
+
+  return {
+    reasoning: `Tracked ${seedKeywords.length} seed keyword(s) via SERP, crawled ${crawled}/${(competitors ?? []).length} competitor page(s), detected ${gapsCreated} new content gap(s). GA4/GSC-based signals unavailable (Google not connected).`,
+    serpResults,
+    crawled,
+    crawlErrors,
+    gapsCreated,
+  } as unknown as Json;
 }
 
 // ---------- Automation ----------
@@ -487,9 +874,15 @@ async function handleSEO(ctx: HandlerCtx): Promise<Json> {
 async function handleAutomation(ctx: HandlerCtx): Promise<Json> {
   const since = new Date(Date.now() - 1000 * 60 * 60 * 24 * 14).toISOString();
   const { data: events } = await ctx.supa
-    .from("agents_events").select("event_type,from_agent,to_agent,created_at")
-    .gte("created_at", since).limit(500);
-  const list = (events ?? []) as Array<{ event_type: string; from_agent: string; to_agent: string | null }>;
+    .from("agents_events")
+    .select("event_type,from_agent,to_agent,created_at")
+    .gte("created_at", since)
+    .limit(500);
+  const list = (events ?? []) as Array<{
+    event_type: string;
+    from_agent: string;
+    to_agent: string | null;
+  }>;
 
   const counts = new Map<string, number>();
   for (const e of list) {
@@ -506,11 +899,22 @@ async function handleAutomation(ctx: HandlerCtx): Promise<Json> {
     await ctx.createTask(`Automate recurring pattern: ${c.pattern} (${c.count}×/14d)`, "low");
   }
 
-  await ctx.emit("automation.candidates", { count: candidates.length, sample: candidates.slice(0, 5) } as Json, "ceo");
-  return { reasoning: `Scanned ${list.length} events; ${candidates.length} automation candidate pattern(s) identified.`, candidates };
+  await ctx.emit(
+    "automation.candidates",
+    { count: candidates.length, sample: candidates.slice(0, 5) } as Json,
+    "ceo",
+  );
+  return {
+    reasoning: `Scanned ${list.length} events; ${candidates.length} automation candidate pattern(s) identified.`,
+    candidates,
+  };
 }
 
-const HANDLERS: Record<string, (ctx: HandlerCtx) => Promise<Json>> = {
+// Exported (not a local const) so both the worker (growth-os-worker) and
+// executeAgent()'s callers can share the exact same handler map -- see
+// src/lib/agent-execution.server.ts's module doc for why this lives here
+// rather than being duplicated.
+export const HANDLERS: Record<string, (ctx: HandlerCtx) => Promise<Json>> = {
   ceo: handleCEO,
   marketing: handleMarketing,
   sales: handleSales,
@@ -526,95 +930,53 @@ const HANDLERS: Record<string, (ctx: HandlerCtx) => Promise<Json>> = {
   automation: handleAutomation,
 };
 
+// Phase 1: this is now a thin wrapper around the shared executeAgent() core
+// -- the run-lifecycle/retry/heartbeat logic that used to live inline here
+// moved to agent-execution.server.ts so the worker (scheduled/event/task/
+// retry triggers) executes through the exact same code path, not a
+// duplicate implementation.
 export const runAgentNow = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => z.object({ slug: z.string() }).parse(input))
   .handler(async ({ data, context }) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const supa = context.supabase as any;
-    const { data: agent, error: aErr } = await supa
-      .from("agents_registry").select("*").eq("slug", data.slug).maybeSingle();
-    if (aErr) throw new Error(aErr.message);
-    if (!agent) throw new Error("Agent not found");
-    if (!agent.enabled) throw new Error("Agent is disabled");
-
-    const startedAt = new Date();
-    const { data: runIns, error: rErr } = await supa
-      .from("agents_runs")
-      .insert({ agent_slug: data.slug, status: "running", trigger: "manual", started_at: startedAt.toISOString() })
-      .select("id").single();
-    if (rErr) throw new Error(rErr.message);
-    const runId = runIns.id as string;
-
-    const log: HandlerCtx["log"] = async (level, message, extra) => {
-      await supa.from("agents_logs").insert({
-        run_id: runId, agent_slug: data.slug, level, message, data: extra ?? null,
-      });
-    };
-    const emit: HandlerCtx["emit"] = async (event_type, payload, to = null) => {
-      await supa.from("agents_events").insert({
-        from_agent: data.slug, to_agent: to, event_type, payload, run_id: runId,
-      });
-    };
-    const createTask: HandlerCtx["createTask"] = async (title, priority = "medium") => {
-      await supa.from("agents_tasks").insert({
-        agent_slug: data.slug, title, priority, status: "pending",
-      });
-    };
-    const knowledge: HandlerCtx["knowledge"] = async (category) => {
-      let q = supa.from("agents_knowledge").select("title,content,category");
-      if (category) q = q.eq("category", category);
-      const { data } = await q.limit(20);
-      return (data ?? []) as Array<{ title: string; content: string; category: string }>;
-    };
-
-    try {
-      await log("info", `Agent ${agent.name} invoked (manual trigger).`);
-      const handler = HANDLERS[data.slug];
-      let output: Json = { note: "No handler registered; noop run." };
-      if (handler) {
-        output = await handler({ supa, slug: data.slug, runId, log, emit, createTask, knowledge });
-      } else {
-        await log("warn", `No handler registered for ${data.slug}.`);
-      }
-
-      const finishedAt = new Date();
-      await supa.from("agents_runs").update({
-        status: "succeeded",
-        finished_at: finishedAt.toISOString(),
-        duration_ms: finishedAt.getTime() - startedAt.getTime(),
-        output,
-      }).eq("id", runId);
-      await supa.from("agents_registry").update({ last_run_at: finishedAt.toISOString() }).eq("slug", data.slug);
-
-      return { ok: true as const, runId, output };
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      await supa.from("agents_runs").update({
-        status: "failed", finished_at: new Date().toISOString(), error: msg,
-      }).eq("id", runId);
-      await log("error", msg);
-      throw new Error(msg);
-    }
+    const result = await executeAgent(context.supabase, data.slug, "manual", HANDLERS);
+    if (!result.ok) throw new Error(result.error);
+    return { ok: true as const, runId: result.runId, output: result.output };
   });
 
 // ============ Overview ============
 export const getWorkforceOverview = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const todayIso = today.toISOString();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const supa = context.supabase as any;
 
-    const [regRes, runsAllRes, runsTodayRes, latestBriefRes, tasksRes, eventsRes] = await Promise.all([
-      supa.from("agents_registry").select("*"),
-      supa.from("agents_runs").select("agent_slug,status,started_at,duration_ms").order("started_at", { ascending: false }).limit(50),
-      supa.from("agents_runs").select("id,status").gte("started_at", todayIso),
-      supa.from("agents_briefs").select("*").order("created_at", { ascending: false }).limit(1).maybeSingle(),
-      supa.from("agents_tasks").select("id,agent_slug,title,status,priority").eq("status", "pending").order("created_at", { ascending: false }).limit(20),
-      supa.from("agents_events").select("*").order("created_at", { ascending: false }).limit(20),
-    ]);
+    const [regRes, runsAllRes, runsTodayRes, latestBriefRes, tasksRes, eventsRes] =
+      await Promise.all([
+        supa.from("agents_registry").select("*"),
+        supa
+          .from("agents_runs")
+          .select("agent_slug,status,started_at,duration_ms")
+          .order("started_at", { ascending: false })
+          .limit(50),
+        supa.from("agents_runs").select("id,status").gte("started_at", todayIso),
+        supa
+          .from("agents_briefs")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle(),
+        supa
+          .from("agents_tasks")
+          .select("id,agent_slug,title,status,priority")
+          .eq("status", "pending")
+          .order("created_at", { ascending: false })
+          .limit(20),
+        supa.from("agents_events").select("*").order("created_at", { ascending: false }).limit(20),
+      ]);
     const registry = (regRes.data ?? []) as AgentRow[];
     const runsAll = runsAllRes.data ?? [];
     const runsToday = runsTodayRes.data ?? [];
@@ -627,7 +989,8 @@ export const getWorkforceOverview = createServerFn({ method: "POST" })
         idle: registry.filter((a) => a.enabled && !a.last_run_at).length,
         disabled: registry.filter((a) => !a.enabled || a.mode === "disabled").length,
         running: runsAll.filter((r: { status: string }) => r.status === "running").length,
-        completedToday: runsToday.filter((r: { status: string }) => r.status === "succeeded").length,
+        completedToday: runsToday.filter((r: { status: string }) => r.status === "succeeded")
+          .length,
         failedToday: runsToday.filter((r: { status: string }) => r.status === "failed").length,
       },
       recentRuns: runsAll.slice(0, 15),
@@ -643,7 +1006,10 @@ export const listKnowledge = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error } = await (context.supabase as any)
-      .from("agents_knowledge").select("*").order("category").order("title");
+      .from("agents_knowledge")
+      .select("*")
+      .order("category")
+      .order("title");
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -651,25 +1017,36 @@ export const listKnowledge = createServerFn({ method: "POST" })
 export const upsertKnowledge = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
-    z.object({
-      id: z.string().optional(),
-      category: z.string().min(1),
-      title: z.string().min(1),
-      content: z.string().min(1),
-      tags: z.array(z.string()).default([]),
-    }).parse(input),
+    z
+      .object({
+        id: z.string().optional(),
+        category: z.string().min(1),
+        title: z.string().min(1),
+        content: z.string().min(1),
+        tags: z.array(z.string()).default([]),
+      })
+      .parse(input),
   )
   .handler(async ({ data, context }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const supa = context.supabase as any;
     if (data.id) {
-      const { error } = await supa.from("agents_knowledge").update({
-        category: data.category, title: data.title, content: data.content, tags: data.tags,
-      }).eq("id", data.id);
+      const { error } = await supa
+        .from("agents_knowledge")
+        .update({
+          category: data.category,
+          title: data.title,
+          content: data.content,
+          tags: data.tags,
+        })
+        .eq("id", data.id);
       if (error) throw new Error(error.message);
     } else {
       const { error } = await supa.from("agents_knowledge").insert({
-        category: data.category, title: data.title, content: data.content, tags: data.tags,
+        category: data.category,
+        title: data.title,
+        content: data.content,
+        tags: data.tags,
         created_by: context.userId,
       });
       if (error) throw new Error(error.message);
@@ -682,7 +1059,10 @@ export const deleteKnowledge = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => z.object({ id: z.string() }).parse(input))
   .handler(async ({ data, context }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (context.supabase as any).from("agents_knowledge").delete().eq("id", data.id);
+    const { error } = await (context.supabase as any)
+      .from("agents_knowledge")
+      .delete()
+      .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -695,6 +1075,8 @@ export const getIntegrationsStatus = createServerFn({ method: "POST" })
       key: i.key,
       label: i.label,
       envVars: i.requiredEnv,
-      status: (i.requiredEnv.every((v) => !!process.env[v]) ? "ready" : "missing_credentials") as IntegrationStatus["status"],
+      status: (i.requiredEnv.every((v) => !!process.env[v])
+        ? "ready"
+        : "missing_credentials") as IntegrationStatus["status"],
     })) satisfies IntegrationStatus[];
   });
