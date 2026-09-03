@@ -2,7 +2,6 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,18 +57,28 @@ function AuthPage() {
     navigate({ to: "/dashboard" });
   };
 
+  // Real bug found+fixed live 2026-09-03: this used lovable.auth.signInWithOAuth,
+  // which routes through Lovable's own OAuth broker (oauth.lovable.app) --
+  // hardcoded to only recognize Lovable-hosted (*.lovable.app) redirect
+  // origins. Since this app is deployed on its own domain
+  // (growth.music.tryvanta.in), that broker 404'd on every attempt.
+  // Fix: use Supabase Auth's own native Google provider directly (confirmed
+  // live via a real call to /auth/v1/settings: google:true, already
+  // enabled) -- this is portable and doesn't depend on Lovable's hosting at
+  // all. Supabase's own redirect handles the callback and session
+  // automatically; no lovable-specific token exchange needed.
   const handleGoogle = async () => {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/dashboard` },
     });
-    if (result.error) {
+    if (error) {
       toast.error("Google sign-in failed");
       setLoading(false);
-      return;
     }
-    if (result.redirected) return;
-    navigate({ to: "/dashboard" });
+    // On success, Supabase redirects the browser to Google itself -- there
+    // is no local "done" state to reach here.
   };
 
   return (
